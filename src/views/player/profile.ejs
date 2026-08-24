@@ -1,178 +1,1353 @@
-<link rel="stylesheet" href="/css/classic-battle.css">
-<link rel="stylesheet" href="/css/profile.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Player Profile &amp; Stats — Ludo Bet</title>
+  <meta name="description" content="View player battle stats, win rate, tier rank, KYC status, match history, and account details on Ludo Bet.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="classic-battle.css">
+  <link rel="stylesheet" href="profile.css">
+</head>
+<body>
 
-<!-- 2. SUB-HEADER WITH BACK BUTTON & SETTINGS SHORTCUT -->
-<div class="sub-header-bar profile-sub-header">
-  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
-    ←
-  </button>
-  <div class="page-title-group">
-    <div class="profile-page-title">
-      <span class="title-blue">PRO</span><span class="title-purple">FILE</span>
-    </div>
-    <div class="page-subtitle">Player Identity &amp; Lifetime Records</div>
-  </div>
-  <button class="header-settings-btn" onclick="alert('Settings menu')" aria-label="Settings" title="Game Settings">
-    ⚙️
-  </button>
-</div>
+  <!-- Ambient background sparkles -->
+  <div class="ambient-sparkles"></div>
 
-<!-- 3. PROFILE HERO CARD (AVATAR, BADGE, EDIT PROFILE) -->
-<section class="profile-hero-card">
-  <!-- Top Tier Rank Badge -->
-  <div class="profile-tier-badge">
-    <span class="tier-shield">🛡️</span>
-    <div class="tier-texts">
-      <span class="tier-title">DIAMOND I</span>
-      <span class="tier-stars">⭐ <%= (user.player_level || 5) * 4 %></span>
-    </div>
-  </div>
+  <!-- Main Mobile App Frame -->
+  <div class="app-container">
 
-  <!-- Avatar with Edit Badge -->
-  <div class="profile-avatar-container">
-    <img src="/assets/<%= user.avatar_id || 'avatar_rajendra.png' %>" alt="<%= user.name %>" class="profile-main-avatar" id="user-display-avatar" onerror="this.src='/assets/avatar_rajendra.png'">
-    <div class="avatar-camera-btn">📷</div>
-  </div>
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+      <!-- Menu Button -->
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="openSidebarDrawer()">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
 
-  <!-- Player Name & Verified Tick -->
-  <div class="profile-name-row">
-    <h1 class="profile-user-name" id="user-display-name"><%= user.name %></h1>
-    <span class="verified-blue-tick" title="Verified Player">✓</span>
-  </div>
+      <!-- Resource Pill Container -->
+      <div class="resource-pill">
+        <!-- Chips Section -->
+        <button class="res-item" onclick="window.location.href='wallet.html'" aria-label="Chips">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-val">12,450</span>
+            <span class="res-label">Chips</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
 
-  <!-- Player ID with Copy Button -->
-  <div class="profile-id-row" onclick="navigator.clipboard.writeText('LD<%= user.id || 10458 %>'); alert('Player ID Copied: LD<%= user.id || 10458 %>');">
-    <span class="player-id-label">Player ID: <strong id="user-player-id">LD<%= user.id || 10458 %></strong></span>
-    <span class="id-copy-icon">📋</span>
-  </div>
+        <!-- Earnings Section -->
+        <button class="res-item" onclick="openWithdrawModal()" aria-label="Earnings">
+          <img class="res-icon" src="assets/diamond.svg" alt="Earnings">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-val">350</span>
+            <span class="res-label">Earnings</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
 
-  <!-- Overall Stats Grid (Battles, Wins, Losses) -->
-  <div class="overall-stats-grid">
-    <div class="stat-box">
-      <span class="stat-header">BATTLES</span>
-      <span class="stat-number" id="stat-total-battles">126</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-box">
-      <span class="stat-header">WINS</span>
-      <span class="stat-number green" id="stat-total-wins">78</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-box">
-      <span class="stat-header">LOSSES</span>
-      <span class="stat-number red" id="stat-total-losses">48</span>
-    </div>
-  </div>
-
-  <!-- Performance Overview (Win Rate, Rank, Rating) -->
-  <div class="performance-overview-grid">
-    <div class="perf-item">
-      <div class="perf-icon">🏆</div>
-      <span class="perf-lbl">WIN RATE</span>
-      <strong class="perf-val" id="stat-win-rate">61.9%</strong>
-    </div>
-    <div class="perf-item">
-      <div class="perf-icon">🥇</div>
-      <span class="perf-lbl">CURRENT RANK</span>
-      <strong class="perf-val" id="stat-current-rank">#248</strong>
-    </div>
-    <div class="perf-item">
-      <div class="perf-icon">🎯</div>
-      <span class="perf-lbl">SCORE / RATING</span>
-      <strong class="perf-val" id="stat-rating">1,580</strong>
-    </div>
-  </div>
-</section>
-
-<!-- 4. QUICK LINKS & ACCOUNT VERIFICATION -->
-<section class="profile-section-card">
-  <div class="section-card-header">
-    <h2 class="section-card-title">ACCOUNT ACTIONS</h2>
-  </div>
-
-  <div class="account-actions-list" style="display:flex; flex-direction:column; gap:8px; padding:10px 0;">
-    <a href="/kyc" class="menu-action-item" style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; text-decoration:none; color:#1e293b; font-weight:700; font-size:13px;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span style="font-size:18px;">🪪</span>
-        <span>KYC Document Verification</span>
+        <!-- Notification Bell -->
+        <button class="bell-item" onclick="openNotificationsModal()" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
       </div>
-      <span style="color:#10b981; font-size:11px; font-weight:800;"><%= user.kyc_status || 'VERIFIED' %> ›</span>
-    </a>
+    </header>
 
-    <a href="/wallet" class="menu-action-item" style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; text-decoration:none; color:#1e293b; font-weight:700; font-size:13px;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span style="font-size:18px;">💰</span>
-        <span>My Real Cash Wallet</span>
-      </div>
-      <span style="color:#3b82f6; font-size:11px; font-weight:800;">₹<%= (parseFloat(wallet.deposit_balance) + parseFloat(wallet.winning_balance)).toFixed(2) %> ›</span>
-    </a>
-
-    <a href="/refer-earn" class="menu-action-item" style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; text-decoration:none; color:#1e293b; font-weight:700; font-size:13px;">
-      <div style="display:flex; align-items:center; gap:10px;">
-        <span style="font-size:18px;">🎁</span>
-        <span>Refer &amp; Earn Cash Rewards</span>
-      </div>
-      <span style="color:#f59e0b; font-size:11px; font-weight:800;">Earn ₹500 ›</span>
-    </a>
-  </div>
-</section>
-
-<!-- 5. GAME WISE STATS -->
-<section class="profile-section-card">
-  <div class="section-card-header">
-    <h2 class="section-card-title">GAME WISE STATS</h2>
-  </div>
-
-  <div class="gamewise-list">
-    <!-- Ludo Classic -->
-    <div class="gamewise-item clickable" onclick="window.location.href='/ludo-classic'" style="cursor:pointer;">
-      <div class="game-item-top">
-        <div class="game-item-title-col">
-          <span class="game-emoji">🎲</span>
-          <span class="game-title">LUDO CLASSIC</span>
+    <!-- 2. SUB-HEADER WITH BACK BUTTON & SETTINGS SHORTCUT -->
+    <div class="sub-header-bar profile-sub-header">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Back to Home">
+        ←
+      </button>
+      <div class="page-title-group">
+        <div class="profile-page-title">
+          <span class="title-blue">PRO</span><span class="title-purple">FILE</span>
         </div>
-        <span class="game-arrow">›</span>
+        <div class="page-subtitle">Player Identity &amp; Lifetime Records</div>
       </div>
-      <div class="game-stats-mini-row">
-        <div>Matches: <strong>85</strong></div>
-        <div>Wins: <strong class="green">52</strong></div>
-        <div>Losses: <strong class="red">33</strong></div>
-        <div>Win Rate: <strong class="blue">61%</strong></div>
-      </div>
+      <button class="header-settings-btn" onclick="openSettingsModal()" aria-label="Settings" title="Game Settings">
+        ⚙️
+      </button>
     </div>
 
-    <!-- Ludo Quick -->
-    <div class="gamewise-item clickable" onclick="window.location.href='/ludo-quick'" style="cursor:pointer;">
-      <div class="game-item-top">
-        <div class="game-item-title-col">
-          <span class="game-emoji">⚡</span>
-          <span class="game-title">LUDO QUICK</span>
+    <!-- 3. PROFILE HERO CARD (AVATAR, BADGE, EDIT PROFILE) -->
+    <section class="profile-hero-card">
+      <!-- Top Tier Rank Badge -->
+      <div class="profile-tier-badge">
+        <span class="tier-shield">🛡️</span>
+        <div class="tier-texts">
+          <span class="tier-title">DIAMOND I</span>
+          <span class="tier-stars">⭐ 20</span>
         </div>
-        <span class="game-arrow">›</span>
       </div>
-      <div class="game-stats-mini-row">
-        <div>Matches: <strong>25</strong></div>
-        <div>Wins: <strong class="green">16</strong></div>
-        <div>Losses: <strong class="red">9</strong></div>
-        <div>Win Rate: <strong class="blue">64%</strong></div>
+
+      <!-- Avatar with Edit Badge -->
+      <div class="profile-avatar-container" onclick="openEditProfileModal()">
+        <img src="assets/avatar_rajendra.png" alt="Rajendra" class="profile-main-avatar" id="user-display-avatar">
+        <div class="avatar-camera-btn">📷</div>
       </div>
+
+      <!-- Player Name & Verified Tick -->
+      <div class="profile-name-row">
+        <h1 class="profile-user-name" id="user-display-name">Rajendra</h1>
+        <span class="verified-blue-tick" title="Verified Player">✓</span>
+      </div>
+
+      <!-- Player ID with Copy Button -->
+      <div class="profile-id-row" onclick="copyPlayerId()">
+        <span class="player-id-label">Player ID: <strong id="user-player-id">LD10458</strong></span>
+        <span class="id-copy-icon">📋</span>
+      </div>
+
+      <!-- Edit Profile Button -->
+      <button class="btn-edit-profile-action" onclick="openEditProfileModal()">
+        <span>✏️</span>
+        <span>EDIT PROFILE</span>
+      </button>
+
+      <!-- Overall Stats Grid (Battles, Wins, Losses) -->
+      <div class="overall-stats-grid">
+        <div class="stat-box">
+          <span class="stat-header">BATTLES</span>
+          <span class="stat-number" id="stat-total-battles">126</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-box">
+          <span class="stat-header">WINS</span>
+          <span class="stat-number green" id="stat-total-wins">78</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-box">
+          <span class="stat-header">LOSSES</span>
+          <span class="stat-number red" id="stat-total-losses">48</span>
+        </div>
+      </div>
+
+      <!-- Performance Overview (Win Rate, Rank, Rating) -->
+      <div class="performance-overview-grid">
+        <div class="perf-item">
+          <div class="perf-icon">🏆</div>
+          <span class="perf-lbl">WIN RATE</span>
+          <strong class="perf-val" id="stat-win-rate">61.9%</strong>
+        </div>
+        <div class="perf-item">
+          <div class="perf-icon">🥇</div>
+          <span class="perf-lbl">CURRENT RANK</span>
+          <strong class="perf-val" id="stat-current-rank">#248</strong>
+        </div>
+        <div class="perf-item">
+          <div class="perf-icon">🎯</div>
+          <span class="perf-lbl">SCORE / RATING</span>
+          <strong class="perf-val" id="stat-rating">1,580</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. GAME WISE STATS -->
+    <section class="profile-section-card">
+      <div class="section-card-header">
+        <h2 class="section-card-title">GAME WISE STATS</h2>
+        <span class="section-header-link" onclick="openGamewiseModal('all')">VIEW ALL</span>
+      </div>
+
+      <div class="gamewise-list">
+        <!-- Ludo Classic -->
+        <div class="gamewise-item clickable" onclick="openGamewiseModal('classic')" style="cursor:pointer;">
+          <div class="game-item-top">
+            <div class="game-item-title-col">
+              <span class="game-emoji">🎲</span>
+              <span class="game-title">LUDO CLASSIC</span>
+            </div>
+            <span class="game-arrow">›</span>
+          </div>
+          <div class="game-stats-mini-row">
+            <div>Matches: <strong>85</strong></div>
+            <div>Wins: <strong class="green">52</strong></div>
+            <div>Losses: <strong class="red">33</strong></div>
+            <div>Win Rate: <strong class="blue">61%</strong></div>
+          </div>
+        </div>
+
+        <!-- Ludo Quick -->
+        <div class="gamewise-item clickable" onclick="openGamewiseModal('quick')" style="cursor:pointer;">
+          <div class="game-item-top">
+            <div class="game-item-title-col">
+              <span class="game-emoji">⚡</span>
+              <span class="game-title">LUDO QUICK</span>
+            </div>
+            <span class="game-arrow">›</span>
+          </div>
+          <div class="game-stats-mini-row">
+            <div>Matches: <strong>25</strong></div>
+            <div>Wins: <strong class="green">16</strong></div>
+            <div>Losses: <strong class="red">9</strong></div>
+            <div>Win Rate: <strong class="blue">64%</strong></div>
+          </div>
+        </div>
+
+        <!-- Snake & Ladders -->
+        <div class="gamewise-item clickable" onclick="openGamewiseModal('snake')" style="cursor:pointer;">
+          <div class="game-item-top">
+            <div class="game-item-title-col">
+              <span class="game-emoji">🪜</span>
+              <span class="game-title">SNAKE &amp; LADDERS</span>
+            </div>
+            <span class="game-arrow">›</span>
+          </div>
+          <div class="game-stats-mini-row">
+            <div>Matches: <strong>16</strong></div>
+            <div>Wins: <strong class="green">10</strong></div>
+            <div>Losses: <strong class="red">6</strong></div>
+            <div>Win Rate: <strong class="blue">62.5%</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. RECENT BATTLES LOG -->
+    <section class="profile-section-card">
+      <div class="section-card-header">
+        <h2 class="section-card-title">RECENT BATTLES</h2>
+        <span class="section-header-link" onclick="window.location.href='my-battles.html'">VIEW ALL</span>
+      </div>
+
+      <div class="recent-battles-list">
+        <!-- Battle 1: Won -->
+        <div class="battle-history-row" onclick="showToast('Match ID: #BT8849102 Won', '🏆')">
+          <div class="battle-row-left">
+            <div class="battle-icon-box won">🎲</div>
+            <div class="battle-details">
+              <span class="battle-name">Ludo Classic</span>
+              <span class="battle-vs">vs Rahul • 10 mins ago</span>
+            </div>
+          </div>
+          <div class="battle-row-right">
+            <span class="battle-result won">Won</span>
+            <strong class="battle-amt green">+ ₹36</strong>
+          </div>
+        </div>
+
+        <!-- Battle 2: Lost -->
+        <div class="battle-history-row" onclick="showToast('Match ID: #BT8841923 Lost', '❌')">
+          <div class="battle-row-left">
+            <div class="battle-icon-box lost">🎲</div>
+            <div class="battle-details">
+              <span class="battle-name">Ludo Classic</span>
+              <span class="battle-vs">vs Amit • 2 hours ago</span>
+            </div>
+          </div>
+          <div class="battle-row-right">
+            <span class="battle-result lost">Lost</span>
+            <strong class="battle-amt red">₹20 Entry</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. YOUR REFERRAL CODE BOX -->
+    <section class="referral-code-card">
+      <div class="referral-code-top">
+        <span class="referral-code-title">YOUR REFERRAL CODE ℹ️</span>
+      </div>
+      <div class="referral-code-action-row">
+        <div class="referral-code-pill" onclick="copyReferralCode()">
+          <span class="ref-code-text" id="ref-code-value">LD84721</span>
+        </div>
+        <button class="btn-ref-action copy" onclick="copyReferralCode()">COPY</button>
+        <button class="btn-ref-action share" onclick="shareReferralCode()">SHARE</button>
+      </div>
+    </section>
+
+    <!-- 7. ACCOUNT DETAILS -->
+    <section class="profile-section-card">
+      <div class="section-card-header">
+        <h2 class="section-card-title">ACCOUNT DETAILS</h2>
+      </div>
+
+      <div class="account-details-list">
+        <div class="acc-row">
+          <span class="acc-label">👤 Name</span>
+          <span class="acc-val" id="acc-name-val">Rajendra</span>
+        </div>
+        <div class="acc-row">
+          <span class="acc-label">📞 Mobile Number</span>
+          <div class="acc-val-badge">
+            <span id="acc-phone-val">98XXXXXX21</span>
+            <span class="status-verified-tag">Verified ✓</span>
+          </div>
+        </div>
+        <div class="acc-row">
+          <span class="acc-label">✉️ Email</span>
+          <div class="acc-val-badge">
+            <span id="acc-email-val">r******@gmail.com</span>
+            <span class="status-verified-tag">Verified ✓</span>
+          </div>
+        </div>
+        <div class="acc-row">
+          <span class="acc-label">📅 Date of Birth</span>
+          <span class="acc-val">12 Aug 1998</span>
+        </div>
+        <div class="acc-row">
+          <span class="acc-label">🏛️ Joined On</span>
+          <span class="acc-val">08 Aug 2026</span>
+        </div>
+        <div class="acc-row">
+          <span class="acc-label">🌍 Country</span>
+          <span class="acc-val">🇮🇳 India</span>
+        </div>
+        <div class="acc-row clickable" onclick="openLanguageModal()">
+          <span class="acc-label">🌐 Preferred Language</span>
+          <span class="acc-val link">English ›</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. ACHIEVEMENTS -->
+    <section class="profile-section-card">
+      <div class="section-card-header">
+        <h2 class="section-card-title">ACHIEVEMENTS</h2>
+        <span class="section-header-link" onclick="openAchievementsModal('all')">VIEW ALL</span>
+      </div>
+
+      <div class="achievements-grid">
+        <div class="achievement-item" onclick="openAchievementsModal('first_win')">
+          <img src="assets/badge_first_win.svg" alt="First Win" class="badge-icon-img">
+          <span class="badge-title">First Win</span>
+          <span class="badge-desc">10 Battles</span>
+        </div>
+
+        <div class="achievement-item" onclick="openAchievementsModal('streak')">
+          <img src="assets/badge_win_streak.svg" alt="Win Streak" class="badge-icon-img">
+          <span class="badge-title">Win Streak</span>
+          <span class="badge-desc">5 Wins</span>
+        </div>
+
+        <div class="achievement-item" onclick="openAchievementsModal('big_winner')">
+          <img src="assets/badge_big_winner.svg" alt="Big Winner" class="badge-icon-img">
+          <span class="badge-title">Big Winner</span>
+          <span class="badge-desc">Win ₹500</span>
+        </div>
+
+        <div class="achievement-item" onclick="openAchievementsModal('quick')">
+          <img src="assets/badge_quick_player.svg" alt="Quick Player" class="badge-icon-img">
+          <span class="badge-title">Quick Player</span>
+          <span class="badge-desc">Fast Finish</span>
+        </div>
+
+        <div class="achievement-item locked" onclick="openAchievementsModal('all')">
+          <div class="badge-lock-circle">🔒</div>
+          <span class="badge-title">More (4)</span>
+          <span class="badge-desc">View All</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8.5 QUICK MENU & ACCOUNT SETTINGS -->
+    <section class="profile-section-card">
+      <div class="section-card-header">
+        <h2 class="section-card-title">ACCOUNT &amp; PREFERENCES</h2>
+      </div>
+
+      <div class="profile-menu-grid">
+        <a class="profile-nav-card" href="kyc.html">
+          <div class="p-nav-left">
+            <span class="p-nav-icon icon-emerald">🪪</span>
+            <div class="p-nav-meta">
+              <span class="p-nav-title">KYC Document Verification</span>
+              <span class="p-nav-sub">Aadhaar, PAN &amp; Bank Account</span>
+            </div>
+          </div>
+          <span class="p-nav-badge green">VERIFIED ✓</span>
+        </a>
+
+        <a class="profile-nav-card" href="transactions.html">
+          <div class="p-nav-left">
+            <span class="p-nav-icon icon-blue">📜</span>
+            <div class="p-nav-meta">
+              <span class="p-nav-title">Transaction Passbook</span>
+              <span class="p-nav-sub">Winnings, Deposits &amp; Referrals</span>
+            </div>
+          </div>
+          <span class="p-nav-arrow">›</span>
+        </a>
+
+        <a class="profile-nav-card" href="rules.html">
+          <div class="p-nav-left">
+            <span class="p-nav-icon icon-purple">⚖️</span>
+            <div class="p-nav-meta">
+              <span class="p-nav-title">Official Tournament Rules</span>
+              <span class="p-nav-sub">Fairplay guidelines &amp; Scoring</span>
+            </div>
+          </div>
+          <span class="p-nav-arrow">›</span>
+        </a>
+
+        <a class="profile-nav-card" href="how-to-play.html">
+          <div class="p-nav-left">
+            <span class="p-nav-icon icon-pink">❓</span>
+            <div class="p-nav-meta">
+              <span class="p-nav-title">How To Play Guide</span>
+              <span class="p-nav-sub">Beginner step-by-step tutorial</span>
+            </div>
+          </div>
+          <span class="p-nav-arrow">›</span>
+        </a>
+
+        <a class="profile-nav-card" href="settings.html">
+          <div class="p-nav-left">
+            <span class="p-nav-icon icon-indigo">⚙️</span>
+            <div class="p-nav-meta">
+              <span class="p-nav-title">App Settings &amp; Audio</span>
+              <span class="p-nav-sub">Sound, Vibration &amp; Alerts</span>
+            </div>
+          </div>
+          <span class="p-nav-arrow">›</span>
+        </a>
+
+        <a class="profile-nav-card" href="support.html">
+          <div class="p-nav-left">
+            <span class="p-nav-icon icon-green">🎧</span>
+            <div class="p-nav-meta">
+              <span class="p-nav-title">24x7 Help &amp; Support</span>
+              <span class="p-nav-sub">WhatsApp &amp; Ticket Support</span>
+            </div>
+          </div>
+          <span class="p-nav-arrow">›</span>
+        </a>
+
+        <a class="profile-nav-card" href="terms.html">
+          <div class="p-nav-left">
+            <span class="p-nav-icon icon-slate">📜</span>
+            <div class="p-nav-meta">
+              <span class="p-nav-title">Terms &amp; Conditions</span>
+              <span class="p-nav-sub">User Agreement &amp; 18+ Rules</span>
+            </div>
+          </div>
+          <span class="p-nav-arrow">›</span>
+        </a>
+
+        <a class="profile-nav-card" href="privacy.html">
+          <div class="p-nav-left">
+            <span class="p-nav-icon icon-slate">🔒</span>
+            <div class="p-nav-meta">
+              <span class="p-nav-title">Privacy Policy</span>
+              <span class="p-nav-sub">256-Bit SSL Data Protection</span>
+            </div>
+          </div>
+          <span class="p-nav-arrow">›</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 9. LOGOUT ACTION BUTTON -->
+    <div class="profile-logout-section">
+      <button class="btn-profile-logout" onclick="openLogoutModal()">
+        <span class="logout-icon">🚪</span>
+        <span class="logout-text">LOG OUT ACCOUNT</span>
+      </button>
+      <span class="logout-sub-note">Safe &amp; Encrypted Session • Player ID: LD10458</span>
     </div>
 
-    <!-- Snake & Ladders -->
-    <div class="gamewise-item clickable" onclick="window.location.href='/snake-ladders'" style="cursor:pointer;">
-      <div class="game-item-top">
-        <div class="game-item-title-col">
-          <span class="game-emoji">🪜</span>
-          <span class="game-title">SNAKE &amp; LADDERS</span>
+  </div>
+
+  <!-- 9. BOTTOM FLOATING NAVIGATION DOCK -->
+  <div class="bottom-nav-container">
+    <nav class="bottom-nav">
+      <button class="nav-tab" onclick="window.location.href='index.html'">
+        <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='ranking.html'">
+        <img class="nav-icon-svg" src="assets/ranking.svg" alt="Ranking">
+        <span class="nav-label">Ranking</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='wallet.html'">
+        <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+        <span class="nav-label">Wallet</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='refer-earn.html'">
+        <img class="nav-icon-svg" src="assets/refer.svg" alt="Refer">
+        <span class="nav-label">Refer</span>
+      </button>
+      <button class="nav-tab active" onclick="window.location.href='profile.html'">
+        <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+    <div class="home-indicator"></div>
+  </div>
+
+  <!-- =========================================================================
+       COMPLETE SIDEBAR DRAWER MENU (EXACT STRUCTURED HIERARCHY)
+       ========================================================================= -->
+  <div class="drawer-backdrop" id="sidebar-drawer" onclick="closeSidebarDrawer();">
+    <div class="drawer-panel" onclick="event.stopPropagation();">
+      <!-- 1. Drawer Header (Fixed) -->
+      <div class="drawer-header-card">
+        <button class="drawer-close-btn" onclick="closeSidebarDrawer()" aria-label="Close Menu">✕</button>
+        <div class="drawer-user-info" onclick="closeSidebarDrawer();">
+          <img src="assets/avatar_rajendra.png" alt="Rajendra" class="drawer-user-avatar">
+          <div class="drawer-user-meta">
+            <div class="drawer-name-row">
+              <span class="drawer-name">Rajendra</span>
+              <span class="verified-tick">✓</span>
+            </div>
+            <span class="drawer-id">Player ID: LD10458</span>
+          </div>
         </div>
-        <span class="game-arrow">›</span>
+        <button class="btn-drawer-profile" onclick="closeSidebarDrawer();">VIEW FULL PROFILE ›</button>
       </div>
-      <div class="game-stats-mini-row">
-        <div>Matches: <strong>16</strong></div>
-        <div>Wins: <strong class="green">10</strong></div>
-        <div>Losses: <strong class="red">6</strong></div>
-        <div>Win Rate: <strong class="blue">62.5%</strong></div>
+
+      <!-- 2. Drawer Scrollable List (Light Luxury Cards) -->
+      <div class="drawer-scroll-content" id="drawer-scroll-content">
+        
+        <!-- SECTION 1: GAMING & BATTLES -->
+        <div class="drawer-section-title">🎮 GAMING &amp; BATTLES</div>
+        
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='my-battles.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-blue">⚔️</div>
+            <div class="nav-card-text">
+              <span class="card-title">My Battles</span>
+              <span class="card-sub">Open, Running &amp; Completed</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='ranking.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-amber">🏆</div>
+            <div class="nav-card-text">
+              <span class="card-title">Leaderboard &amp; Rankings</span>
+              <span class="card-sub">Daily, Weekly &amp; Monthly Winners</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='notifications.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-amber">🔔</div>
+            <div class="nav-card-text">
+              <span class="card-title">Notifications</span>
+              <span class="card-sub">Invites, Results &amp; Alerts</span>
+            </div>
+          </div>
+          <span class="nav-badge-pill red">3</span>
+        </a>
+
+        <!-- SECTION 2: WALLET & FINANCES -->
+        <div class="drawer-section-title">💳 WALLET &amp; TRANSACTIONS</div>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='wallet.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-green">💰</div>
+            <div class="nav-card-text">
+              <span class="card-title">Add Cash / Deposit</span>
+              <span class="card-sub">Instant UPI, QR &amp; Cards</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='withdraw.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-emerald">💸</div>
+            <div class="nav-card-text">
+              <span class="card-title">Withdraw Cash</span>
+              <span class="card-sub">Instant Transfer to UPI / Bank</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='transactions.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-indigo">📜</div>
+            <div class="nav-card-text">
+              <span class="card-title">Transaction History</span>
+              <span class="card-sub">Passbook, Ledger &amp; Winnings</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <!-- SECTION 3: REWARDS & EARNINGS -->
+        <div class="drawer-section-title">🎁 REWARDS &amp; OFFERS</div>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='refer-earn.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-orange">🎁</div>
+            <div class="nav-card-text">
+              <span class="card-title">Refer &amp; Earn</span>
+              <span class="card-sub">Get ₹100 Per Friend</span>
+            </div>
+          </div>
+          <span class="nav-badge-pill orange">HOT 🔥</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='profile.html#achievements';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-pink">🎉</div>
+            <div class="nav-card-text">
+              <span class="card-title">Rewards &amp; Bonuses</span>
+              <span class="card-sub">Cashback, Free Spins &amp; Passes</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <!-- SECTION 4: ACCOUNT & VERIFICATION -->
+        <div class="drawer-section-title">🛡️ ACCOUNT &amp; RULES</div>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='kyc.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-green">🆔</div>
+            <div class="nav-card-text">
+              <span class="card-title">KYC Verification</span>
+              <span class="card-sub">Aadhaar &amp; PAN Identity</span>
+            </div>
+          </div>
+          <span class="nav-badge-pill green">VERIFIED ✓</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='rules.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-blue">📖</div>
+            <div class="nav-card-text">
+              <span class="card-title">Game Rules</span>
+              <span class="card-sub">Rules of Classic, Quick &amp; Snake</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='how-to-play.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-blue">🎓</div>
+            <div class="nav-card-text">
+              <span class="card-title">How to Play</span>
+              <span class="card-sub">Beginners Guide &amp; Tips</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <!-- SECTION 5: SETTINGS & SUPPORT -->
+        <div class="drawer-section-title">⚙️ SETTINGS &amp; SUPPORT</div>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='settings.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-slate">⚙️</div>
+            <div class="nav-card-text">
+              <span class="card-title">Settings</span>
+              <span class="card-sub">Sound, Vibration, Language</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='support.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-green">🎧</div>
+            <div class="nav-card-text">
+              <span class="card-title">Support / Help</span>
+              <span class="card-sub">FAQ, 24x7 WhatsApp Support</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='terms.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-slate">⚖️</div>
+            <div class="nav-card-text">
+              <span class="card-title">Terms &amp; Conditions</span>
+              <span class="card-sub">Fairplay &amp; User Agreements</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeSidebarDrawer(); window.location.href='privacy.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-slate">🔒</div>
+            <div class="nav-card-text">
+              <span class="card-title">Privacy Policy</span>
+              <span class="card-sub">Privacy &amp; Data Security</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <!-- Logout -->
+        <a class="drawer-menu-card logout-card" onclick="closeSidebarDrawer(); openLogoutModal();">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-red">🚪</div>
+            <div class="nav-card-text">
+              <span class="card-title danger">Logout</span>
+              <span class="card-sub">Securely exit account</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+      </div>
+
+      <!-- Drawer Footer -->
+      <div class="drawer-bottom-footer">
+        <span>Fairplay 100% Certified • v2.4.0</span>
       </div>
     </div>
   </div>
-</section>
+
+  <!-- =========================================================================
+       INTERACTIVE MODALS
+       ========================================================================= -->
+
+  <!-- MODAL 1: PREMIUM EDIT PROFILE -->
+  <div class="flow-modal-backdrop" id="modal-edit-profile" onclick="closeModal('modal-edit-profile')">
+    <div class="flow-modal-box" style="text-align:left;" onclick="event.stopPropagation()">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-edit-profile')">✕</button>
+      <div class="flow-header-pill blue-pill">✏️ EDIT PROFILE</div>
+      <h3 class="flow-title">Update Your Info</h3>
+      <p class="flow-subtitle">Personalize your player identity on Ludo Bet.</p>
+
+      <div class="edit-profile-form">
+        <!-- Choose Avatar -->
+        <div class="form-field-group">
+          <label class="form-label">
+            <span>Choose Player Avatar:</span>
+            <span class="label-sub">Tap to select</span>
+          </label>
+          <div class="avatar-selection-row">
+            <div class="avatar-option-wrap active" onclick="selectProfileAvatar('assets/avatar_rajendra.png', this)">
+              <img src="assets/avatar_rajendra.png" alt="Rajendra" class="avatar-choice-img">
+              <span class="avatar-check-badge">✓</span>
+            </div>
+            <div class="avatar-option-wrap" onclick="selectProfileAvatar('assets/avatar_rahul.png', this)">
+              <img src="assets/avatar_rahul.png" alt="Rahul" class="avatar-choice-img">
+              <span class="avatar-check-badge">✓</span>
+            </div>
+            <div class="avatar-option-wrap" onclick="selectProfileAvatar('assets/avatar_amit.png', this)">
+              <img src="assets/avatar_amit.png" alt="Amit" class="avatar-choice-img">
+              <span class="avatar-check-badge">✓</span>
+            </div>
+            <div class="avatar-option-wrap" onclick="selectProfileAvatar('assets/avatar_vikash.png', this)">
+              <img src="assets/avatar_vikash.png" alt="Vikash" class="avatar-choice-img">
+              <span class="avatar-check-badge">✓</span>
+            </div>
+            <div class="avatar-option-wrap" onclick="selectProfileAvatar('assets/avatar_neha.png', this)">
+              <img src="assets/avatar_neha.png" alt="Neha" class="avatar-choice-img">
+              <span class="avatar-check-badge">✓</span>
+            </div>
+            <div class="avatar-option-wrap" onclick="selectProfileAvatar('assets/user_rajendra_hero.png', this)">
+              <img src="assets/user_rajendra_hero.png" alt="Pro Gamer" class="avatar-choice-img">
+              <span class="avatar-check-badge">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Display Name -->
+        <div class="form-field-group">
+          <label class="form-label" for="edit-input-name">Display Name</label>
+          <div class="premium-input-box">
+            <span class="input-icon">👤</span>
+            <input type="text" class="form-text-input" id="edit-input-name" value="Rajendra" placeholder="Enter your display name" maxlength="20">
+          </div>
+        </div>
+
+        <!-- Email -->
+        <div class="form-field-group">
+          <label class="form-label" for="edit-input-email">Email Address</label>
+          <div class="premium-input-box">
+            <span class="input-icon">✉️</span>
+            <input type="email" class="form-text-input" id="edit-input-email" value="rajendra.pro@gmail.com" placeholder="name@example.com">
+          </div>
+        </div>
+
+        <!-- Mobile Number (Locked / Verified) -->
+        <div class="form-field-group">
+          <label class="form-label">
+            <span>Mobile Number</span>
+            <span class="verified-pill">🛡️ VERIFIED</span>
+          </label>
+          <div class="premium-input-box locked">
+            <span class="input-icon">📱</span>
+            <input type="text" class="form-text-input disabled" value="+91 9876543221" disabled>
+            <span class="lock-icon">🔒</span>
+          </div>
+        </div>
+
+        <!-- Security Note -->
+        <div class="form-note-box">
+          <span class="note-icon">🛡️</span>
+          <p class="note-text"><strong>Security Protection:</strong> Player ID (<strong>LD10458</strong>) &amp; verified mobile number cannot be altered to safeguard your wallet funds and tournament ratings.</p>
+        </div>
+      </div>
+
+      <button class="btn-flow-green" onclick="saveProfileChanges()">
+        <span>SAVE CHANGES ✓</span>
+        <span class="btn-sub-text">Updates Instantly Across App</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 1B: GAME WISE STATS BREAKDOWN -->
+  <div class="flow-modal-backdrop" id="modal-gamewise-stats" onclick="closeModal('modal-gamewise-stats')">
+    <div class="flow-modal-box" style="text-align:left; max-width:460px;" onclick="event.stopPropagation()">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-gamewise-stats')">✕</button>
+      <div class="flow-header-pill purple-pill">📊 PERFORMANCE BREAKDOWN</div>
+      <h3 class="flow-title">Game-Wise Statistics</h3>
+      <p class="flow-subtitle">Comprehensive metrics, win percentages and earnings history.</p>
+
+      <!-- Filter Tabs -->
+      <div class="gw-filter-bar">
+        <button class="gw-tab-chip active" onclick="filterGamewiseModal('all', this)">ALL GAMES</button>
+        <button class="gw-tab-chip" onclick="filterGamewiseModal('classic', this)">🎲 CLASSIC</button>
+        <button class="gw-tab-chip" onclick="filterGamewiseModal('quick', this)">⚡ QUICK</button>
+        <button class="gw-tab-chip" onclick="filterGamewiseModal('snake', this)">🪜 SNAKE &amp; LADDERS</button>
+      </div>
+
+      <!-- High Level Overview -->
+      <div class="gw-overview-grid">
+        <div class="gw-stat-box">
+          <span class="gw-stat-lbl">TOTAL</span>
+          <span class="gw-stat-val" id="gw-total-matches">126</span>
+        </div>
+        <div class="gw-stat-box">
+          <span class="gw-stat-lbl">WINS</span>
+          <span class="gw-stat-val green" id="gw-total-wins">78</span>
+        </div>
+        <div class="gw-stat-box">
+          <span class="gw-stat-lbl">WIN RATE</span>
+          <span class="gw-stat-val blue" id="gw-total-rate">61.9%</span>
+        </div>
+        <div class="gw-stat-box">
+          <span class="gw-stat-lbl">WON CASH</span>
+          <span class="gw-stat-val green" id="gw-total-cash">₹8,420</span>
+        </div>
+      </div>
+
+      <!-- Cards Stack -->
+      <div class="gw-game-cards-stack">
+        <!-- LUDO CLASSIC -->
+        <div class="gw-game-card" id="gw-card-classic">
+          <div class="gw-game-head">
+            <div class="gw-title-group">
+              <span class="gw-emoji">🎲</span>
+              <span class="gw-name">Ludo Classic (1v1 &amp; 4P)</span>
+            </div>
+            <span class="gw-win-badge">61.2% Win Rate</span>
+          </div>
+          <div class="gw-metrics-row">
+            <span>Matches: <strong>85</strong></span>
+            <span>Won: <strong class="green">52</strong></span>
+            <span>Loss: <strong class="red">33</strong></span>
+            <span>Earned: <strong class="green">+₹5,720</strong></span>
+          </div>
+          <div class="gw-progress-bar-wrap">
+            <div class="gw-progress-fill" style="width: 61.2%;"></div>
+          </div>
+          <button class="gw-cta-btn" onclick="window.location.href='ludo-classic.html'">
+            ⚔️ PLAY LUDO CLASSIC BATTLES ➔
+          </button>
+        </div>
+
+        <!-- LUDO QUICK -->
+        <div class="gw-game-card" id="gw-card-quick">
+          <div class="gw-game-head">
+            <div class="gw-title-group">
+              <span class="gw-emoji">⚡</span>
+              <span class="gw-name">Ludo Quick (1 Token Rush)</span>
+            </div>
+            <span class="gw-win-badge">64.0% Win Rate</span>
+          </div>
+          <div class="gw-metrics-row">
+            <span>Matches: <strong>25</strong></span>
+            <span>Won: <strong class="green">16</strong></span>
+            <span>Loss: <strong class="red">9</strong></span>
+            <span>Earned: <strong class="green">+₹1,760</strong></span>
+          </div>
+          <div class="gw-progress-bar-wrap">
+            <div class="gw-progress-fill" style="width: 64%;"></div>
+          </div>
+          <button class="gw-cta-btn" onclick="window.location.href='ludo-quick.html'">
+            ⚡ PLAY LUDO QUICK BATTLES ➔
+          </button>
+        </div>
+
+        <!-- SNAKE & LADDERS -->
+        <div class="gw-game-card" id="gw-card-snake">
+          <div class="gw-game-head">
+            <div class="gw-title-group">
+              <span class="gw-emoji">🪜</span>
+              <span class="gw-name">Snake &amp; Ladders</span>
+            </div>
+            <span class="gw-win-badge">62.5% Win Rate</span>
+          </div>
+          <div class="gw-metrics-row">
+            <span>Matches: <strong>16</strong></span>
+            <span>Won: <strong class="green">10</strong></span>
+            <span>Loss: <strong class="red">6</strong></span>
+            <span>Earned: <strong class="green">+₹940</strong></span>
+          </div>
+          <div class="gw-progress-bar-wrap">
+            <div class="gw-progress-fill" style="width: 62.5%;"></div>
+          </div>
+          <button class="gw-cta-btn" onclick="window.location.href='snake-ladders.html'">
+            🪜 PLAY SNAKE &amp; LADDERS ➔
+          </button>
+        </div>
+      </div>
+
+      <button class="btn-flow-primary" onclick="closeModal('modal-gamewise-stats')">
+        CLOSE BREAKDOWN
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 1C: ACHIEVEMENTS & BADGES SHOWCASE -->
+  <div class="flow-modal-backdrop" id="modal-achievements" onclick="closeModal('modal-achievements')">
+    <div class="flow-modal-box" style="text-align:left; max-width:460px;" onclick="event.stopPropagation()">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-achievements')">✕</button>
+      <div class="flow-header-pill purple-pill">🎖️ TROPHIES &amp; BADGES</div>
+      <h3 class="flow-title">Player Achievements</h3>
+      <p class="flow-subtitle">Unlock milestones, earn trophy points &amp; collect rewards.</p>
+
+      <!-- Milestone Summary Banner -->
+      <div class="achieve-milestone-box">
+        <div class="achieve-milestone-top">
+          <span class="achieve-level-title">🌟 Gold Tier Champion</span>
+          <span class="achieve-xp-badge">⭐ 450 XP Points</span>
+        </div>
+        <div class="achieve-bar-wrap">
+          <div class="achieve-bar-fill" style="width: 50%;"></div>
+        </div>
+        <div class="achieve-bar-meta">
+          <span>4 of 8 Badges Unlocked</span>
+          <span>50% Milestone Complete</span>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="achieve-filter-bar">
+        <button class="achieve-tab-chip active" onclick="filterAchievementsModal('all', this)">ALL BADGES (8)</button>
+        <button class="achieve-tab-chip" onclick="filterAchievementsModal('unlocked', this)">✅ UNLOCKED (4)</button>
+        <button class="achieve-tab-chip" onclick="filterAchievementsModal('locked', this)">🔒 LOCKED (4)</button>
+      </div>
+
+      <!-- Badges List -->
+      <div class="achieve-badges-list">
+        <!-- Badge 1: First Win -->
+        <div class="achieve-badge-card unlocked" data-status="unlocked">
+          <div class="b-card-left">
+            <div class="b-card-icon">🎖️</div>
+            <div class="b-card-info">
+              <span class="b-card-title">First Win</span>
+              <span class="b-card-desc">Won 10 Tournament Matches</span>
+              <span class="b-card-reward">🎁 Reward: +₹20 Bonus Credited</span>
+            </div>
+          </div>
+          <span class="b-card-status unlocked">UNLOCKED ✓</span>
+        </div>
+
+        <!-- Badge 2: Win Streak -->
+        <div class="achieve-badge-card unlocked" data-status="unlocked">
+          <div class="b-card-left">
+            <div class="b-card-icon">🔥</div>
+            <div class="b-card-info">
+              <span class="b-card-title">Win Streak Master</span>
+              <span class="b-card-desc">Won 5 Battles in a Row</span>
+              <span class="b-card-reward">🎁 Reward: +₹50 Bonus Credited</span>
+            </div>
+          </div>
+          <span class="b-card-status unlocked">UNLOCKED ✓</span>
+        </div>
+
+        <!-- Badge 3: Big Winner -->
+        <div class="achieve-badge-card unlocked" data-status="unlocked">
+          <div class="b-card-left">
+            <div class="b-card-icon">💰</div>
+            <div class="b-card-info">
+              <span class="b-card-title">Big Winner</span>
+              <span class="b-card-desc">Won ₹500+ in a single match</span>
+              <span class="b-card-reward">🎁 Reward: +10 Gems Credited</span>
+            </div>
+          </div>
+          <span class="b-card-status unlocked">UNLOCKED ✓</span>
+        </div>
+
+        <!-- Badge 4: Quick Player -->
+        <div class="achieve-badge-card unlocked" data-status="unlocked">
+          <div class="b-card-left">
+            <div class="b-card-icon">⚡</div>
+            <div class="b-card-info">
+              <span class="b-card-title">Quick Player</span>
+              <span class="b-card-desc">Won Ludo Quick in under 3 mins</span>
+              <span class="b-card-reward">🎁 Reward: +₹30 Bonus Credited</span>
+            </div>
+          </div>
+          <span class="b-card-status unlocked">UNLOCKED ✓</span>
+        </div>
+
+        <!-- Badge 5: Centurion King -->
+        <div class="achieve-badge-card locked" data-status="locked">
+          <div class="b-card-left">
+            <div class="b-card-icon">👑</div>
+            <div class="b-card-info">
+              <span class="b-card-title">Centurion King</span>
+              <span class="b-card-desc">Play 100 Tournament Battles (85/100)</span>
+              <span class="b-card-reward">🎁 Reward: +₹100 Cash &amp; VIP Frame</span>
+            </div>
+          </div>
+          <span class="b-card-status locked">85% 🔒</span>
+        </div>
+
+        <!-- Badge 6: Rating Maestro -->
+        <div class="achieve-badge-card locked" data-status="locked">
+          <div class="b-card-left">
+            <div class="b-card-icon">🎯</div>
+            <div class="b-card-info">
+              <span class="b-card-title">Rating Maestro</span>
+              <span class="b-card-desc">Reach 2,000 Rating Points (1580/2000)</span>
+              <span class="b-card-reward">🎁 Reward: +50 Gems 💎</span>
+            </div>
+          </div>
+          <span class="b-card-status locked">79% 🔒</span>
+        </div>
+
+        <!-- Badge 7: Super Referrer -->
+        <div class="achieve-badge-card locked" data-status="locked">
+          <div class="b-card-left">
+            <div class="b-card-icon">🤝</div>
+            <div class="b-card-info">
+              <span class="b-card-title">Super Referrer</span>
+              <span class="b-card-desc">Refer 10 Active Playing Friends (6/10)</span>
+              <span class="b-card-reward">🎁 Reward: +₹250 Direct Cash</span>
+            </div>
+          </div>
+          <span class="b-card-status locked">60% 🔒</span>
+        </div>
+
+        <!-- Badge 8: Lucky Sixer -->
+        <div class="achieve-badge-card locked" data-status="locked">
+          <div class="b-card-left">
+            <div class="b-card-icon">🎲</div>
+            <div class="b-card-info">
+              <span class="b-card-title">Lucky Sixer</span>
+              <span class="b-card-desc">Roll three consecutive 6s in tournament</span>
+              <span class="b-card-reward">🎁 Reward: Golden 3D Dice Skin</span>
+            </div>
+          </div>
+          <span class="b-card-status locked">LOCKED 🔒</span>
+        </div>
+      </div>
+
+      <button class="btn-flow-primary" onclick="closeModal('modal-achievements')">
+        CLOSE TROPHIES
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 2: WITHDRAW CASH -->
+  <div class="flow-modal-backdrop" id="modal-withdraw-cash">
+    <div class="flow-modal-box" style="text-align:left;">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-withdraw-cash')">✕</button>
+      <div class="flow-header-pill" style="background:#2e7d32;">INSTANT WITHDRAWAL</div>
+      <h3 class="flow-title">Withdraw Winnings</h3>
+      <p class="flow-subtitle">Instant payout to your verified UPI ID or Bank Account.</p>
+
+      <div class="withdraw-balance-box">
+        <div class="withdraw-balance-row">
+          <span>Withdrawable Winnings:</span>
+          <strong class="green" style="font-size:18px;">₹350.00</strong>
+        </div>
+        <span class="withdraw-min-tag">⚡ Min: ₹50 • Max: ₹10,000 / Day</span>
+      </div>
+
+      <div class="form-field-group">
+        <label class="form-label">Enter Withdrawal Amount:</label>
+        <div class="withdraw-input-frame">
+          <span class="curr-prefix">₹</span>
+          <input type="number" class="withdraw-amt-field" id="withdraw-amount-input" value="300" min="50" max="350">
+          <button class="btn-max-all" onclick="document.getElementById('withdraw-amount-input').value = 350;">MAX</button>
+        </div>
+      </div>
+
+      <div class="form-field-group">
+        <label class="form-label">Select Payout Method:</label>
+        <div class="payout-methods-grid">
+          <div class="payout-method-card selected" onclick="selectPayoutMethod(this)">
+            <span>📱 UPI ID (Instant 5s)</span>
+            <strong>rajendra@okaxis</strong>
+          </div>
+          <div class="payout-method-card" onclick="selectPayoutMethod(this)">
+            <span>🏛️ Bank Account</span>
+            <strong>HDFC Bank •••• 4421</strong>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-flow-green" onclick="submitWithdrawalRequest()">PROCEED WITHDRAWAL ➔</button>
+    </div>
+  </div>
+
+  <!-- MODAL 3: COMPREHENSIVE ALL-IN-ONE TRANSACTION HISTORY -->
+  <div class="flow-modal-backdrop" id="modal-transaction-history">
+    <div class="flow-modal-box" style="text-align:left; max-width:440px;">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-transaction-history')">✕</button>
+      <div class="flow-header-pill" style="background:#0288d1;">PASSBOOK</div>
+      <h3 class="flow-title">Transaction History</h3>
+      <p class="flow-subtitle">Complete ledger of winnings, losses, deposits, withdrawals &amp; referrals.</p>
+
+      <!-- Filter Pills -->
+      <div class="txn-filter-scroll">
+        <button class="txn-filter-btn active" onclick="filterTransactions('all', this)">ALL</button>
+        <button class="txn-filter-btn" onclick="filterTransactions('won', this)">WON</button>
+        <button class="txn-filter-btn" onclick="filterTransactions('lost', this)">LOST</button>
+        <button class="txn-filter-btn" onclick="filterTransactions('deposit', this)">DEPOSIT</button>
+        <button class="txn-filter-btn" onclick="filterTransactions('withdraw', this)">WITHDRAW</button>
+        <button class="txn-filter-btn" onclick="filterTransactions('refer', this)">REFERRAL</button>
+      </div>
+
+      <!-- Transaction Items List -->
+      <div class="txn-items-container" id="all-transactions-list">
+        <!-- Dynamically rendered via profile.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: KYC VERIFICATION -->
+  <div class="flow-modal-backdrop" id="modal-kyc" onclick="closeModal('modal-kyc')">
+    <div class="flow-modal-box" style="text-align:left; max-width:440px;" onclick="event.stopPropagation()">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-kyc')">✕</button>
+      <div class="flow-header-pill green-pill">🛡️ KYC STATUS</div>
+      <h3 class="flow-title">Identity Verification: 100% Verified ✅</h3>
+      <p class="flow-subtitle">Your identity documents have been approved for unlimited instant withdrawals.</p>
+
+      <div class="kyc-doc-list">
+        <div class="kyc-doc-item approved">
+          <div class="doc-left">
+            <span class="doc-icon">🪪</span>
+            <div class="doc-meta">
+              <strong class="doc-name">Aadhaar Card</strong>
+              <span class="doc-num">XXXX-XXXX-4821</span>
+            </div>
+          </div>
+          <span class="doc-badge success">APPROVED ✓</span>
+        </div>
+
+        <div class="kyc-doc-item approved">
+          <div class="doc-left">
+            <span class="doc-icon">📄</span>
+            <div class="doc-meta">
+              <strong class="doc-name">PAN Card</strong>
+              <span class="doc-num">ABCDE••••F</span>
+            </div>
+          </div>
+          <span class="doc-badge success">APPROVED ✓</span>
+        </div>
+
+        <div class="kyc-doc-item approved">
+          <div class="doc-left">
+            <span class="doc-icon">🏛️</span>
+            <div class="doc-meta">
+              <strong class="doc-name">Bank Account</strong>
+              <span class="doc-num">HDFC •••• 4421</span>
+            </div>
+          </div>
+          <span class="doc-badge success">VERIFIED ✓</span>
+        </div>
+      </div>
+
+      <a class="link-adv-settings" href="kyc.html">
+        🪪 Open Full KYC Details Page ➔
+      </a>
+
+      <button class="btn-flow-primary" onclick="closeModal('modal-kyc')">CLOSE</button>
+    </div>
+  </div>
+
+  <!-- MODAL 5: GAME RULES -->
+  <div class="flow-modal-backdrop" id="modal-game-rules" onclick="closeModal('modal-game-rules')">
+    <div class="flow-modal-box" style="text-align:left; max-width:440px;" onclick="event.stopPropagation()">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-game-rules')">✕</button>
+      <div class="flow-header-pill purple-pill">⚖️ RULES &amp; GUIDELINES</div>
+      <h3 class="flow-title">Official Tournament Rules</h3>
+      <p class="flow-subtitle">100% fairplay algorithms, move timers and scoring system.</p>
+
+      <div class="rules-scroll-box">
+        <div class="rule-group-item">
+          <strong>🎲 Ludo Classic Rules:</strong>
+          <p>4 tokens per player. Roll a 6 to open token. All 4 tokens home to win. 10% platform commission on total entry fee.</p>
+        </div>
+        <div class="rule-group-item">
+          <strong>⚡ Ludo Quick Rules:</strong>
+          <p>Score rush mode. 24 moves timer. First player to get 1 goti home or highest points wins the match.</p>
+        </div>
+        <div class="rule-group-item">
+          <strong>🪜 Snake &amp; Ladders Rules:</strong>
+          <p>Race to square 100. Ladders boost position, snake bites pull back. Exact dice roll required to land on 100.</p>
+        </div>
+      </div>
+
+      <a class="link-adv-settings" href="rules.html">
+        📜 View Complete Rulebook &amp; Fairplay Policy ➔
+      </a>
+
+      <button class="btn-flow-primary" onclick="closeModal('modal-game-rules')">UNDERSTOOD ✓</button>
+    </div>
+  </div>
+
+  <!-- MODAL 6: PREMIUM GAME SETTINGS -->
+  <div class="flow-modal-backdrop" id="modal-settings" onclick="closeModal('modal-settings')">
+    <div class="flow-modal-box" style="text-align:left; max-width:440px;" onclick="event.stopPropagation()">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-settings')">✕</button>
+      <div class="flow-header-pill blue-pill">⚙️ PREFERENCES</div>
+      <h3 class="flow-title">Game Settings</h3>
+      <p class="flow-subtitle">Customize audio effects, haptics and tournament alerts.</p>
+
+      <div class="settings-list-wrap">
+        <!-- SFX Sound -->
+        <div class="setting-card-item">
+          <div class="s-item-left">
+            <span class="s-item-icon">🔊</span>
+            <div class="s-item-meta">
+              <span class="s-item-title">Sound Effects (SFX)</span>
+              <span class="s-item-sub">Dice roll, token movement &amp; victory audio</span>
+            </div>
+          </div>
+          <label class="ios-switch" for="setting-sound">
+            <input type="checkbox" id="setting-sound" checked onchange="toggleSoundSetting(this)">
+            <span class="ios-slider"></span>
+          </label>
+        </div>
+
+        <!-- Vibration / Haptics -->
+        <div class="setting-card-item">
+          <div class="s-item-left">
+            <span class="s-item-icon">📳</span>
+            <div class="s-item-meta">
+              <span class="s-item-title">Vibration Feedback</span>
+              <span class="s-item-sub">Turn alert, 6 roll &amp; goti capture vibration</span>
+            </div>
+          </div>
+          <label class="ios-switch" for="setting-vibration">
+            <input type="checkbox" id="setting-vibration" checked onchange="showToast('Vibration updated', '📳')">
+            <span class="ios-slider"></span>
+          </label>
+        </div>
+
+        <!-- Battle Notifications -->
+        <div class="setting-card-item">
+          <div class="s-item-left">
+            <span class="s-item-icon">🔔</span>
+            <div class="s-item-meta">
+              <span class="s-item-title">Battle Notifications</span>
+              <span class="s-item-sub">Match invites, room codes &amp; cash prize alerts</span>
+            </div>
+          </div>
+          <label class="ios-switch" for="setting-notifs">
+            <input type="checkbox" id="setting-notifs" checked onchange="showToast('Notifications updated', '🔔')">
+            <span class="ios-slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Language Selector Row -->
+      <div class="setting-lang-row">
+        <div class="s-item-meta">
+          <span class="s-item-title">🌐 App Language</span>
+          <span class="s-item-sub">Display text &amp; commentary</span>
+        </div>
+        <div class="lang-chips-group">
+          <button class="lang-chip active" onclick="switchLanguage('en', this)">English</button>
+          <button class="lang-chip" onclick="switchLanguage('hi', this)">हिंदी</button>
+        </div>
+      </div>
+
+      <!-- Advanced Settings Page Link -->
+      <a class="link-adv-settings" href="settings.html">
+        ⚙️ Open Full Settings Screen ➔
+      </a>
+
+      <button class="btn-flow-green" onclick="closeModal('modal-settings'); showToast('Settings saved successfully!', '✅');">
+        <span>SAVE SETTINGS ✓</span>
+        <span class="btn-sub-text">Applied Instantly to Current Session</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL 7: 24x7 SUPPORT & HELPDESK -->
+  <div class="flow-modal-backdrop" id="modal-support" onclick="closeModal('modal-support')">
+    <div class="flow-modal-box" style="text-align:left; max-width:440px;" onclick="event.stopPropagation()">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-support')">✕</button>
+      <div class="flow-header-pill green-pill">🎧 24x7 HELPDESK</div>
+      <h3 class="flow-title">Customer Support</h3>
+      <p class="flow-subtitle">Instant live resolution across WhatsApp, Telegram and email.</p>
+
+      <div class="support-channels-list">
+        <div class="support-channel-card" onclick="window.open('https://api.whatsapp.com/send?phone=919876543210', '_blank')">
+          <img src="assets/icon_whatsapp.svg" alt="WhatsApp" class="support-icon">
+          <div>
+            <strong>WhatsApp Live Support</strong>
+            <span>Instant reply under 2 mins • 24x7 Active</span>
+          </div>
+        </div>
+
+        <div class="support-channel-card" onclick="window.open('https://t.me/ludobet_support', '_blank')">
+          <img src="assets/icon_telegram.svg" alt="Telegram" class="support-icon">
+          <div>
+            <strong>Official Telegram Channel</strong>
+            <span>Tournament announcements &amp; community</span>
+          </div>
+        </div>
+
+        <div class="support-channel-card" onclick="window.location.href='support.html'">
+          <div class="support-icon-circle">🎫</div>
+          <div>
+            <strong>Ticket Desk &amp; FAQs</strong>
+            <span>Payment issues, KYCs &amp; disputes</span>
+          </div>
+        </div>
+      </div>
+
+      <a class="link-adv-settings" href="support.html">
+        🎧 Open Full Helpdesk Page ➔
+      </a>
+
+      <button class="btn-flow-primary" onclick="closeModal('modal-support')">CLOSE HELPDESK</button>
+    </div>
+  </div>
+
+  <!-- MODAL 8: LOGOUT CONFIRMATION -->
+  <div class="flow-modal-backdrop" id="modal-logout" onclick="closeModal('modal-logout')">
+    <div class="flow-modal-box" style="text-align:center; max-width:400px;" onclick="event.stopPropagation()">
+      <button class="flow-modal-close-btn" onclick="closeModal('modal-logout')">✕</button>
+      <div class="flow-header-pill" style="background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 3px 8px rgba(239, 68, 68, 0.35);">🚪 LOGOUT</div>
+      <div style="font-size:48px; margin:10px 0 6px;">🚪</div>
+      <h3 class="flow-title" style="color: #b91c1c;">Log Out Account?</h3>
+      <p class="flow-subtitle" style="margin-bottom:18px;">Are you sure you want to log out of <strong>Rajendra (LD10458)</strong>? Your wallet balance (<strong>₹1,250</strong>) and rank will remain 100% safe.</p>
+
+      <div class="dual-btn-row">
+        <button class="btn-flow-secondary" onclick="closeModal('modal-logout')">CANCEL</button>
+        <button class="btn-flow-danger" onclick="performLogout()">YES, LOG OUT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast-msg"></div>
+
+  <!-- Profile Scripts -->
+  <script src="profile.js"></script>
+</body>
+</html>

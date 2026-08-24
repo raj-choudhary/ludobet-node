@@ -1,92 +1,323 @@
-<link rel="stylesheet" href="/css/classic-battle.css">
-<link rel="stylesheet" href="/css/refer-earn.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Refer & Earn — Ludo Bet</title>
+  <meta name="description" content="Refer friends and earn ₹100 real cash per friend plus 5% lifetime commission on Ludo Bet!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="classic-battle.css">
+  <link rel="stylesheet" href="refer-earn.css">
+</head>
+<body>
 
-<!-- 2. SUB-HEADER WITH BACK BUTTON & 3-COLOR TITLE -->
-<div class="sub-header-bar">
-  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
-    ←
-  </button>
-  <div class="page-title-group">
-    <div class="refer-page-title">
-      <span class="title-refer-purple">REFER</span>
-      <span class="title-refer-blue">&amp;</span>
-      <span class="title-refer-gold">EARN</span>
+  <!-- Ambient background sparkles -->
+  <div class="ambient-sparkles"></div>
+
+  <!-- Main Mobile App Frame -->
+  <div class="app-container">
+
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+      <!-- Menu Button -->
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- Resource Pill Container -->
+      <div class="resource-pill">
+        <!-- Chips Section -->
+        <button class="res-item" onclick="showToast('Chips: 12,450', '🪙')" aria-label="Chips">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-val">12,450</span>
+            <span class="res-label">Chips</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Earnings Section -->
+        <button class="res-item" onclick="showToast('Earnings: ₹350', '💎')" aria-label="Earnings">
+          <img class="res-icon" src="assets/diamond.svg" alt="Earnings">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-val">350</span>
+            <span class="res-label">Earnings</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Notification Bell -->
+        <button class="bell-item" onclick="showToast('3 New Notifications', '🔔')" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. SUB-HEADER WITH BACK BUTTON & 3-COLOR TITLE -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Back to Home">
+        ←
+      </button>
+      <div class="page-title-group">
+        <div class="refer-page-title">
+          <span class="title-refer-purple">REFER</span>
+          <span class="title-refer-blue">&</span>
+          <span class="title-refer-gold">EARN</span>
+        </div>
+        <div class="page-subtitle">Invite friends & earn unlimited cash forever!</div>
+      </div>
     </div>
-    <div class="page-subtitle">Invite friends &amp; earn unlimited cash forever!</div>
+
+    <!-- 3. HERO 3D REFERRAL SHOWCASE CARD -->
+    <section class="refer-hero-card">
+      <div class="refer-badge-top">UNLIMITED EARNINGS</div>
+      
+      <!-- 3D Gift Box Illustration -->
+      <img class="refer-hero-img" src="assets/refer_hero_3d.png" alt="Refer & Earn 3D Rewards">
+
+      <h1 class="refer-hero-headline">
+        Earn <span class="highlight-green">₹100 Cash</span> + <span class="highlight-gold">5% Lifetime</span> Comm.
+      </h1>
+      <p class="refer-hero-desc">
+        When your friend joins with your code and plays their first battle, you both get cash rewards!
+      </p>
+
+      <!-- Live Referral Summary Stats Bar -->
+      <div class="refer-stats-grid">
+        <div class="refer-stat-cell">
+          <span class="stat-icon">👥</span>
+          <span class="stat-val" id="stat-total-friends">14</span>
+          <span class="stat-label">Friends Joined</span>
+        </div>
+
+        <div class="refer-stat-divider"></div>
+
+        <div class="refer-stat-cell">
+          <span class="stat-icon">💰</span>
+          <span class="stat-val" id="stat-total-earned">₹1,400</span>
+          <span class="stat-label">Total Earned</span>
+        </div>
+
+        <div class="refer-stat-divider"></div>
+
+        <div class="refer-stat-cell">
+          <span class="stat-icon">⚡</span>
+          <span class="stat-val highlight" id="stat-claimable">₹350</span>
+          <span class="stat-label">Claimable</span>
+        </div>
+      </div>
+
+      <!-- Instant Claim Earnings Button -->
+      <button class="btn-claim-earnings" id="btn-claim-rewards" onclick="handleClaimEarnings()">
+        <span>💎</span>
+        <span>CLAIM EARNINGS (₹350)</span>
+      </button>
+    </section>
+
+    <!-- 4. YOUR REFERRAL CODE & SHARING BOX -->
+    <section class="refer-code-box">
+      <div class="code-box-header">
+        <span class="code-box-title">YOUR EXCLUSIVE REFERRAL CODE</span>
+        <span class="code-bonus-tag">BONUS ACTIVE</span>
+      </div>
+
+      <div class="code-display-row">
+        <div class="code-value-wrapper" onclick="handleCopyReferralCode()">
+          <span class="code-text" id="user-referral-code">LUDOKING99</span>
+          <span class="code-tap-hint">Tap to copy</span>
+        </div>
+        <button class="btn-copy-code" id="btn-copy-code" onclick="handleCopyReferralCode()">
+          <span>📋</span>
+          <span id="copy-btn-text">COPY</span>
+        </button>
+      </div>
+
+      <!-- Social 1-Click Sharing Grid -->
+      <div class="social-share-label">SHARE VIA 1-CLICK:</div>
+      <div class="social-share-grid">
+        <!-- WhatsApp Share -->
+        <button class="btn-social-share btn-wa" onclick="shareOnWhatsApp()">
+          <img src="assets/icon_whatsapp.svg" alt="WhatsApp">
+          <span>WhatsApp</span>
+        </button>
+
+        <!-- Telegram Share -->
+        <button class="btn-social-share btn-tg" onclick="shareOnTelegram()">
+          <img src="assets/icon_telegram.svg" alt="Telegram">
+          <span>Telegram</span>
+        </button>
+
+        <!-- Native Share / More -->
+        <button class="btn-social-share btn-more" onclick="shareNative()">
+          <span>📤</span>
+          <span>More</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 5. HOW IT WORKS (3 EASY STEPS) -->
+    <section class="refer-guide-card">
+      <div class="guide-header-row">
+        <h2 class="guide-title">How Does It Work?</h2>
+        <span class="guide-badge">3 EASY STEPS</span>
+      </div>
+
+      <div class="guide-steps-list">
+        <!-- Step 1 -->
+        <div class="guide-step-item">
+          <div class="guide-num-circle">1</div>
+          <div class="guide-step-content">
+            <div class="guide-step-heading">Invite Your Friends</div>
+            <div class="guide-step-text">Share your referral link or code with your friends on WhatsApp & Telegram.</div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="guide-step-item">
+          <div class="guide-num-circle">2</div>
+          <div class="guide-step-content">
+            <div class="guide-step-heading">Friend Registers & Plays</div>
+            <div class="guide-step-text">They register, receive ₹20 signup bonus, and play their 1st battle.</div>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="guide-step-item">
+          <div class="guide-num-circle">3</div>
+          <div class="guide-step-content">
+            <div class="guide-step-heading">Instant Cash & 5% Lifetime</div>
+            <div class="guide-step-text">You get ₹100 instant cash added to your wallet + 5% commission on every match they play forever!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. REFERRAL PARTNER TIERS (GAMIFICATION) -->
+    <section class="refer-tiers-card">
+      <div class="tiers-header">
+        <h2 class="tiers-title">Partner Tiers & Bonuses</h2>
+        <span class="tier-current-tag">YOU ARE SILVER ⭐</span>
+      </div>
+
+      <div class="tiers-list">
+        <!-- Bronze -->
+        <div class="tier-item">
+          <div class="tier-icon">🥉</div>
+          <div class="tier-info">
+            <div class="tier-name">Bronze Partner (1-5 Friends)</div>
+            <div class="tier-perk">₹50 per friend • Standard Support</div>
+          </div>
+          <span class="tier-status unlocked">COMPLETED</span>
+        </div>
+
+        <!-- Silver (Active) -->
+        <div class="tier-item active-tier">
+          <div class="tier-icon">🥈</div>
+          <div class="tier-info">
+            <div class="tier-name">Silver Partner (6-15 Friends)</div>
+            <div class="tier-perk">₹100 per friend • 5% Lifetime Comm.</div>
+          </div>
+          <span class="tier-status active">CURRENT TIER</span>
+        </div>
+
+        <!-- Gold -->
+        <div class="tier-item">
+          <div class="tier-icon">🥇</div>
+          <div class="tier-info">
+            <div class="tier-name">Gold VIP (16-50 Friends)</div>
+            <div class="tier-perk">₹125 per friend • 7% Lifetime Comm.</div>
+          </div>
+          <span class="tier-status locked">1 MORE NEEDED</span>
+        </div>
+
+        <!-- Diamond -->
+        <div class="tier-item">
+          <div class="tier-icon">💎</div>
+          <div class="tier-info">
+            <div class="tier-name">Diamond Master (50+ Friends)</div>
+            <div class="tier-perk">₹150 per friend • 10% Comm. + Weekly Salary</div>
+          </div>
+          <span class="tier-status locked">LOCKED</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. RECENT REFERRALS ACTIVITY LIST -->
+    <section class="referrals-history-card">
+      <div class="history-header">
+        <h2 class="history-title">Recent Referrals</h2>
+        <span class="history-count">14 Friends</span>
+      </div>
+
+      <div class="referrals-list" id="referrals-list-container">
+        <!-- Dynamically rendered via refer-earn.js -->
+      </div>
+    </section>
+
   </div>
-</div>
 
-<!-- 3. HERO 3D REFERRAL SHOWCASE CARD -->
-<section class="refer-hero-card">
-  <div class="refer-badge-top">UNLIMITED EARNINGS</div>
-  
-  <!-- 3D Gift Box Illustration -->
-  <img class="refer-hero-img" src="/assets/refer_hero_3d.png" alt="Refer & Earn 3D Rewards">
+  <!-- 8. BOTTOM FLOATING NAVIGATION DOCK -->
+  <div class="bottom-nav-container">
+    <nav class="bottom-nav">
+      <button class="nav-tab" onclick="window.location.href='index.html'">
+        <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='ranking.html'">
+        <img class="nav-icon-svg" src="assets/ranking.svg" alt="Ranking">
+        <span class="nav-label">Ranking</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='wallet.html'">
+        <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+        <span class="nav-label">Wallet</span>
+      </button>
+      <button class="nav-tab active" onclick="window.location.href='refer-earn.html'">
+        <img class="nav-icon-svg" src="assets/refer.svg" alt="Refer">
+        <span class="nav-label">Refer</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='profile.html'">
+        <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+    <div class="home-indicator"></div>
+  </div>
 
-  <h1 class="refer-hero-headline">
-    Earn <span class="highlight-green">₹100 Cash</span> + <span class="highlight-gold">5% Lifetime</span> Comm.
-  </h1>
-  <p class="refer-hero-desc">
-    When your friend joins with your code and plays their first battle, you both get cash rewards!
-  </p>
+  <!-- CLAIM REWARD SUCCESS MODAL -->
+  <div class="flow-modal-backdrop" id="modal-claim-success">
+    <div class="flow-modal-box">
+      <button class="flow-modal-close-btn" onclick="closeClaimModal()">✕</button>
+      <div class="flow-header-pill" style="background:#2e7d32;">REWARD CLAIMED</div>
+      <div class="victory-trophy-icon" style="font-size: 54px; margin: 10px 0;">🎉</div>
+      <h3 class="flow-title">₹350 Added to Wallet!</h3>
+      <p class="flow-subtitle">Your referral earnings have been credited to your withdrawable balance!</p>
 
-  <!-- Live Referral Summary Stats Bar -->
-  <div class="refer-stats-grid">
-    <div class="refer-stat-cell">
-      <span class="stat-icon">👥</span>
-      <span class="stat-val" id="stat-total-friends">14</span>
-      <span class="stat-label">Friends Joined</span>
+      <div class="claim-credited-box">
+        <div class="claim-credited-row">
+          <span>New Wallet Balance:</span>
+          <strong style="color: #2cb730; font-size: 16px;">₹12,800</strong>
+        </div>
+        <div class="claim-credited-row">
+          <span>Earnings Claimed:</span>
+          <strong>₹350</strong>
+        </div>
+      </div>
+
+      <button class="btn-flow-green" onclick="closeClaimModal()">AWESOME, THANKS!</button>
     </div>
-
-    <div class="refer-stat-divider"></div>
-
-    <div class="refer-stat-cell">
-      <span class="stat-icon">💰</span>
-      <span class="stat-val" id="stat-total-earned">₹1,400</span>
-      <span class="stat-label">Total Earned</span>
-    </div>
-
-    <div class="refer-stat-divider"></div>
-
-    <div class="refer-stat-cell">
-      <span class="stat-icon">⚡</span>
-      <span class="stat-val highlight" id="stat-claimable">₹350</span>
-      <span class="stat-label">Claimable</span>
-    </div>
   </div>
 
-  <!-- Instant Claim Earnings Button -->
-  <button class="btn-claim-earnings" id="btn-claim-rewards" onclick="alert('Claimed ₹350 into your main wallet!')">
-    <span>💎</span>
-    <span>CLAIM EARNINGS (₹350)</span>
-  </button>
-</section>
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast-msg"></div>
 
-<!-- 4. YOUR REFERRAL CODE & SHARING BOX -->
-<section class="refer-code-box">
-  <div class="code-box-header">
-    <span class="code-box-title">YOUR EXCLUSIVE REFERRAL CODE</span>
-    <span class="code-bonus-tag">BONUS ACTIVE</span>
-  </div>
-
-  <div class="code-display-row">
-    <div class="code-value-wrapper" onclick="navigator.clipboard.writeText('<%= user.referral_code || 'LUDOBET100' %>'); alert('Copied code!');">
-      <span class="code-text" id="user-referral-code"><%= user.referral_code || 'LUDOBET100' %></span>
-      <span class="code-tap-hint">Tap to copy</span>
-    </div>
-    <button class="btn-copy-code" id="btn-copy-code" onclick="navigator.clipboard.writeText('<%= user.referral_code || 'LUDOBET100' %>'); alert('Copied code!');">
-      <span>📋</span>
-      <span id="copy-btn-text">COPY</span>
-    </button>
-  </div>
-
-  <!-- Social 1-Click Sharing Grid -->
-  <div class="social-share-label">SHARE VIA 1-CLICK:</div>
-  <div class="social-share-grid">
-    <!-- WhatsApp Share -->
-    <a class="btn-social-share btn-wa" href="https://api.whatsapp.com/send?text=Play%20Ludo%20and%20Win%20Real%20Cash!%20Use%20my%20code:%20<%= user.referral_code || 'LUDOBET100' %>" target="_blank" style="text-decoration:none;">
-      <img src="/assets/icon_whatsapp.svg" alt="WhatsApp">
-      <span>WhatsApp</span>
-    </a>
-  </div>
-</section>
+  <!-- Refer and Earn Logic -->
+  <script src="refer-earn.js"></script>
+</body>
+</html>

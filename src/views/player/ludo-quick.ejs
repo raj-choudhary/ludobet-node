@@ -1,138 +1,532 @@
-<link rel="stylesheet" href="/css/classic-battle.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Ludo Quick — Admin Speed Arena</title>
+  <meta name="description" content="Play Ludo Quick Admin Prebuilt Speed Tournaments. Instant 1-Pawn Home Wins and 5-Minute Timer Blitz contests.">
+  <link rel="stylesheet" href="classic-battle.css">
+  <style>
+    /* Ludo Quick Exclusive Styling */
+    .title-quick-accent {
+      color: #ff6d00 !important;
+      font-weight: 900;
+    }
 
-<!-- 2. SUB-HEADER WITH BACK BUTTON & TITLE -->
-<div class="sub-header-bar">
-  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
-    ←
-  </button>
-  <div class="page-title-group">
-    <div class="ludo-classic-title">
-      <span class="title-l">L</span><span class="title-u">U</span><span class="title-d">D</span><span class="title-o">O</span>
-      <span class="title-classic" style="color:#ff6d00;">QUICK</span>
-    </div>
-    <div class="page-subtitle">1-Token Fast Blitz • First Home Wins</div>
-  </div>
-</div>
+    /* 2 Distinct Admin Contest Mode Hero Switcher */
+    .admin-contest-modes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 10;
+    }
 
-<!-- 3. "CREATE BATTLE" MAIN CARD -->
-<section class="create-battle-card">
-  <div class="create-battle-badge" style="background: linear-gradient(135deg, #ff6d00 0%, #e65100 100%);">1-TOKEN BLITZ</div>
-  
-  <!-- 3D Board Artwork -->
-  <img class="create-battle-art-img" src="/assets/board_3d_card.png" alt="3D Ludo Board">
-  
-  <div class="entry-amount-label">Entry Amount (₹)</div>
-  
-  <div class="amount-input-wrapper">
-    <span class="currency-symbol">₹</span>
-    <input type="number" class="amount-input" id="create-entry-amount" value="50" min="10" max="10000" step="10">
-  </div>
+    .admin-contest-mode-card {
+      background: #ffffff;
+      border: 2px solid #d8e6f5;
+      border-radius: 18px;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(16, 56, 110, 0.06);
+      transition: all 0.22s var(--ease-bounce);
+      overflow: hidden;
+    }
 
-  <!-- Preset Quick Chips -->
-  <div class="amount-presets">
-    <button class="preset-chip-btn" onclick="setPresetAmount(10, this)">₹10</button>
-    <button class="preset-chip-btn" onclick="setPresetAmount(20, this)">₹20</button>
-    <button class="preset-chip-btn active" onclick="setPresetAmount(50, this)">₹50</button>
-    <button class="preset-chip-btn" onclick="setPresetAmount(100, this)">₹100</button>
-    <button class="preset-chip-btn" onclick="setPresetAmount(200, this)">₹200</button>
-  </div>
+    .admin-contest-mode-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(16, 56, 110, 0.12);
+    }
 
-  <button class="btn-create-battle" style="background: linear-gradient(135deg, #ff6d00 0%, #e65100 100%);" onclick="executeCreateBattleFlow()">CREATE QUICK BATTLE</button>
-</section>
+    .admin-contest-mode-card.active {
+      background: linear-gradient(135deg, #ffffff 0%, #f7f1ff 100%);
+      border-color: var(--purple-main);
+      box-shadow: 0 0 0 1px var(--purple-main), 0 6px 18px rgba(113, 46, 199, 0.18);
+    }
 
-<!-- 5. BATTLE LIST TABS -->
-<div class="battle-tabs-container">
-  <button class="battle-tab-btn active" id="tab-open-battles">
-    OPEN QUICK BATTLES (<%= openBattles.length %>)
-  </button>
-  <button class="battle-tab-btn" id="tab-running-battles">
-    RUNNING <span class="badge-live-pulse">● LIVE</span>
-  </button>
-</div>
+    .admin-contest-mode-card.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3.5px;
+      background: linear-gradient(90deg, #ff6d00 0%, #ffab00 50%, #712ec7 100%);
+    }
 
-<!-- 7. OPEN BATTLES LIST CONTAINER -->
-<div class="battles-list" id="battles-list-container">
-  <% if (openBattles && openBattles.length > 0) { %>
-    <% openBattles.forEach(function(b) { %>
-      <div class="battle-card-item">
-        <div class="bci-player">
-          <div class="bci-avatar" style="background:#ff6d00;">⚡</div>
-          <div class="bci-meta">
-            <strong class="bci-name"><%= b.creator_name %></strong>
-            <span class="bci-mode">1v1 QUICK</span>
+    .contest-mode-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .contest-mode-icon-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #f0f6fc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .admin-contest-mode-card.active .contest-mode-icon-circle {
+      background: linear-gradient(135deg, #8339de 0%, #6824bd 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(104, 36, 189, 0.3);
+    }
+
+    .contest-mode-badge-tag {
+      font-size: 8px;
+      font-weight: 900;
+      color: #ffffff;
+      background: #ff6d00;
+      padding: 2px 7px;
+      border-radius: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .contest-mode-badge-tag.turbo {
+      background: #7c4dff;
+    }
+
+    .contest-mode-title {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--navy-text);
+      line-height: 1.15;
+    }
+
+    .contest-mode-desc {
+      font-size: 10px;
+      color: var(--slate-text);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    /* Admin Guaranteed / Sponsored Banner */
+    .admin-sponsored-hero-card {
+      position: relative;
+      z-index: 10;
+      background: linear-gradient(135deg, #ff6f00 0%, #e65100 50%, #bf360c 100%);
+      border: 2px solid #ffffff;
+      border-radius: 18px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(230, 81, 0, 0.28);
+      color: #ffffff;
+      transition: transform 0.15s ease;
+      overflow: hidden;
+    }
+
+    .admin-sponsored-hero-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .sponsored-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .sponsored-flag-pill {
+      background: #ffeb3b;
+      color: #bf360c;
+      font-size: 8.5px;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+    }
+
+    .sponsored-timer-tag {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .sponsored-timer-tag span.ticker {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+      color: #ffeb3b;
+    }
+
+    .sponsored-content-grid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .sponsored-title-main {
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+    }
+
+    .sponsored-sub-main {
+      font-size: 10.5px;
+      color: #ffe0b2;
+      font-weight: 600;
+    }
+
+    .btn-sponsored-join {
+      background: #ffffff;
+      color: #e65100;
+      font-size: 12px;
+      font-weight: 900;
+      padding: 6px 14px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      white-space: nowrap;
+      transition: transform 0.15s ease;
+    }
+
+    .btn-sponsored-join:hover {
+      transform: scale(1.06);
+    }
+
+    /* Admin Prebuilt Contest Cards in Battle List */
+    .admin-contest-card {
+      background: #ffffff;
+      border: 1.5px solid #d8e7f5;
+      border-radius: 16px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      box-shadow: 0 4px 10px rgba(16, 56, 110, 0.08);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+    }
+
+    .admin-contest-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(16, 56, 110, 0.14);
+      border-color: #90caf9;
+    }
+
+    .contest-card-meta-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .contest-tag-pill {
+      font-size: 10px;
+      font-weight: 800;
+      color: #0d2c66;
+      background: #f0f6fc;
+      padding: 2px 8px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .contest-fair-badge {
+      font-size: 9px;
+      font-weight: 800;
+      color: #1e9922;
+      background: #eaf8eb;
+      padding: 2px 6px;
+      border-radius: 6px;
+      border: 1px solid rgba(30, 153, 34, 0.25);
+    }
+
+    .contest-card-main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .contest-stat-box {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.15;
+    }
+
+    .contest-stat-lbl {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--slate-text);
+    }
+
+    .contest-stat-val-entry {
+      font-size: 15.5px;
+      font-weight: 900;
+      color: #1e88e5;
+    }
+
+    .contest-stat-val-prize {
+      font-size: 15.5px;
+      font-weight: 900;
+      color: #2cb730;
+    }
+
+    .contest-stat-val-players {
+      font-size: 12.5px;
+      font-weight: 900;
+      color: var(--navy-text);
+    }
+
+    .contest-stat-val-sub {
+      font-size: 9px;
+      font-weight: 700;
+      color: #7b8ea3;
+    }
+
+    .contest-action-box {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .btn-contest-join {
+      width: 78px;
+      height: 32px;
+      background: linear-gradient(180deg, #32c436 0%, #1e9922 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(30, 153, 34, 0.35);
+      transition: transform 0.15s ease;
+    }
+
+    .btn-contest-join:hover {
+      transform: scale(1.06);
+    }
+
+    .btn-contest-join:active {
+      transform: scale(0.95);
+    }
+
+    .slots-progress-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .slots-mini-bar {
+      width: 42px;
+      height: 4px;
+      background: #e2edf7;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .slots-mini-fill {
+      height: 100%;
+      background: #2cb730;
+      border-radius: 2px;
+    }
+
+    .slots-mini-text {
+      font-size: 8.5px;
+      font-weight: 800;
+      color: #6a7d94;
+    }
+
+    .winner-rank-breakdown {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #e65100;
+      background: #fff3e0;
+      padding: 3px 8px;
+      border-radius: 6px;
+      align-self: flex-start;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient background sparkles -->
+  <div class="ambient-sparkles"></div>
+
+  <!-- Main Mobile App Frame -->
+  <div class="app-container">
+
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+      <!-- Menu Button -->
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- Resource Pill Container -->
+      <div class="resource-pill">
+        <!-- Chips Section -->
+        <button class="res-item" onclick="showToast('Chips: 12,450', '🪙')" aria-label="Chips">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-val">12,450</span>
+            <span class="res-label">Chips</span>
           </div>
-        </div>
-        <div class="bci-pricing">
-          <span class="bci-fee">Entry: ₹<%= parseFloat(b.entry_fee).toFixed(0) %></span>
-          <strong class="bci-prize">Win: ₹<%= parseFloat(b.prize_pool).toFixed(0) %></strong>
-        </div>
-        <button class="btn-accept-battle" style="background: linear-gradient(135deg, #ff6d00 0%, #e65100 100%);" onclick="joinMatchAction(<%= b.id %>)">
-          ACCEPT
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Earnings Section -->
+        <button class="res-item" onclick="showToast('Earnings: ₹350', '💎')" aria-label="Earnings">
+          <img class="res-icon" src="assets/diamond.svg" alt="Earnings">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-val">350</span>
+            <span class="res-label">Earnings</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Notification Bell -->
+        <button class="bell-item" onclick="showToast('3 New Notifications', '🔔')" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
         </button>
       </div>
-    <% }); %>
-  <% } else { %>
-    <div class="battle-card-item">
-      <div class="bci-player">
-        <div class="bci-avatar" style="background:#ff6d00;">⚡</div>
-        <div class="bci-meta">
-          <strong class="bci-name">Aman_Gamer</strong>
-          <span class="bci-mode">1v1 QUICK BLITZ</span>
+    </header>
+
+    <!-- 2. SUB-HEADER WITH BACK BUTTON & 4-COLOR TITLE -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Back to Home">
+        ←
+      </button>
+      <div class="page-title-group">
+        <div class="ludo-classic-title">
+          <span class="title-l">L</span><span class="title-u">U</span><span class="title-d">D</span><span class="title-o">O</span>
+          <span class="title-classic title-quick-accent">QUICK</span>
+        </div>
+        <div class="page-subtitle">Admin Prebuilt Tournaments & Speed Contests</div>
+      </div>
+    </div>
+
+    <!-- 3. TWO DISTINCT ADMIN CONTEST MODES (SWITCHER) -->
+    <div class="admin-contest-modes-grid">
+      <!-- Mode 1: 1-Pawn Home -->
+      <div class="admin-contest-mode-card active" id="tab-mode-1pawn" onclick="switchQuickMode('1pawn')">
+        <div class="contest-mode-top-row">
+          <div class="contest-mode-icon-circle">🎯</div>
+          <span class="contest-mode-badge-tag">FAVORITE</span>
+        </div>
+        <div class="contest-mode-title">1 Pawn Home</div>
+        <div class="contest-mode-desc">1st goti to reach home wins immediately!</div>
+      </div>
+
+      <!-- Mode 2: 5-Min Blitz -->
+      <div class="admin-contest-mode-card" id="tab-mode-timer" onclick="switchQuickMode('timer')">
+        <div class="contest-mode-top-row">
+          <div class="contest-mode-icon-circle">⏱️</div>
+          <span class="contest-mode-badge-tag turbo">TURBO</span>
+        </div>
+        <div class="contest-mode-title">5-Min Blitz</div>
+        <div class="contest-mode-desc">Highest points when 5-min timer ends wins!</div>
+      </div>
+    </div>
+
+    <!-- 4. ADMIN GUARANTEED MEGA TOURNAMENT BANNER -->
+    <div class="admin-sponsored-hero-card" onclick="handleJoinContest('sp_mega', 20)">
+      <div class="sponsored-header-row">
+        <span class="sponsored-flag-pill">ADMIN SPONSORED</span>
+        <div class="sponsored-timer-tag">
+          <span>Starts in:</span>
+          <span class="ticker" id="sponsored-timer">03:45</span>
         </div>
       </div>
-      <div class="bci-pricing">
-        <span class="bci-fee">Entry: ₹50</span>
-        <strong class="bci-prize">Win: ₹94</strong>
+      <div class="sponsored-content-grid">
+        <div>
+          <div class="sponsored-title-main">⚡ MEGA SPEED CLASH</div>
+          <div class="sponsored-sub-main">₹5,000 Guaranteed Prize • Entry ₹20</div>
+        </div>
+        <button class="btn-sponsored-join">JOIN ➔</button>
       </div>
-      <button class="btn-accept-battle" style="background: linear-gradient(135deg, #ff6d00 0%, #e65100 100%);" onclick="alert('Joining 1v1 Quick Match...')">
-        ACCEPT
+    </div>
+
+    <!-- 5. BATTLE TABS (OPEN BATTLES vs RUNNING BATTLES) -->
+    <div class="battle-tabs-container">
+      <button class="battle-tab-btn active" id="tab-open-battles" onclick="switchQuickTab('open')">
+        OPEN BATTLES
+      </button>
+      <button class="battle-tab-btn" id="tab-running-battles" onclick="switchQuickTab('running')">
+        RUNNING BATTLES <span class="badge-live-pulse">● LIVE</span>
       </button>
     </div>
-  <% } %>
-</div>
 
-<script>
-  function setPresetAmount(amt, elem) {
-    document.getElementById('create-entry-amount').value = amt;
-    document.querySelectorAll('.preset-chip-btn').forEach(b => b.classList.remove('active'));
-    if (elem) elem.classList.add('active');
-  }
+    <!-- 6. FILTERS & REFRESH ROW -->
+    <div class="filter-row">
+      <div class="filter-btn">
+        <span>🔽</span>
+        <select id="quick-sort-select" onchange="handleSortChange()">
+          <option value="low">Sort: Low to High</option>
+          <option value="high">Sort: High to Low</option>
+          <option value="prize">Sort: Highest Prize</option>
+        </select>
+      </div>
 
-  async function executeCreateBattleFlow() {
-    const amt = parseFloat(document.getElementById('create-entry-amount').value);
-    if (!amt || amt < 10) return alert('Minimum battle entry is ₹10.00');
+      <button class="btn-refresh" id="btn-quick-refresh" onclick="refreshQuickBattlesList()" aria-label="Refresh Battles" title="Refresh">
+        🔄
+      </button>
+    </div>
 
-    try {
-      const res = await fetch('/api/battles/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 1, gameMode: 'QUICK', entryFee: amt })
-      });
-      const data = await res.json();
-      if (data.success) {
-        alert('1v1 Quick Battle Deployed to Lobby!');
-        window.location.reload();
-      }
-    } catch (e) {
-      alert('Battle Deployed!');
-      window.location.reload();
-    }
-  }
+    <!-- 7. ADMIN PREBUILT BATTLES LIST CONTAINER -->
+    <div class="battles-list" id="quick-battles-container">
+      <!-- Dynamically Rendered via quick-battle.js -->
+    </div>
 
-  async function joinMatchAction(id) {
-    try {
-      const res = await fetch('/api/battles/join', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 1, battleId: id })
-      });
-      const data = await res.json();
-      if (data.success) {
-        alert('Match Joined! Launching Quick Board...');
-        window.location.reload();
-      }
-    } catch (e) {
-      alert('Entering Quick Match...');
-    }
-  }
-</script>
+  </div>
+
+  <!-- 8. BOTTOM FLOATING NAVIGATION DOCK -->
+  <div class="bottom-nav-container">
+    <nav class="bottom-nav">
+      <button class="nav-tab active" onclick="window.location.href='index.html'">
+        <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='ranking.html'">
+        <img class="nav-icon-svg" src="assets/ranking.svg" alt="Ranking">
+        <span class="nav-label">Ranking</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='wallet.html'">
+        <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+        <span class="nav-label">Wallet</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='refer-earn.html'">
+        <img class="nav-icon-svg" src="assets/refer.svg" alt="Refer">
+        <span class="nav-label">Refer</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='profile.html'">
+        <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+    <div class="home-indicator"></div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast-msg"></div>
+
+  <!-- Quick Battle Scripts -->
+  <script src="quick-battle.js"></script>
+</body>
+</html>

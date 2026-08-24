@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player Management — Ludo Bet Admin</title>
-  <meta name="description" content="Manage and inspect all players on Ludo Bet platform.">
+  <title>Referral Program Management — Ludo Bet Admin</title>
+  <meta name="description" content="Manage referral commission tiers and payout tracking.">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -27,12 +27,12 @@
 
       <!-- 2. Players Dropdown -->
       <div class="nav-dropdown-group">
-        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
           <div class="nav-left-group"><span class="nav-item-icon">👥</span><span>Players</span></div>
           <span class="nav-dropdown-arrow">▼</span>
         </a>
-        <div class="sidebar-submenu open">
-          <a class="submenu-item-btn active" href="players.html">All Players (1,24,580)</a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="players.html">All Players (1,24,580)</a>
           <a class="submenu-item-btn" href="players-banned.html">🚫 Banned Accounts (152)</a>
           <a class="submenu-item-btn" href="player-view.html?id=LD10458">👤 Player Profile View</a>
         </div>
@@ -100,13 +100,13 @@
 
       <!-- 8. Rewards & Spin Dropdown -->
       <div class="nav-dropdown-group">
-        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
           <div class="nav-left-group"><span class="nav-item-icon">🎡</span><span>Rewards &amp; Spin</span></div>
           <span class="nav-dropdown-arrow">▼</span>
         </a>
-        <div class="sidebar-submenu">
+        <div class="sidebar-submenu open">
           <a class="submenu-item-btn" href="rewards-bonuses.html">🎁 Bonuses Rules</a>
-          <a class="submenu-item-btn" href="rewards-referrals.html">🤝 Referral Program</a>
+          <a class="submenu-item-btn active" href="rewards-referrals.html">🤝 Referral Program</a>
           <a class="submenu-item-btn" href="rewards-spin.html">🎡 Spin Wheel CMS</a>
         </div>
       </div>
@@ -179,8 +179,8 @@
   <div class="admin-main-wrapper">
     <header class="admin-top-header">
       <div class="header-left-group">
-        <button class="btn-sidebar-toggle" onclick="document.getElementById('admin-sidebar').classList.toggle('open')">☰</button>
-        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">Player Management</h2>
+        <button class="btn-sidebar-toggle" onclick="toggleMobileSidebar()">☰</button>
+        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">🤝 Referral Commission Engine</h2>
       </div>
 
       <div class="header-right-group">
@@ -197,110 +197,87 @@
     </header>
 
     <main class="admin-body-container">
+      
+      <!-- Subnav Navigation Pill Strip -->
+      <div class="player-drawer-tabs-bar" style="background:#ffffff; border:1px solid var(--border-color); border-radius:14px; padding:4px 14px;">
+        <a class="player-drawer-tab-btn" href="rewards-bonuses.html" style="text-decoration:none;">🎁 Bonus Rules</a>
+        <a class="player-drawer-tab-btn active" href="rewards-referrals.html" style="text-decoration:none;">🤝 Referral Program</a>
+        <a class="player-drawer-tab-btn" href="rewards-spin.html" style="text-decoration:none;">🎡 Spin Wheel CMS</a>
+      </div>
+
       <div class="admin-data-panel">
         <div class="data-panel-top-bar">
           <div>
-            <h1 class="page-title-main">Player Directory</h1>
-            <p class="page-title-sub">Search, inspect wallets, view game stats, and adjust account permissions.</p>
+            <h1 class="page-title-main">Referral Settings &amp; Top Influencers</h1>
+            <p class="page-title-sub">Configure direct cash reward on first deposit and commission share per match played by referee.</p>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:14px;">
+          <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:16px; padding:18px;">
+            <h3 style="font-size:14px; font-weight:800; color:#0f172a;">💵 Referrer Cash Reward (Per User)</h3>
+            <p style="font-size:11px; color:#64748b; margin:4px 0 12px;">Paid to referrer on friend's first deposit (Min ₹50).</p>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-weight:900;">₹</span>
+              <input type="number" value="25" style="width:100%; padding:8px 12px; border-radius:10px; border:1.5px solid #cbd5e1; font-weight:800;">
+            </div>
           </div>
 
-          <!-- Search, Sort & Filters -->
-          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-            <div class="data-search-input-box">
-              <span>🔍</span>
-              <input type="text" class="data-search-field" id="player-search-input" placeholder="Search by ID, Name, Phone...">
+          <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:16px; padding:18px;">
+            <h3 style="font-size:14px; font-weight:800; color:#0f172a;">🎁 New User Extra Bonus</h3>
+            <p style="font-size:11px; color:#64748b; margin:4px 0 12px;">Extra bonus code boost credited to referee.</p>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-weight:900;">₹</span>
+              <input type="number" value="50" style="width:100%; padding:8px 12px; border-radius:10px; border:1.5px solid #cbd5e1; font-weight:800;">
             </div>
+          </div>
 
-            <!-- Sort Dropdown -->
-            <div style="display:flex; align-items:center; gap:6px;">
-              <span style="font-size:11px; font-weight:800; color:#64748b;">Sort:</span>
-              <select class="chart-filter-select" id="player-sort-select" onchange="setPlayerSort(this.value)" style="padding:6px 10px; border-radius:10px;">
-                <option value="newest">📅 Registration Date (Newest)</option>
-                <option value="oldest">📅 Registration Date (Oldest)</option>
-                <option value="balance_desc">💰 Total Balance (Highest)</option>
-                <option value="balance_asc">💰 Total Balance (Lowest)</option>
-                <option value="battles_desc">⚔️ Battles (Most Played)</option>
-                <option value="winrate_desc">🏆 Win Rate (Highest)</option>
-                <option value="name_asc">👤 Player Name (A-Z)</option>
-              </select>
-            </div>
-
-            <!-- Filter Chips -->
-            <div class="filter-chips-row" id="player-filter-chips">
-              <button class="filter-chip-btn active" id="chip-all" onclick="setPlayerFilter(this, 'all')">ALL (6)</button>
-              <button class="filter-chip-btn" id="chip-kyc" onclick="setPlayerFilter(this, 'approved')">KYC VERIFIED (3)</button>
-              <button class="filter-chip-btn" id="chip-pending" onclick="setPlayerFilter(this, 'pending')">KYC PENDING (1)</button>
-              <button class="filter-chip-btn" id="chip-banned" onclick="setPlayerFilter(this, 'banned')">BANNED (1)</button>
+          <div style="background:#ffffff; border:1.5px solid #e2e8f0; border-radius:16px; padding:18px;">
+            <h3 style="font-size:14px; font-weight:800; color:#0f172a;">📊 Match Commission Share</h3>
+            <p style="font-size:11px; color:#64748b; margin:4px 0 12px;">Lifetime platform rake share to referrer.</p>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <input type="number" value="1.0" step="0.1" style="width:100%; padding:8px 12px; border-radius:10px; border:1.5px solid #cbd5e1; font-weight:800;">
+              <span style="font-weight:900;">%</span>
             </div>
           </div>
         </div>
 
-        <!-- Table with Clickable Sort Headers -->
-        <div class="admin-table-frame">
+        <!-- Top Referrers Table -->
+        <h2 style="font-size:15px; font-weight:900; color:#0f172a; margin-top:24px;">Top Platform Referrers (Influencer Ledger)</h2>
+        <div class="admin-table-frame" style="margin-top:10px;">
           <table class="admin-data-table">
             <thead>
               <tr>
-                <th class="sort-col-header" onclick="toggleSortColumn('id')">Player ID <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('name')">Player Name &amp; Phone <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('joined')">Joined Date <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('kyc')">KYC Status <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('balance')">Total Balance <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('status')">Account Status <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('battles')">Battles (Win Rate) <span class="sort-indicator-arrow">▲▼</span></th>
-                <th>Actions</th>
+                <th>Player ID</th>
+                <th>Referrer Name</th>
+                <th>Referral Code</th>
+                <th>Invited Users</th>
+                <th>Converted (Deposited)</th>
+                <th>Total Earned</th>
               </tr>
             </thead>
-            <tbody id="players-table-body">
-              <!-- Dynamically populated via admin.js -->
+            <tbody>
+              <tr>
+                <td><strong>LD10458</strong></td>
+                <td>Rajendra Kumar</td>
+                <td><code>RAJ104</code></td>
+                <td><strong>142 Users</strong></td>
+                <td><span style="color:#10b981; font-weight:800;">118 Deposited (83%)</span></td>
+                <td><strong style="color:#10b981;">₹3,550.00</strong></td>
+              </tr>
+              <tr>
+                <td><strong>LD60219</strong></td>
+                <td>Neha Singh</td>
+                <td><code>NEHA99</code></td>
+                <td><strong>88 Users</strong></td>
+                <td><span style="color:#10b981; font-weight:800;">64 Deposited (72%)</span></td>
+                <td><strong style="color:#10b981;">₹2,200.00</strong></td>
+              </tr>
             </tbody>
           </table>
         </div>
       </div>
     </main>
-  </div>
-
-  <!-- WALLET ADJUSTMENT MODAL -->
-  <div class="admin-audit-modal" id="modal-wallet-adjust">
-    <div class="audit-modal-box">
-      <h3 style="font-size:16px; font-weight:900; color:#0f172a;">Manual Wallet Adjustment</h3>
-      <p style="font-size:11.5px; color:#64748b;">Adjust player wallet. Every change is permanently logged.</p>
-
-      <div style="margin-top:12px; font-size:12px; font-weight:800; color:#6366f1;">
-        Target Player: <span id="adj-target-player">LD10458</span>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Action Type:</label>
-        <select id="adj-type-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
-          <option value="credit">➕ CREDIT (Add Funds)</option>
-          <option value="debit">➖ DEBIT (Deduct Funds)</option>
-        </select>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Target Wallet:</label>
-        <select id="adj-wallet-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
-          <option value="winnings">🏆 Winnings Cash</option>
-          <option value="deposit">💳 Deposit Cash</option>
-          <option value="bonus">🎁 Bonus Cash</option>
-        </select>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Amount (₹):</label>
-        <input type="number" id="adj-amount-input" value="100" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit; font-weight:800;">
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#ef4444;">Mandatory Admin Reason (Audit Log):</label>
-        <textarea class="audit-reason-textarea" id="adj-reason-input" placeholder="Enter reason (e.g. Tournament compensation, refund reversal...)"></textarea>
-      </div>
-
-      <div style="display:flex; gap:10px; margin-top:16px;">
-        <button class="btn-table-action" style="flex:1; padding:10px 0;" onclick="closeWalletAdjustModal()">CANCEL</button>
-        <button class="btn-table-action" style="flex:1; padding:10px 0; background:#6366f1; color:#fff;" onclick="submitWalletAdjustment()">CONFIRM &amp; LOG ➔</button>
-      </div>
-    </div>
   </div>
 
   <script src="admin.js"></script>

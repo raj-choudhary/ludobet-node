@@ -1,138 +1,422 @@
-<link rel="stylesheet" href="/css/classic-battle.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Snake & Ladders — Battle Arena</title>
+  <meta name="description" content="Play Snake & Ladders online battles. Classic Race to 100 and 24-Move Turbo Rush with real cash prizes!">
+  <link rel="stylesheet" href="classic-battle.css">
+  <style>
+    /* Snake & Ladders Custom Theme Styles */
+    .title-snake-group {
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: 0.4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
 
-<!-- 2. SUB-HEADER WITH BACK BUTTON & TITLE -->
-<div class="sub-header-bar">
-  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
-    ←
-  </button>
-  <div class="page-title-group">
-    <div class="ludo-classic-title">
-      <span class="title-l" style="color:#2e7d32;">SNAKE</span>
-      <span class="title-classic" style="color:#1b5e20;">&amp; LADDERS</span>
-    </div>
-    <div class="page-subtitle">1-100 Duel • First to Cell 100 Wins Cash</div>
-  </div>
-</div>
+    .title-snake-green {
+      color: #2e7d32;
+    }
 
-<!-- 3. "CREATE BATTLE" MAIN CARD -->
-<section class="create-battle-card">
-  <div class="create-battle-badge" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);">1-100 DUEL</div>
-  
-  <!-- 3D Board Artwork -->
-  <img class="create-battle-art-img" src="/assets/card_snake_exact.png" alt="Snake & Ladders Board" style="border-radius:14px; max-height:160px; object-fit:cover; width:100%;">
-  
-  <div class="entry-amount-label">Entry Amount (₹)</div>
-  
-  <div class="amount-input-wrapper">
-    <span class="currency-symbol">₹</span>
-    <input type="number" class="amount-input" id="create-entry-amount" value="50" min="10" max="10000" step="10">
-  </div>
+    .title-snake-amp {
+      color: #0288d1;
+    }
 
-  <!-- Preset Quick Chips -->
-  <div class="amount-presets">
-    <button class="preset-chip-btn" onclick="setPresetAmount(10, this)">₹10</button>
-    <button class="preset-chip-btn" onclick="setPresetAmount(20, this)">₹20</button>
-    <button class="preset-chip-btn active" onclick="setPresetAmount(50, this)">₹50</button>
-    <button class="preset-chip-btn" onclick="setPresetAmount(100, this)">₹100</button>
-    <button class="preset-chip-btn" onclick="setPresetAmount(200, this)">₹200</button>
-  </div>
+    .title-snake-orange {
+      color: #e65100;
+    }
 
-  <button class="btn-create-battle" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);" onclick="executeCreateBattleFlow()">CREATE SNAKE BATTLE</button>
-</section>
+    /* 2 Distinct Snake Modes Switcher */
+    .snake-modes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 10;
+    }
 
-<!-- 5. BATTLE LIST TABS -->
-<div class="battle-tabs-container">
-  <button class="battle-tab-btn active" id="tab-open-battles">
-    OPEN SNAKE DUELS (<%= openBattles.length %>)
-  </button>
-  <button class="battle-tab-btn" id="tab-running-battles">
-    RUNNING <span class="badge-live-pulse">● LIVE</span>
-  </button>
-</div>
+    .snake-mode-card {
+      background: #ffffff;
+      border: 2px solid #d8e6f5;
+      border-radius: 18px;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(16, 56, 110, 0.06);
+      transition: all 0.22s var(--ease-bounce);
+      overflow: hidden;
+    }
 
-<!-- 7. OPEN BATTLES LIST CONTAINER -->
-<div class="battles-list" id="battles-list-container">
-  <% if (openBattles && openBattles.length > 0) { %>
-    <% openBattles.forEach(function(b) { %>
-      <div class="battle-card-item">
-        <div class="bci-player">
-          <div class="bci-avatar" style="background:#2e7d32;">🪜</div>
-          <div class="bci-meta">
-            <strong class="bci-name"><%= b.creator_name %></strong>
-            <span class="bci-mode">1v1 SNAKE</span>
+    .snake-mode-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(16, 56, 110, 0.12);
+    }
+
+    .snake-mode-card.active {
+      background: linear-gradient(135deg, #ffffff 0%, #f1f8e9 100%);
+      border-color: #2e7d32;
+      box-shadow: 0 0 0 1px #2e7d32, 0 6px 18px rgba(46, 125, 50, 0.18);
+    }
+
+    .snake-mode-card.active::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3.5px;
+      background: linear-gradient(90deg, #2e7d32 0%, #00e676 50%, #ffab00 100%);
+    }
+
+    .snake-mode-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .snake-icon-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: #e8f5e9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .snake-mode-card.active .snake-icon-badge {
+      background: linear-gradient(135deg, #388e3c 0%, #1b5e20 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(27, 94, 32, 0.3);
+    }
+
+    .snake-tag-mini {
+      font-size: 8px;
+      font-weight: 900;
+      color: #ffffff;
+      background: #2e7d32;
+      padding: 2px 7px;
+      border-radius: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .snake-tag-mini.rush {
+      background: #e65100;
+    }
+
+    .snake-mode-heading {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: var(--navy-text);
+      line-height: 1.15;
+    }
+
+    .snake-mode-desc {
+      font-size: 10px;
+      color: var(--slate-text);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    /* Board Mini Specs Strip */
+    .snake-board-specs-strip {
+      background: #ffffff;
+      border: 1.5px solid #d8e6f5;
+      border-radius: 14px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.04);
+      position: relative;
+      z-index: 10;
+    }
+
+    .specs-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--navy-text);
+    }
+
+    .specs-item span.icon {
+      font-size: 14px;
+    }
+
+    .specs-divider {
+      width: 1px;
+      height: 16px;
+      background: #d8e6f5;
+    }
+
+    .btn-snake-rules {
+      background: #f1f8e9;
+      border: 1.5px solid #a5d6a7;
+      color: #2e7d32;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: transform 0.15s ease;
+    }
+
+    .btn-snake-rules:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient background sparkles -->
+  <div class="ambient-sparkles"></div>
+
+  <!-- Main Mobile App Frame -->
+  <div class="app-container">
+
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+      <!-- Menu Button -->
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- Resource Pill Container -->
+      <div class="resource-pill">
+        <!-- Chips Section -->
+        <button class="res-item" onclick="showToast('Chips: 12,450', '🪙')" aria-label="Chips">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-val">12,450</span>
+            <span class="res-label">Chips</span>
           </div>
-        </div>
-        <div class="bci-pricing">
-          <span class="bci-fee">Entry: ₹<%= parseFloat(b.entry_fee).toFixed(0) %></span>
-          <strong class="bci-prize">Win: ₹<%= parseFloat(b.prize_pool).toFixed(0) %></strong>
-        </div>
-        <button class="btn-accept-battle" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);" onclick="joinMatchAction(<%= b.id %>)">
-          ACCEPT
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Earnings Section -->
+        <button class="res-item" onclick="showToast('Earnings: ₹350', '💎')" aria-label="Earnings">
+          <img class="res-icon" src="assets/diamond.svg" alt="Earnings">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-val">350</span>
+            <span class="res-label">Earnings</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Notification Bell -->
+        <button class="bell-item" onclick="showToast('3 New Notifications', '🔔')" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
         </button>
       </div>
-    <% }); %>
-  <% } else { %>
-    <div class="battle-card-item">
-      <div class="bci-player">
-        <div class="bci-avatar" style="background:#2e7d32;">🪜</div>
-        <div class="bci-meta">
-          <strong class="bci-name">Rohit_King</strong>
-          <span class="bci-mode">1v1 SNAKE &amp; LADDERS</span>
+    </header>
+
+    <!-- 2. SUB-HEADER WITH BACK BUTTON & 3-COLOR TITLE -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Back to Home">
+        ←
+      </button>
+      <div class="page-title-group">
+        <div class="title-snake-group">
+          <span class="title-snake-green">SNAKE</span>
+          <span class="title-snake-amp">&</span>
+          <span class="title-snake-orange">LADDERS</span>
         </div>
+        <div class="page-subtitle">Race to 100 • Climb ladders & dodge snakes</div>
       </div>
-      <div class="bci-pricing">
-        <span class="bci-fee">Entry: ₹50</span>
-        <strong class="bci-prize">Win: ₹95</strong>
+    </div>
+
+    <!-- 3. TWO DISTINCT SNAKE MODES (SWITCHER) -->
+    <div class="snake-modes-grid">
+      <!-- Mode 1: Classic Race to 100 -->
+      <div class="snake-mode-card active" id="tab-snake-race" onclick="switchSnakeMode('race')">
+        <div class="snake-mode-top">
+          <div class="snake-icon-badge">🎲</div>
+          <span class="snake-tag-mini">POPULAR</span>
+        </div>
+        <div class="snake-mode-heading">Race to 100</div>
+        <div class="snake-mode-desc">First player to reach square 100 wins!</div>
       </div>
-      <button class="btn-accept-battle" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);" onclick="alert('Joining Snake & Ladders Duel...')">
-        ACCEPT
+
+      <!-- Mode 2: 24-Move Score Rush -->
+      <div class="snake-mode-card" id="tab-snake-rush" onclick="switchSnakeMode('rush')">
+        <div class="snake-mode-top">
+          <div class="snake-icon-badge">⚡</div>
+          <span class="snake-tag-mini rush">SPEED</span>
+        </div>
+        <div class="snake-mode-heading">24-Move Rush</div>
+        <div class="snake-mode-desc">24 moves timer race • Ladder point boosts!</div>
+      </div>
+    </div>
+
+    <!-- 4. "CREATE BATTLE" MAIN CARD -->
+    <section class="create-battle-card">
+      <div class="create-battle-badge" id="create-badge-text">SNAKE BATTLE</div>
+      
+      <!-- 3D Board Artwork -->
+      <img class="create-battle-art-img" src="assets/board_3d_card.png" alt="3D Snake Board">
+      
+      <div class="entry-amount-label">Entry Amount (₹)</div>
+      
+      <div class="amount-input-wrapper">
+        <span class="currency-symbol">₹</span>
+        <input type="number" class="amount-input" id="snake-entry-amount" value="20" min="10" max="10000" step="10">
+      </div>
+
+      <!-- Preset Quick Chips -->
+      <div class="amount-presets">
+        <button class="preset-chip-btn" onclick="setPresetSnakeAmount(10, this)">₹10</button>
+        <button class="preset-chip-btn active" onclick="setPresetSnakeAmount(20, this)">₹20</button>
+        <button class="preset-chip-btn" onclick="setPresetSnakeAmount(50, this)">₹50</button>
+        <button class="preset-chip-btn" onclick="setPresetSnakeAmount(100, this)">₹100</button>
+        <button class="preset-chip-btn" onclick="setPresetSnakeAmount(200, this)">₹200</button>
+      </div>
+
+      <button class="btn-create-battle" onclick="startSnakeBattleCreation()">CREATE BATTLE</button>
+    </section>
+
+    <!-- 5. BOARD SPECS & RULES QUICK STRIP (NO PRIVATE ROOM) -->
+    <div class="snake-board-specs-strip">
+      <div class="specs-item">
+        <span class="icon">🪜</span>
+        <span>7 Ladders</span>
+      </div>
+      <div class="specs-divider"></div>
+      <div class="specs-item">
+        <span class="icon">🐍</span>
+        <span>6 Snakes</span>
+      </div>
+      <div class="specs-divider"></div>
+      <button class="btn-snake-rules" onclick="openSnakeRulesModal()">
+        <span>ℹ️</span>
+        <span>Rules</span>
       </button>
     </div>
-  <% } %>
-</div>
 
-<script>
-  function setPresetAmount(amt, elem) {
-    document.getElementById('create-entry-amount').value = amt;
-    document.querySelectorAll('.preset-chip-btn').forEach(b => b.classList.remove('active'));
-    if (elem) elem.classList.add('active');
-  }
+    <!-- 6. BATTLE TABS (OPEN BATTLES vs RUNNING BATTLES) -->
+    <div class="battle-tabs-container">
+      <button class="battle-tab-btn active" id="tab-open-battles" onclick="switchSnakeTab('open')">
+        OPEN BATTLES
+      </button>
+      <button class="battle-tab-btn" id="tab-running-battles" onclick="switchSnakeTab('running')">
+        RUNNING BATTLES <span class="badge-live-pulse">● LIVE</span>
+      </button>
+    </div>
 
-  async function executeCreateBattleFlow() {
-    const amt = parseFloat(document.getElementById('create-entry-amount').value);
-    if (!amt || amt < 10) return alert('Minimum battle entry is ₹10.00');
+    <!-- 7. FILTERS & REFRESH ROW (CLEAN COMPACT) -->
+    <div class="filter-row">
+      <div class="filter-btn">
+        <span>🔽</span>
+        <select id="snake-sort-select" onchange="handleSortChange()">
+          <option value="low">Sort: Low to High</option>
+          <option value="high">Sort: High to Low</option>
+          <option value="prize">Sort: Highest Prize</option>
+        </select>
+      </div>
 
-    try {
-      const res = await fetch('/api/battles/create', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 1, gameMode: 'SNAKE', entryFee: amt })
-      });
-      const data = await res.json();
-      if (data.success) {
-        alert('1v1 Snake Duel Deployed to Lobby!');
-        window.location.reload();
-      }
-    } catch (e) {
-      alert('Battle Deployed!');
-      window.location.reload();
-    }
-  }
+      <button class="btn-refresh" id="btn-snake-refresh" onclick="refreshSnakeBattlesList()" aria-label="Refresh Battles" title="Refresh">
+        🔄
+      </button>
+    </div>
 
-  async function joinMatchAction(id) {
-    try {
-      const res = await fetch('/api/battles/join', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 1, battleId: id })
-      });
-      const data = await res.json();
-      if (data.success) {
-        alert('Match Joined! Launching Snake Board...');
-        window.location.reload();
-      }
-    } catch (e) {
-      alert('Entering Snake Duel...');
-    }
-  }
-</script>
+    <!-- 8. LIVE SNAKE BATTLES LIST -->
+    <div class="battles-list" id="snake-battles-container">
+      <!-- Dynamically Rendered via snake-battle.js -->
+    </div>
+
+  </div>
+
+  <!-- 9. BOTTOM FLOATING NAVIGATION DOCK -->
+  <div class="bottom-nav-container">
+    <nav class="bottom-nav">
+      <button class="nav-tab active" onclick="window.location.href='index.html'">
+        <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='ranking.html'">
+        <img class="nav-icon-svg" src="assets/ranking.svg" alt="Ranking">
+        <span class="nav-label">Ranking</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='wallet.html'">
+        <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+        <span class="nav-label">Wallet</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='refer-earn.html'">
+        <img class="nav-icon-svg" src="assets/refer.svg" alt="Refer">
+        <span class="nav-label">Refer</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='profile.html'">
+        <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+    <div class="home-indicator"></div>
+  </div>
+
+  <!-- =========================================================================
+       MODALS
+       ========================================================================= -->
+
+  <!-- MODAL: SNAKE & LADDERS RULES MODAL -->
+  <div class="flow-modal-backdrop" id="modal-snake-rules">
+    <div class="flow-modal-box">
+      <button class="flow-modal-close-btn" onclick="closeSnakeRulesModal()">✕</button>
+      <div class="flow-header-pill" style="background:#2e7d32;">SNAKE & LADDERS RULES</div>
+      <h3 class="flow-title">How To Play & Win</h3>
+      <p class="flow-subtitle">Climb ladders to jump ahead and avoid deadly snake bites!</p>
+
+      <div class="how-it-works-body">
+        <div class="rule-step-item">
+          <div class="step-num-badge" style="background:#2e7d32;">1</div>
+          <div class="step-text-content">
+            <div class="step-title">🪜 Ladder Boosts (Fast Advance)</div>
+            <div class="step-desc">Landing at the base of a ladder automatically climbs you to its top square with bonus turn!</div>
+          </div>
+        </div>
+
+        <div class="rule-step-item">
+          <div class="step-num-badge" style="background:#d32f2f;">2</div>
+          <div class="step-text-content">
+            <div class="step-title">🐍 Snake Bites (Slide Down)</div>
+            <div class="step-desc">Landing on a snake's mouth slides you down to its tail. In 24-Move Rush, you lose score points!</div>
+          </div>
+        </div>
+
+        <div class="rule-step-item">
+          <div class="step-num-badge" style="background:#0288d1;">3</div>
+          <div class="step-text-content">
+            <div class="step-title">🏁 Winning the Match</div>
+            <div class="step-desc"><strong>Race Mode:</strong> First player to reach square 100 wins! <strong>Rush Mode:</strong> Highest points at move 24 wins!</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-flow-green" onclick="closeSnakeRulesModal()">GOT IT, LET'S PLAY!</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast-msg"></div>
+
+  <!-- Snake Battle Scripts -->
+  <script src="snake-battle.js"></script>
+</body>
+</html>

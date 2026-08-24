@@ -1,248 +1,418 @@
-<link rel="stylesheet" href="/css/classic-battle.css">
-<link rel="stylesheet" href="/css/wallet.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>My Wallet — Ludo Bet</title>
+  <meta name="description" content="Instant 100% secure deposits on Ludo Bet. Add cash via UPI, GPay, PhonePe, Paytm, and Cards with instant cashback bonus!">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="classic-battle.css">
+  <link rel="stylesheet" href="wallet.css">
+</head>
+<body>
 
-<!-- 2. SUB-HEADER WITH BACK BUTTON & CLEAN TITLE -->
-<div class="sub-header-bar">
-  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
-    ←
-  </button>
-  <div class="page-title-group">
-    <div class="wallet-page-title">
-      <span class="title-blue">MY</span>
-      <span class="title-green">WALLET</span>
-    </div>
-    <div class="page-subtitle">Instant &amp; 100% Secure Deposits</div>
-  </div>
-</div>
+  <!-- Ambient background sparkles -->
+  <div class="ambient-sparkles"></div>
 
-<!-- 3. ULTRA-CLEAN MODERN BALANCE HERO CARD -->
-<section class="wallet-hero-card">
-  <div class="hero-card-glow"></div>
-  
-  <!-- Top Row: Badge & Status -->
-  <div class="hero-top-row">
-    <div class="hero-badge">
-      <span class="badge-icon">⚡</span>
-      <span>AVAILABLE BALANCE</span>
-    </div>
-    <div class="live-status-pill">
-      <span class="live-dot"></span>
-      <span>LIVE</span>
-    </div>
-  </div>
+  <!-- Main Mobile App Frame -->
+  <div class="app-container">
 
-  <!-- Main Balance Display -->
-  <div class="hero-balance-section">
-    <span class="hero-balance-label">TOTAL WALLET BALANCE</span>
-    <div class="hero-balance-amount">
-      <span class="hero-currency">₹</span>
-      <span class="hero-digits" id="wallet-total-val">
-        <%= (parseFloat(wallet.deposit_balance) + parseFloat(wallet.winning_balance)).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-      </span>
-    </div>
-  </div>
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+      <!-- Menu Button -->
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
 
-  <!-- Split Breakdown: Deposit vs Bonus -->
-  <div class="hero-split-grid">
-    <!-- Deposit Cash Box -->
-    <div class="split-card deposit">
-      <div class="split-card-top">
-        <span class="split-badge-tag green">100% USABLE</span>
+      <!-- Resource Pill Container -->
+      <div class="resource-pill">
+        <!-- Chips Section -->
+        <button class="res-item" onclick="showToast('Chips: 12,450', '🪙')" aria-label="Chips">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-val">12,450</span>
+            <span class="res-label">Chips</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Earnings Section -->
+        <button class="res-item" onclick="showToast('Earnings: ₹350', '💎')" aria-label="Earnings">
+          <img class="res-icon" src="assets/diamond.svg" alt="Earnings">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-val">350</span>
+            <span class="res-label">Earnings</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Notification Bell -->
+        <button class="bell-item" onclick="showToast('3 New Notifications', '🔔')" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
       </div>
-      <div class="split-main">
-        <div class="split-icon-circle green">💰</div>
-        <div class="split-texts">
-          <span class="split-label">Deposit Cash</span>
-          <strong class="split-num" id="wallet-deposit-val">₹<%= parseFloat(wallet.deposit_balance).toFixed(2) %></strong>
+    </header>
+
+    <!-- 2. SUB-HEADER WITH BACK BUTTON & CLEAN TITLE (NO HEADPHONES) -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Back to Home">
+        ←
+      </button>
+      <div class="page-title-group">
+        <div class="wallet-page-title">
+          <span class="title-blue">MY</span>
+          <span class="title-green">WALLET</span>
+        </div>
+        <div class="page-subtitle">Instant &amp; 100% Secure Deposits</div>
+      </div>
+    </div>
+
+    <!-- 3. ULTRA-CLEAN MODERN BALANCE HERO CARD -->
+    <section class="wallet-hero-card">
+      <div class="hero-card-glow"></div>
+      
+      <!-- Top Row: Badge & Status -->
+      <div class="hero-top-row">
+        <div class="hero-badge">
+          <span class="badge-icon">⚡</span>
+          <span>AVAILABLE BALANCE</span>
+        </div>
+        <div class="live-status-pill">
+          <span class="live-dot"></span>
+          <span>LIVE</span>
         </div>
       </div>
-    </div>
 
-    <!-- Winning / Bonus Cash Box -->
-    <div class="split-card bonus">
-      <div class="split-card-top">
-        <span class="split-badge-tag purple">WITHDRAWABLE</span>
-      </div>
-      <div class="split-main">
-        <div class="split-icon-circle purple">💎</div>
-        <div class="split-texts">
-          <span class="split-label">Winning Cash</span>
-          <strong class="split-num" id="wallet-bonus-val">₹<%= parseFloat(wallet.winning_balance).toFixed(2) %></strong>
+      <!-- Main Balance Display -->
+      <div class="hero-balance-section">
+        <span class="hero-balance-label">TOTAL WALLET BALANCE</span>
+        <div class="hero-balance-amount">
+          <span class="hero-currency">₹</span>
+          <span class="hero-digits" id="wallet-total-val">12,450</span>
+          <span class="hero-decimal">.00</span>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Guarantee Footer -->
-  <div class="hero-card-footer">
-    <span>🔒 100% Safe • RBI Approved Payment Gateways • Instant Credit</span>
-  </div>
-</section>
+      <!-- Split Breakdown: Deposit vs Bonus -->
+      <div class="hero-split-grid">
+        <!-- Deposit Cash Box -->
+        <div class="split-card deposit">
+          <div class="split-card-top">
+            <span class="split-badge-tag green">100% USABLE</span>
+          </div>
+          <div class="split-main">
+            <div class="split-icon-circle green">💰</div>
+            <div class="split-texts">
+              <span class="split-label">Deposit Cash</span>
+              <strong class="split-num" id="wallet-deposit-val">₹10,250</strong>
+            </div>
+          </div>
+        </div>
 
-<!-- 4. ADD CASH / DEPOSIT SECTION -->
-<section class="deposit-action-card">
-  <div class="action-card-header">
-    <div class="action-header-left">
-      <span class="action-header-icon">⚡</span>
-      <h2 class="action-heading">ADD CASH TO WALLET</h2>
-    </div>
-    <span class="bonus-tag-pill">🔥 UPTO 100% BONUS</span>
-  </div>
+        <!-- Bonus Cash Box -->
+        <div class="split-card bonus">
+          <div class="split-card-top">
+            <span class="split-badge-tag purple">FEE DISCOUNT</span>
+          </div>
+          <div class="split-main">
+            <div class="split-icon-circle purple">🎁</div>
+            <div class="split-texts">
+              <span class="split-label">Bonus Cash</span>
+              <strong class="split-num" id="wallet-bonus-val">₹2,200</strong>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <!-- Deposit Input Field -->
-  <div class="amount-input-box">
-    <div class="currency-symbol-box">₹</div>
-    <input type="number" class="amount-number-input" id="deposit-amount-input" value="500" min="50" max="50000" step="10">
-    <div class="amount-bonus-pill" id="deposit-bonus-hint">+₹100 Bonus</div>
-  </div>
+      <!-- Guarantee Footer -->
+      <div class="hero-card-footer">
+        <span>🔒 100% Safe • RBI Approved Payment Gateways • Instant Credit</span>
+      </div>
+    </section>
 
-  <!-- Preset Deposit Chips Grid -->
-  <div class="preset-chips-grid">
-    <button class="preset-chip" onclick="selectDepositPreset(100, 10, this)">
-      <span class="preset-amt">₹100</span>
-      <span class="preset-sub">+₹10 Bonus</span>
-    </button>
+    <!-- 4. ADD CASH / DEPOSIT SECTION -->
+    <section class="deposit-action-card">
+      <div class="action-card-header">
+        <div class="action-header-left">
+          <span class="action-header-icon">⚡</span>
+          <h2 class="action-heading">ADD CASH TO WALLET</h2>
+        </div>
+        <span class="bonus-tag-pill">🔥 UPTO 100% BONUS</span>
+      </div>
 
-    <button class="preset-chip" onclick="selectDepositPreset(200, 30, this)">
-      <span class="preset-amt">₹200</span>
-      <span class="preset-sub">+₹30 Bonus</span>
-    </button>
+      <!-- Deposit Input Field -->
+      <div class="amount-input-box">
+        <div class="currency-symbol-box">₹</div>
+        <input type="number" class="amount-number-input" id="deposit-amount-input" value="500" min="10" max="50000" step="10">
+        <div class="amount-bonus-pill" id="deposit-bonus-hint">+₹100 Bonus</div>
+      </div>
 
-    <button class="preset-chip active" onclick="selectDepositPreset(500, 100, this)">
-      <span class="chip-badge popular">POPULAR</span>
-      <span class="preset-amt">₹500</span>
-      <span class="preset-sub highlight">+₹100 Bonus 🔥</span>
-    </button>
+      <!-- Preset Deposit Chips Grid -->
+      <div class="preset-chips-grid">
+        <button class="preset-chip" onclick="selectDepositPreset(100, 10, this)">
+          <span class="preset-amt">₹100</span>
+          <span class="preset-sub">+₹10 Bonus</span>
+        </button>
 
-    <button class="preset-chip" onclick="selectDepositPreset(1000, 250, this)">
-      <span class="chip-badge best">BEST VALUE</span>
-      <span class="preset-amt">₹1,000</span>
-      <span class="preset-sub highlight">+₹250 Bonus ⭐</span>
-    </button>
+        <button class="preset-chip" onclick="selectDepositPreset(200, 30, this)">
+          <span class="preset-amt">₹200</span>
+          <span class="preset-sub">+₹30 Bonus</span>
+        </button>
 
-    <button class="preset-chip" onclick="selectDepositPreset(2000, 600, this)">
-      <span class="chip-badge vip">VIP CHOICE</span>
-      <span class="preset-amt">₹2,000</span>
-      <span class="preset-sub vip">+₹600 VIP 💎</span>
-    </button>
-  </div>
+        <button class="preset-chip active" onclick="selectDepositPreset(500, 100, this)">
+          <span class="chip-badge popular">POPULAR</span>
+          <span class="preset-amt">₹500</span>
+          <span class="preset-sub highlight">+₹100 Bonus 🔥</span>
+        </button>
 
-  <!-- Promo Code / Coupons -->
-  <div class="coupon-section">
-    <div class="coupon-input-row">
-      <input type="text" class="coupon-input-field" id="promo-code-input" placeholder="Enter Coupon Code (e.g. FIRST100)">
-      <button class="btn-coupon-apply" id="btn-apply-promo" onclick="alert('Promo code applied!')">APPLY</button>
-    </div>
+        <button class="preset-chip" onclick="selectDepositPreset(1000, 250, this)">
+          <span class="chip-badge best">BEST VALUE</span>
+          <span class="preset-amt">₹1,000</span>
+          <span class="preset-sub highlight">+₹250 Bonus ⭐</span>
+        </button>
 
-    <div class="coupon-pills-row">
-      <button class="coupon-pill-btn" onclick="document.getElementById('promo-code-input').value='FIRST100'">
-        <span>🏷️ FIRST100 (100% Extra)</span>
+        <button class="preset-chip" onclick="selectDepositPreset(2000, 600, this)">
+          <span class="chip-badge vip">VIP CHOICE</span>
+          <span class="preset-amt">₹2,000</span>
+          <span class="preset-sub vip">+₹600 VIP 💎</span>
+        </button>
+      </div>
+
+      <!-- Promo Code / Coupons -->
+      <div class="coupon-section">
+        <div class="coupon-input-row">
+          <input type="text" class="coupon-input-field" id="promo-code-input" placeholder="Enter Coupon Code (e.g. FIRST100)">
+          <button class="btn-coupon-apply" id="btn-apply-promo" onclick="handleApplyPromo()">APPLY</button>
+        </div>
+
+        <div class="coupon-pills-row">
+          <button class="coupon-pill-btn" onclick="setPromo('FIRST100')">
+            <span>🏷️ FIRST100 (100% Extra)</span>
+          </button>
+          <button class="coupon-pill-btn" onclick="setPromo('LUDO50')">
+            <span>🏷️ LUDO50 (Flat ₹50)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Payment Methods Grid -->
+      <div class="payment-section-title">SELECT PAYMENT METHOD:</div>
+      <div class="methods-grid">
+        <!-- Google Pay -->
+        <div class="method-tile selected" id="method-gpay" onclick="selectPaymentMethod('gpay', this)">
+          <img src="assets/icon_gpay.svg" alt="Google Pay" class="method-logo">
+          <div class="method-details">
+            <span class="method-name">Google Pay</span>
+            <span class="method-desc">Instant 1-Click UPI</span>
+          </div>
+          <div class="method-check-dot"></div>
+        </div>
+
+        <!-- PhonePe -->
+        <div class="method-tile" id="method-phonepe" onclick="selectPaymentMethod('phonepe', this)">
+          <img src="assets/icon_phonepe.svg" alt="PhonePe" class="method-logo">
+          <div class="method-details">
+            <span class="method-name">PhonePe</span>
+            <span class="method-desc">UPI / Wallet / Cards</span>
+          </div>
+          <div class="method-check-dot"></div>
+        </div>
+
+        <!-- Paytm -->
+        <div class="method-tile" id="method-paytm" onclick="selectPaymentMethod('paytm', this)">
+          <img src="assets/icon_paytm.svg" alt="Paytm" class="method-logo">
+          <div class="method-details">
+            <span class="method-name">Paytm UPI</span>
+            <span class="method-desc">Paytm Wallet &amp; UPI</span>
+          </div>
+          <div class="method-check-dot"></div>
+        </div>
+
+        <!-- Scan QR Code -->
+        <div class="method-tile" id="method-qr" onclick="selectPaymentMethod('qr', this)">
+          <div class="method-icon-circle">📷</div>
+          <div class="method-details">
+            <span class="method-name">Scan QR Code</span>
+            <span class="method-desc">Scan via Any UPI App</span>
+          </div>
+          <div class="method-check-dot"></div>
+        </div>
+
+        <!-- Debit & Credit Cards -->
+        <div class="method-tile" id="method-card" onclick="selectPaymentMethod('card', this)">
+          <img src="assets/icon_cards.svg" alt="Cards" class="method-logo">
+          <div class="method-details">
+            <span class="method-name">Cards (ATM / Credit)</span>
+            <span class="method-desc">Visa, MasterCard, RuPay</span>
+          </div>
+          <div class="method-check-dot"></div>
+        </div>
+
+        <!-- Net Banking -->
+        <div class="method-tile" id="method-netbanking" onclick="selectPaymentMethod('netbanking', this)">
+          <img src="assets/icon_netbanking.svg" alt="Net Banking" class="method-logo">
+          <div class="method-details">
+            <span class="method-name">Net Banking</span>
+            <span class="method-desc">50+ Major Indian Banks</span>
+          </div>
+          <div class="method-check-dot"></div>
+        </div>
+      </div>
+
+      <!-- Main Action Deposit Button -->
+      <button class="btn-deposit-submit" id="btn-submit-deposit" onclick="startDepositFlow()">
+        <span class="btn-lock-icon">🔒</span>
+        <span id="btn-deposit-text">ADD ₹500 CASH NOW ➔</span>
       </button>
-      <button class="coupon-pill-btn" onclick="document.getElementById('promo-code-input').value='LUDO50'">
-        <span>🏷️ LUDO50 (Flat ₹50)</span>
+
+      <!-- Trust Badges Row -->
+      <div class="trust-row">
+        <div class="trust-item">
+          <span>⚡</span>
+          <span>Instant 5s Credit</span>
+        </div>
+        <div class="trust-item">
+          <span>🛡️</span>
+          <span>256-Bit SSL Encrypted</span>
+        </div>
+        <div class="trust-item">
+          <span>🤝</span>
+          <span>24x7 Payment Support</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. RECENT DEPOSITS TRANSACTION HISTORY -->
+    <section class="deposit-history-card">
+      <div class="history-header-row">
+        <div class="history-title-group">
+          <span class="history-icon">📜</span>
+          <h2 class="history-title">Recent Deposit History</h2>
+        </div>
+        <span class="history-filter-pill">ALL DEPOSITS</span>
+      </div>
+
+      <div class="deposit-list" id="deposit-history-container">
+        <!-- Dynamically rendered via wallet.js -->
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 6. BOTTOM FLOATING NAVIGATION DOCK -->
+  <div class="bottom-nav-container">
+    <nav class="bottom-nav">
+      <button class="nav-tab" onclick="window.location.href='index.html'">
+        <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+        <span class="nav-label">Home</span>
       </button>
+      <button class="nav-tab" onclick="window.location.href='ranking.html'">
+        <img class="nav-icon-svg" src="assets/ranking.svg" alt="Ranking">
+        <span class="nav-label">Ranking</span>
+      </button>
+      <button class="nav-tab active" onclick="window.location.href='wallet.html'">
+        <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+        <span class="nav-label">Wallet</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='refer-earn.html'">
+        <img class="nav-icon-svg" src="assets/refer.svg" alt="Refer">
+        <span class="nav-label">Refer</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='profile.html'">
+        <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+    <div class="home-indicator"></div>
+  </div>
+
+  <!-- =========================================================================
+       DEPOSIT FLOW MODALS (END-TO-END CHECKOUT)
+       ========================================================================= -->
+
+  <!-- MODAL 1: SCAN QR CODE / UPI PAYMENT CHECKOUT -->
+  <div class="flow-modal-backdrop" id="modal-qr-checkout">
+    <div class="flow-modal-box">
+      <button class="flow-modal-close-btn" onclick="closeDepositModal('modal-qr-checkout')">✕</button>
+      <div class="flow-header-pill" style="background:#0288d1;">SECURE PAYMENT GATEWAY</div>
+      <h3 class="flow-title" id="checkout-amount-title">Pay ₹500</h3>
+      <p class="flow-subtitle">Scan QR Code using any UPI App (GPay, PhonePe, Paytm)</p>
+
+      <div class="qr-checkout-container">
+        <!-- Live Countdown Timer -->
+        <div class="qr-timer-pill">
+          <span>Expires in: </span>
+          <strong id="qr-expiry-timer">04:59</strong>
+        </div>
+
+        <!-- Dynamic QR Code -->
+        <div class="qr-image-frame">
+          <img src="assets/payment_qr_code.png" alt="UPI Payment QR Code" class="qr-img">
+        </div>
+
+        <!-- UPI ID Row with Copy Button -->
+        <div class="upi-id-copy-row">
+          <span class="upi-id-text">ludobet.pay@icici</span>
+          <button class="btn-upi-copy" onclick="copyUPIAddress()">COPY</button>
+        </div>
+      </div>
+
+      <button class="btn-flow-green" onclick="simulatePaymentProcessing()">I HAVE PAID ₹500 ➔</button>
     </div>
   </div>
 
-  <!-- Payment Methods Grid -->
-  <div class="payment-section-title">SELECT PAYMENT METHOD:</div>
-  <div class="methods-grid">
-    <!-- Google Pay -->
-    <div class="method-tile selected" id="method-gpay" onclick="selectPaymentMethod('gpay', this)">
-      <img src="/assets/icon_gpay.svg" alt="Google Pay" class="method-logo">
-      <div class="method-details">
-        <span class="method-name">Google Pay</span>
-        <span class="method-desc">Instant 1-Click UPI</span>
-      </div>
-      <div class="method-check-dot"></div>
-    </div>
-
-    <!-- PhonePe -->
-    <div class="method-tile" id="method-phonepe" onclick="selectPaymentMethod('phonepe', this)">
-      <img src="/assets/icon_phonepe.svg" alt="PhonePe" class="method-logo">
-      <div class="method-details">
-        <span class="method-name">PhonePe</span>
-        <span class="method-desc">UPI / Wallet / Cards</span>
-      </div>
-      <div class="method-check-dot"></div>
-    </div>
-
-    <!-- Paytm -->
-    <div class="method-tile" id="method-paytm" onclick="selectPaymentMethod('paytm', this)">
-      <img src="/assets/icon_paytm.svg" alt="Paytm" class="method-logo">
-      <div class="method-details">
-        <span class="method-name">Paytm UPI</span>
-        <span class="method-desc">Paytm Wallet &amp; UPI</span>
-      </div>
-      <div class="method-check-dot"></div>
-    </div>
-
-    <!-- Scan QR Code -->
-    <div class="method-tile" id="method-qr" onclick="selectPaymentMethod('qr', this)">
-      <div class="method-icon-circle">📷</div>
-      <div class="method-details">
-        <span class="method-name">Scan QR Code</span>
-        <span class="method-desc">Scan via Any UPI App</span>
-      </div>
-      <div class="method-check-dot"></div>
+  <!-- MODAL 2: PROCESSING PAYMENT ANIMATION -->
+  <div class="flow-modal-backdrop" id="modal-processing-payment">
+    <div class="flow-modal-box" style="text-align:center; padding:30px 20px;">
+      <div class="payment-spinner"></div>
+      <h3 class="flow-title" style="margin-top:16px;">Verifying Payment...</h3>
+      <p class="flow-subtitle">Confirming transaction with bank. Please do not press back or refresh.</p>
     </div>
   </div>
 
-  <!-- Main Action Deposit Button -->
-  <button class="btn-deposit-submit" id="btn-submit-deposit" onclick="executeDepositAction()">
-    <span class="btn-lock-icon">🔒</span>
-    <span id="btn-deposit-text">ADD ₹500 CASH NOW ➔</span>
-  </button>
+  <!-- MODAL 3: PAYMENT SUCCESS CELEBRATION MODAL -->
+  <div class="flow-modal-backdrop" id="modal-deposit-success">
+    <div class="flow-modal-box">
+      <button class="flow-modal-close-btn" onclick="closeDepositModal('modal-deposit-success')">✕</button>
+      <div class="flow-header-pill" style="background:#2e7d32;">PAYMENT SUCCESSFUL</div>
+      <div class="victory-trophy-icon" style="font-size: 56px; margin: 10px 0;">🎉</div>
+      <h3 class="flow-title" id="success-modal-heading">₹500 Added Successfully!</h3>
+      <p class="flow-subtitle">Your wallet balance has been updated. Ready for battles!</p>
 
-  <!-- Trust Badges Row -->
-  <div class="trust-row">
-    <div class="trust-item">
-      <span>⚡</span>
-      <span>Instant 5s Credit</span>
-    </div>
-    <div class="trust-item">
-      <span>🛡️</span>
-      <span>256-Bit SSL Encrypted</span>
-    </div>
-    <div class="trust-item">
-      <span>🤝</span>
-      <span>24x7 Payment Support</span>
+      <div class="success-receipt-box">
+        <div class="receipt-row">
+          <span>Transaction ID:</span>
+          <strong id="receipt-txnid">TXN_9984120</strong>
+        </div>
+        <div class="receipt-row">
+          <span>Deposit Cash:</span>
+          <strong style="color:#2e7d32;" id="receipt-deposit-amt">₹500</strong>
+        </div>
+        <div class="receipt-row">
+          <span>Bonus Cash:</span>
+          <strong style="color:#7a39d0;" id="receipt-bonus-amt">+₹100</strong>
+        </div>
+        <div class="receipt-row" style="border-top:1px solid #d4e5f7; padding-top:6px; margin-top:4px;">
+          <span>New Total Balance:</span>
+          <strong style="color:#0288d1; font-size:15px;" id="receipt-new-balance">₹13,050</strong>
+        </div>
+      </div>
+
+      <button class="btn-flow-green" onclick="closeDepositModal('modal-deposit-success')">PLAY BATTLES NOW ➔</button>
     </div>
   </div>
-</section>
 
-<script>
-  function selectDepositPreset(amt, bonus, elem) {
-    document.getElementById('deposit-amount-input').value = amt;
-    document.getElementById('deposit-bonus-hint').innerText = `+₹${bonus} Bonus`;
-    document.getElementById('btn-deposit-text').innerText = `ADD ₹${amt} CASH NOW ➔`;
-    document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
-    if (elem) elem.classList.add('active');
-  }
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast-msg"></div>
 
-  function selectPaymentMethod(id, elem) {
-    document.querySelectorAll('.method-tile').forEach(m => m.classList.remove('selected'));
-    if (elem) elem.classList.add('selected');
-  }
-
-  async function executeDepositAction() {
-    const amt = parseFloat(document.getElementById('deposit-amount-input').value);
-    if (!amt || amt < 50) return alert('Minimum deposit is ₹50.00');
-
-    try {
-      const res = await fetch('/api/wallet/deposit', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 1, amount: amt, gateway: 'MANUAL_UPI' })
-      });
-      const data = await res.json();
-      if (data.success) {
-        alert(`Success! ₹${amt.toFixed(2)} added to your wallet.`);
-        window.location.reload();
-      }
-    } catch (e) {
-      alert('Deposit processed.');
-      window.location.reload();
-    }
-  }
-</script>
+  <!-- Wallet Scripts -->
+  <script src="wallet.js"></script>
+</body>
+</html>

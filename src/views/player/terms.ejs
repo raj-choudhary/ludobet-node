@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Terms & Conditions | Ludo Tournament King</title>
+  <meta name="description" content="Terms of Service, Fairplay Agreement, and Legal Disclaimers for Ludo Tournament King.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="rules.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 1. TOP HEADER (Menu + Resource Pill) -->
+    <header class="top-header">
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <div class="resource-pill">
+        <a href="wallet.html" class="res-item" style="text-decoration:none;" aria-label="Wallet Balance">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">₹1,250</span>
+            <span class="res-label">Cash</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
+
+        <div class="res-item" aria-label="Gems">
+          <img class="res-icon" src="assets/diamond.svg" alt="Gems">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">20</span>
+            <span class="res-label">Gems</span>
+          </div>
+        </div>
+
+        <button class="bell-item" onclick="window.location.href='notifications.html'" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Header Bar -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Go Back">←</button>
+      <div class="page-title-group">
+        <h1 class="rules-page-title">
+          <span class="title-blue">TERMS</span> <span class="title-purple">&amp; CONDITIONS</span>
+        </h1>
+        <span class="page-subtitle">User Agreement &amp; Legal Compliance</span>
+      </div>
+      <div class="status-verified-badge" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">
+        18+ ONLY
+      </div>
+    </div>
+
+    <!-- MAIN BODY -->
+    <main class="rules-main-body">
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="rule-h-icon">⚖️</span>
+          <span class="rule-h-title">User Agreement &amp; Fairplay Policy</span>
+        </div>
+        <ul class="rule-bullet-list">
+          <li><strong>1. Eligibility (18+ Only):</strong> You must be at least 18 years of age and a resident of India (excluding restricted states: Andhra Pradesh, Assam, Nagaland, Odisha, Sikkim, Telangana).</li>
+          <li><strong>2. Game of Skill:</strong> Ludo and related tournament games on this platform are recognized as Games of Skill under the Constitution of India.</li>
+          <li><strong>3. Single Account Policy:</strong> One user is permitted to hold only one registered account with valid Aadhaar &amp; PAN KYC. Multiple duplicate accounts will be terminated.</li>
+          <li><strong>4. Result Verification:</strong> Results must be submitted with valid screenshots. False result declarations or tampered screenshots will lead to instant penalty deduction and account termination.</li>
+          <li><strong>5. Deposits &amp; Withdrawals:</strong> Withdrawals are processed instantly to verified UPI / Bank accounts. Minimum withdrawal limit is ₹100.</li>
+        </ul>
+      </div>
+
+      <div class="rules-bottom-cta">
+        <button class="btn-play-now" onclick="window.location.href='privacy.html'">
+          🔒 VIEW PRIVACY POLICY ›
+        </button>
+      </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav">
+        <button class="nav-tab" onclick="window.location.href='index.html'">
+          <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ludo-classic.html'">
+          <img class="nav-icon-svg" src="assets/chip.svg" alt="Battles">
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ranking.html'">
+          <img class="nav-icon-svg" src="assets/ranking.svg" alt="Leaderboard">
+          <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='wallet.html'">
+          <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+          <span class="nav-label">Wallet</span>
+        </button>
+        <button class="nav-tab active" onclick="window.location.href='profile.html'">
+          <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+</body>
+</html>

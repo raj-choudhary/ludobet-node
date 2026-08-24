@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>My Battles & History | Ludo Tournament King</title>
+  <meta name="description" content="View all your running, open, and completed tournament battles with live status and winning history.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="my-battles.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 1. TOP HEADER (Menu + Resource Pill) -->
+    <header class="top-header">
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <div class="resource-pill">
+        <a href="wallet.html" class="res-item" style="text-decoration:none;" aria-label="Wallet Balance">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">₹1,250</span>
+            <span class="res-label">Cash</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
+
+        <div class="res-item" aria-label="Gems">
+          <img class="res-icon" src="assets/diamond.svg" alt="Gems">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">20</span>
+            <span class="res-label">Gems</span>
+          </div>
+        </div>
+
+        <button class="bell-item" onclick="window.location.href='notifications.html'" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Header Bar -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Go Back">←</button>
+      <div class="page-title-group">
+        <h1 class="battles-page-title">
+          <span class="title-purple">MY</span> <span class="title-blue">BATTLES</span>
+        </h1>
+        <span class="page-subtitle">Total: 126 Matches Played (78 Won)</span>
+      </div>
+      <button class="header-action-btn" onclick="window.location.href='ludo-classic.html'">
+        + NEW BATTLE
+      </button>
+    </div>
+
+    <!-- MAIN BODY -->
+    <main class="battles-body">
+
+      <!-- 1. STATS SUMMARY STRIP -->
+      <section class="battles-stats-strip">
+        <div class="stat-pill-box">
+          <span class="stat-num text-navy">126</span>
+          <span class="stat-lbl">TOTAL</span>
+        </div>
+        <div class="stat-pill-box">
+          <span class="stat-num text-green">78</span>
+          <span class="stat-lbl">WON</span>
+        </div>
+        <div class="stat-pill-box">
+          <span class="stat-num text-red">48</span>
+          <span class="stat-lbl">LOST</span>
+        </div>
+        <div class="stat-pill-box">
+          <span class="stat-num text-purple">61.9%</span>
+          <span class="stat-lbl">WIN RATE</span>
+        </div>
+      </section>
+
+      <!-- 2. FILTER TABS -->
+      <div class="battles-tabs-bar">
+        <button class="battles-tab active" onclick="filterBattles('all', this)">ALL (126)</button>
+        <button class="battles-tab" onclick="filterBattles('live', this)">🟢 LIVE (1)</button>
+        <button class="battles-tab" onclick="filterBattles('won', this)">🏆 WON (78)</button>
+        <button class="battles-tab" onclick="filterBattles('lost', this)">❌ LOST (48)</button>
+      </div>
+
+      <!-- 3. BATTLES LIST -->
+      <div class="battles-list-container" id="battles-list">
+        
+        <!-- CARD 1: LIVE MATCH (ACTIVE) -->
+        <div class="battle-card-row live-card" data-category="live">
+          <div class="card-top-bar">
+            <div class="mode-tag live">
+              <span class="live-blink-dot"></span> LIVE IN PROGRESS
+            </div>
+            <span class="battle-id-badge">#BTL-9284</span>
+          </div>
+
+          <div class="card-versus-area">
+            <div class="player-col">
+              <img src="assets/avatar_rajendra.png" alt="You" class="p-avatar you">
+              <span class="p-name">Rajendra (You)</span>
+            </div>
+            <div class="vs-badge-small">VS</div>
+            <div class="player-col">
+              <img src="assets/avatar_rahul.png" alt="Rahul" class="p-avatar opp">
+              <span class="p-name">Rahul Kumar</span>
+            </div>
+          </div>
+
+          <div class="card-stakes-row">
+            <div class="stake-col">
+              <span class="st-lbl">Entry Fee</span>
+              <span class="st-val">₹50.00</span>
+            </div>
+            <div class="stake-col">
+              <span class="st-lbl">Prize Pool</span>
+              <span class="st-val text-green">₹95.00</span>
+            </div>
+            <div class="stake-col">
+              <span class="st-lbl">Game Mode</span>
+              <span class="st-val">Ludo Classic</span>
+            </div>
+          </div>
+
+          <div class="card-actions-area">
+            <button class="btn-card-action primary" onclick="window.location.href='match-room.html'">
+              🎮 GO TO MATCH ROOM ›
+            </button>
+            <button class="btn-card-action green" onclick="window.location.href='match-result.html'">
+              🏆 SUBMIT RESULT
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2: WON MATCH -->
+        <div class="battle-card-row won-card" data-category="won">
+          <div class="card-top-bar">
+            <div class="mode-tag won">🏆 VICTORY</div>
+            <span class="battle-date-text">Today, 02:45 PM • #BTL-9180</span>
+          </div>
+
+          <div class="card-versus-area">
+            <div class="player-col">
+              <img src="assets/avatar_rajendra.png" alt="You" class="p-avatar you">
+              <span class="p-name">Rajendra</span>
+            </div>
+            <div class="vs-badge-small">VS</div>
+            <div class="player-col">
+              <img src="assets/avatar_amit.png" alt="Amit" class="p-avatar">
+              <span class="p-name">Amit Verma</span>
+            </div>
+          </div>
+
+          <div class="card-stakes-row">
+            <div class="stake-col">
+              <span class="st-lbl">Entry Fee</span>
+              <span class="st-val">₹100.00</span>
+            </div>
+            <div class="stake-col">
+              <span class="st-lbl">Amount Won</span>
+              <span class="st-val text-green">+₹190.00</span>
+            </div>
+            <div class="stake-col">
+              <span class="st-lbl">Game</span>
+              <span class="st-val">Ludo Quick</span>
+            </div>
+          </div>
+
+          <div class="card-actions-area">
+            <button class="btn-card-action outline" onclick="showToast('Result Verified by Admin & AI Proof', '✅')">
+              ✅ Result Verified &amp; Credited
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 3: LOST MATCH -->
+        <div class="battle-card-row lost-card" data-category="lost">
+          <div class="card-top-bar">
+            <div class="mode-tag lost">❌ DEFEAT</div>
+            <span class="battle-date-text">Yesterday, 06:10 PM • #BTL-9022</span>
+          </div>
+
+          <div class="card-versus-area">
+            <div class="player-col">
+              <img src="assets/avatar_rajendra.png" alt="You" class="p-avatar you">
+              <span class="p-name">Rajendra</span>
+            </div>
+            <div class="vs-badge-small">VS</div>
+            <div class="player-col">
+              <img src="assets/avatar_samir.png" alt="Samir" class="p-avatar">
+              <span class="p-name">Samir Sheikh</span>
+            </div>
+          </div>
+
+          <div class="card-stakes-row">
+            <div class="stake-col">
+              <span class="st-lbl">Entry Fee</span>
+              <span class="st-val">₹20.00</span>
+            </div>
+            <div class="stake-col">
+              <span class="st-lbl">Result</span>
+              <span class="st-val text-red">-₹20.00</span>
+            </div>
+            <div class="stake-col">
+              <span class="st-lbl">Game</span>
+              <span class="st-val">Snakes &amp; Ladders</span>
+            </div>
+          </div>
+
+          <div class="card-actions-area">
+            <button class="btn-card-action rematch" onclick="window.location.href='snake-ladders.html'">
+              ⚔️ Play Rematch
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 4: WON MATCH -->
+        <div class="battle-card-row won-card" data-category="won">
+          <div class="card-top-bar">
+            <div class="mode-tag won">🏆 VICTORY</div>
+            <span class="battle-date-text">21 Aug, 09:30 PM • #BTL-8942</span>
+          </div>
+
+          <div class="card-versus-area">
+            <div class="player-col">
+              <img src="assets/avatar_rajendra.png" alt="You" class="p-avatar you">
+              <span class="p-name">Rajendra</span>
+            </div>
+            <div class="vs-badge-small">VS</div>
+            <div class="player-col">
+              <img src="assets/avatar_neha.png" alt="Neha" class="p-avatar">
+              <span class="p-name">Neha Sharma</span>
+            </div>
+          </div>
+
+          <div class="card-stakes-row">
+            <div class="stake-col">
+              <span class="st-lbl">Entry Fee</span>
+              <span class="st-val">₹250.00</span>
+            </div>
+            <div class="stake-col">
+              <span class="st-lbl">Amount Won</span>
+              <span class="st-val text-green">+₹475.00</span>
+            </div>
+            <div class="stake-col">
+              <span class="st-lbl">Game</span>
+              <span class="st-val">Ludo Classic</span>
+            </div>
+          </div>
+
+          <div class="card-actions-area">
+            <button class="btn-card-action outline" onclick="showToast('Result Verified & Added to Winnings Wallet', '✅')">
+              ✅ Result Verified &amp; Credited
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav">
+        <button class="nav-tab" onclick="window.location.href='index.html'">
+          <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-tab active" onclick="window.location.href='my-battles.html'">
+          <img class="nav-icon-svg" src="assets/chip.svg" alt="Battles">
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ranking.html'">
+          <img class="nav-icon-svg" src="assets/ranking.svg" alt="Leaderboard">
+          <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='wallet.html'">
+          <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+          <span class="nav-label">Wallet</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='profile.html'">
+          <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="app-toast" id="app-toast">
+    <span class="toast-icon" id="toast-icon">⚡</span>
+    <span class="toast-msg" id="toast-msg">Notification</span>
+  </div>
+
+  <script>
+    function filterBattles(category, btn) {
+      document.querySelectorAll('.battles-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.battle-card-row');
+      cards.forEach(card => {
+        if (category === 'all') {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = card.getAttribute('data-category') === category ? 'flex' : 'none';
+        }
+      });
+    }
+
+    function showToast(msg, icon = '⚡') {
+      const toast = document.getElementById('app-toast');
+      const msgEl = document.getElementById('toast-msg');
+      const iconEl = document.getElementById('toast-icon');
+      if (!toast || !msgEl) return;
+      msgEl.innerText = msg;
+      if (iconEl) iconEl.innerText = icon;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+  </script>
+</body>
+</html>

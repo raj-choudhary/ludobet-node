@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Notifications | Ludo Tournament King</title>
+  <meta name="description" content="View your match results, wallet credits, bonuses, and system updates.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="notifications.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 1. TOP HEADER (Menu + Resource Pill) -->
+    <header class="top-header">
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <div class="resource-pill">
+        <a href="wallet.html" class="res-item" style="text-decoration:none;" aria-label="Wallet Balance">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">₹1,250</span>
+            <span class="res-label">Cash</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
+
+        <div class="res-item" aria-label="Gems">
+          <img class="res-icon" src="assets/diamond.svg" alt="Gems">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">20</span>
+            <span class="res-label">Gems</span>
+          </div>
+        </div>
+
+        <button class="bell-item" onclick="window.location.href='notifications.html'" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Header Bar -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Go Back">←</button>
+      <div class="page-title-group">
+        <h1 class="notif-page-title">
+          <span class="title-orange">NOTI</span><span class="title-blue">FICATIONS</span>
+        </h1>
+        <span class="page-subtitle">3 Unread Alerts &amp; Updates</span>
+      </div>
+      <button class="btn-clear-all" onclick="markAllRead()">
+        Mark Read
+      </button>
+    </div>
+
+    <!-- MAIN NOTIFICATIONS LIST -->
+    <main class="notif-body">
+
+      <!-- Filter Tabs -->
+      <div class="notif-tabs-bar">
+        <button class="notif-tab active" onclick="filterNotifs('all', this)">ALL (4)</button>
+        <button class="notif-tab" onclick="filterNotifs('battle', this)">🏆 BATTLES</button>
+        <button class="notif-tab" onclick="filterNotifs('wallet', this)">💰 WALLET</button>
+        <button class="notif-tab" onclick="filterNotifs('system', this)">📢 SYSTEM</button>
+      </div>
+
+      <div class="notifs-container">
+
+        <!-- Notification 1 (Battle Won) -->
+        <div class="notif-card unread" data-category="battle">
+          <div class="notif-icon-circle green">🏆</div>
+          <div class="notif-content">
+            <div class="notif-header-row">
+              <span class="notif-title">Victory! +₹95.00 Credited</span>
+              <span class="notif-time">2 mins ago</span>
+            </div>
+            <p class="notif-msg">Your match against Rahul Kumar (#BTL-9284) has been verified. ₹95.00 added to your Winnings Wallet!</p>
+            <div class="notif-action-row">
+              <button class="btn-notif-action" onclick="window.location.href='wallet.html'">View in Wallet ›</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification 2 (Deposit Success) -->
+        <div class="notif-card unread" data-category="wallet">
+          <div class="notif-icon-circle blue">💰</div>
+          <div class="notif-content">
+            <div class="notif-header-row">
+              <span class="notif-title">Deposit Successful! +₹500.00</span>
+              <span class="notif-time">1 hour ago</span>
+            </div>
+            <p class="notif-msg">₹500.00 added via UPI (Ref: TXN-894182). Ready to join high roller battles!</p>
+            <div class="notif-action-row">
+              <button class="btn-notif-action" onclick="window.location.href='ludo-classic.html'">Join Battles ›</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification 3 (KYC Approved) -->
+        <div class="notif-card unread" data-category="system">
+          <div class="notif-icon-circle emerald">🆔</div>
+          <div class="notif-content">
+            <div class="notif-header-row">
+              <span class="notif-title">KYC Verification Approved!</span>
+              <span class="notif-time">Yesterday</span>
+            </div>
+            <p class="notif-msg">Your Aadhaar &amp; PAN card documents have been verified. Unlimited instant withdrawals unlocked!</p>
+            <div class="notif-action-row">
+              <button class="btn-notif-action" onclick="window.location.href='withdraw.html'">Withdraw Cash ›</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification 4 (Referral Bonus) -->
+        <div class="notif-card read" data-category="wallet">
+          <div class="notif-icon-circle purple">🎁</div>
+          <div class="notif-content">
+            <div class="notif-header-row">
+              <span class="notif-title">Referral Reward: +₹100.00</span>
+              <span class="notif-time">2 days ago</span>
+            </div>
+            <p class="notif-msg">Your friend Amit joined using code LD84721. You earned ₹100 + 5% lifetime commission.</p>
+            <div class="notif-action-row">
+              <button class="btn-notif-action" onclick="window.location.href='refer-earn.html'">Refer More Friends ›</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav">
+        <button class="nav-tab" onclick="window.location.href='index.html'">
+          <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ludo-classic.html'">
+          <img class="nav-icon-svg" src="assets/chip.svg" alt="Battles">
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ranking.html'">
+          <img class="nav-icon-svg" src="assets/ranking.svg" alt="Leaderboard">
+          <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='wallet.html'">
+          <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+          <span class="nav-label">Wallet</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='profile.html'">
+          <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="app-toast" id="app-toast">
+    <span class="toast-icon" id="toast-icon">⚡</span>
+    <span class="toast-msg" id="toast-msg">Notification</span>
+  </div>
+
+  <script>
+    function filterNotifs(category, btn) {
+      document.querySelectorAll('.notif-tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.notif-card');
+      cards.forEach(card => {
+        if (category === 'all') {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = card.getAttribute('data-category') === category ? 'flex' : 'none';
+        }
+      });
+    }
+
+    function markAllRead() {
+      document.querySelectorAll('.notif-card.unread').forEach(c => c.classList.remove('unread'));
+      const badge = document.querySelector('.bell-badge');
+      if (badge) badge.style.display = 'none';
+      showToast('All notifications marked as read', '✅');
+    }
+
+    function showToast(msg, icon = '⚡') {
+      const toast = document.getElementById('app-toast');
+      const msgEl = document.getElementById('toast-msg');
+      const iconEl = document.getElementById('toast-icon');
+      if (!toast || !msgEl) return;
+      msgEl.innerText = msg;
+      if (iconEl) iconEl.innerText = icon;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+  </script>
+</body>
+</html>

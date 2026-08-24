@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Match Room #BTL-9284 | Ludo Tournament King</title>
+  <meta name="description" content="Live tournament battle room with Room Code, opponent status, countdown timer, and result submission.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="match-room.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 1. TOP HEADER (Menu + Resource Pill) -->
+    <header class="top-header">
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <div class="resource-pill">
+        <a href="wallet.html" class="res-item" style="text-decoration:none;" aria-label="Wallet Balance">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">₹1,250</span>
+            <span class="res-label">Cash</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
+
+        <div class="res-item" aria-label="Gems">
+          <img class="res-icon" src="assets/diamond.svg" alt="Gems">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">20</span>
+            <span class="res-label">Gems</span>
+          </div>
+        </div>
+
+        <button class="bell-item" onclick="window.location.href='notifications.html'" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Header Bar (Proper Gap & Back Navigation) -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='ludo-classic.html'" aria-label="Go Back">←</button>
+      <div class="page-title-group">
+        <h1 class="match-room-title">
+          <span class="title-blue">MATCH</span> <span class="title-orange">ROOM</span>
+        </h1>
+        <span class="page-subtitle">Battle ID: #BTL-9284 • 1v1 Classic</span>
+      </div>
+      <div class="match-live-badge">
+        <span class="live-dot"></span> LIVE
+      </div>
+    </div>
+
+    <!-- MAIN SCROLLABLE CONTENT -->
+    <main class="match-room-body">
+
+      <!-- 1. VERSUS PLAYER SHOWCASE CARD -->
+      <section class="versus-card">
+        <!-- Player 1 (You) -->
+        <div class="player-box you">
+          <div class="player-avatar-wrap you">
+            <img src="assets/avatar_rajendra.png" alt="You" class="player-avatar">
+            <span class="player-tag you">YOU</span>
+          </div>
+          <span class="player-name">Rajendra</span>
+          <span class="player-id">LD10458</span>
+          <span class="player-status ready">READY ✅</span>
+        </div>
+
+        <!-- VS Center Emblem -->
+        <div class="vs-emblem-wrap">
+          <div class="vs-circle">
+            <span class="vs-text">VS</span>
+          </div>
+          <div class="vs-glow-ring"></div>
+        </div>
+
+        <!-- Player 2 (Opponent) -->
+        <div class="player-box opp">
+          <div class="player-avatar-wrap opp">
+            <img src="assets/avatar_rahul.png" alt="Rahul" class="player-avatar">
+            <span class="player-tag opp">OPPONENT</span>
+          </div>
+          <span class="player-name">Rahul Kumar</span>
+          <span class="player-id">LD88921</span>
+          <span class="player-status in-room">JOINED 🟢</span>
+        </div>
+      </section>
+
+      <!-- 2. BATTLE STAKES STRIP -->
+      <div class="battle-stakes-strip">
+        <div class="stake-item">
+          <span class="stake-label">ENTRY FEE</span>
+          <span class="stake-val entry">₹50.00</span>
+        </div>
+        <div class="stake-divider"></div>
+        <div class="stake-item">
+          <span class="stake-label">WINNING PRIZE</span>
+          <span class="stake-val prize">🏆 ₹95.00</span>
+        </div>
+        <div class="stake-divider"></div>
+        <div class="stake-item">
+          <span class="stake-label">GAME MODE</span>
+          <span class="stake-val mode">Ludo Classic</span>
+        </div>
+      </div>
+
+      <!-- 3. LUDO KING ROOM CODE CARD (THE CORE HUB) -->
+      <section class="room-code-hero-card">
+        <div class="room-code-header">
+          <div class="header-left">
+            <span class="code-badge-label">🔑 LUDO KING ROOM CODE</span>
+            <span class="code-sub-label">Share or join in Ludo King App</span>
+          </div>
+          <button class="btn-refresh-code" onclick="refreshRoomCode()" title="Generate New Code">🔄</button>
+        </div>
+
+        <!-- Digital Code Box -->
+        <div class="digital-code-display" onclick="copyRoomCode()">
+          <span class="code-digits" id="room-code-digits">0849 1928</span>
+          <button class="btn-copy-mini" id="btn-copy-mini" aria-label="Copy Code">
+            <span id="copy-text">COPY</span> 📋
+          </button>
+        </div>
+
+        <!-- Fast Launcher Actions -->
+        <div class="code-action-buttons">
+          <button class="btn-action-primary copy" onclick="copyRoomCode()">
+            <span>📋 COPY ROOM CODE</span>
+          </button>
+          <button class="btn-action-primary open-app" onclick="openLudoKingApp()">
+            <span>🎮 OPEN LUDO KING</span>
+          </button>
+        </div>
+
+        <div class="code-instruction-strip">
+          <span>💡 Paste this Room Code in <strong>Ludo King › Play with Friends › Join Room</strong></span>
+        </div>
+      </section>
+
+      <!-- 4. LIVE COUNTDOWN TIMER CARD -->
+      <section class="timer-card">
+        <div class="timer-row">
+          <div class="timer-icon-wrap">⏱️</div>
+          <div class="timer-meta">
+            <span class="timer-title">Match Auto-Cancellation Window</span>
+            <span class="timer-sub">Opponent must start battle before timer ends</span>
+          </div>
+          <div class="timer-countdown" id="match-countdown">04:45</div>
+        </div>
+        <div class="timer-progress-bar">
+          <div class="timer-progress-fill" id="timer-progress-fill" style="width: 82%;"></div>
+        </div>
+      </section>
+
+      <!-- 5. HOW TO PLAY & FAIRPLAY RULES ACCORDION -->
+      <section class="rules-card">
+        <div class="rules-header" onclick="toggleRulesAccordion()">
+          <div class="rules-title-row">
+            <span class="rules-icon">🛡️</span>
+            <span class="rules-heading">Match Fairplay Rules &amp; Guidelines</span>
+          </div>
+          <span class="rules-toggle-arrow" id="rules-toggle-arrow">▼</span>
+        </div>
+        <div class="rules-body" id="rules-body">
+          <ul class="rules-list">
+            <li><strong>1. Record / Screenshot:</strong> Must take a screenshot of the victory/loss screen at the end of the match in Ludo King.</li>
+            <li><strong>2. Valid Room Code:</strong> Host must create a classic match in Ludo King and share the exact code.</li>
+            <li><strong>3. 15-Minute Deadline:</strong> Both players must submit results within 15 minutes of match completion.</li>
+            <li><strong>4. Fake Result Penalty:</strong> Submitting fake winning screenshots will lead to <strong>permanent ban + ₹100 penalty</strong>.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 6. MATCH RESULT & DISPUTE ACTION BUTTONS -->
+      <section class="match-bottom-actions">
+        <button class="btn-main-action submit-result" onclick="window.location.href='match-result.html'">
+          <span class="btn-text-large">🏆 SUBMIT MATCH RESULT</span>
+          <span class="btn-subtext">Click here after match finishes</span>
+        </button>
+
+        <div class="secondary-actions-row">
+          <button class="btn-secondary cancel" onclick="openCancelModal()">
+            <span>⚠️ Cancel Battle / Issue</span>
+          </button>
+          <button class="btn-secondary help" onclick="window.location.href='profile.html'">
+            <span>🎧 24x7 Help</span>
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav">
+        <button class="nav-tab" onclick="window.location.href='index.html'">
+          <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-tab active" onclick="window.location.href='ludo-classic.html'">
+          <img class="nav-icon-svg" src="assets/chip.svg" alt="Battles">
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ranking.html'">
+          <img class="nav-icon-svg" src="assets/ranking.svg" alt="Leaderboard">
+          <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='wallet.html'">
+          <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+          <span class="nav-label">Wallet</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='profile.html'">
+          <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- CANCEL BATTLE CONFIRMATION MODAL -->
+  <div class="modal-backdrop" id="cancel-modal" onclick="closeCancelModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title">⚠️ CANCEL MATCH</span>
+        <button class="modal-close-btn" onclick="closeCancelModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">Are you sure you want to cancel this battle? If opponent has already joined, admin verification may be required.</p>
+        <div class="cancel-reasons-list">
+          <label class="reason-option">
+            <input type="radio" name="cancel-reason" value="Opponent Not Joining" checked>
+            <span>Opponent is not joining / unresponsive</span>
+          </label>
+          <label class="reason-option">
+            <input type="radio" name="cancel-reason" value="Wrong Room Code">
+            <span>Invalid or expired room code</span>
+          </label>
+          <label class="reason-option">
+            <input type="radio" name="cancel-reason" value="Game App Error">
+            <span>Ludo King app crashed / Network issue</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn outline" onclick="closeCancelModal()">Back to Match</button>
+        <button class="modal-btn danger" onclick="confirmCancelBattle()">Confirm Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Toast Notification -->
+  <div class="app-toast" id="app-toast">
+    <span class="toast-icon" id="toast-icon">⚡</span>
+    <span class="toast-msg" id="toast-msg">Notification</span>
+  </div>
+
+  <script src="match-room.js"></script>
+</body>
+</html>

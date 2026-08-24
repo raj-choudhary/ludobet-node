@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Settings | Ludo Tournament King</title>
+  <meta name="description" content="Audio, vibration, notifications, and language settings for Ludo Tournament King.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 1. TOP HEADER (Menu + Resource Pill) -->
+    <header class="top-header">
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <div class="resource-pill">
+        <a href="wallet.html" class="res-item" style="text-decoration:none;" aria-label="Wallet Balance">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">₹1,250</span>
+            <span class="res-label">Cash</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
+
+        <div class="res-item" aria-label="Gems">
+          <img class="res-icon" src="assets/diamond.svg" alt="Gems">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">20</span>
+            <span class="res-label">Gems</span>
+          </div>
+        </div>
+
+        <button class="bell-item" onclick="window.location.href='notifications.html'" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Header Bar -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Go Back">←</button>
+      <div class="page-title-group">
+        <h1 class="settings-page-title">
+          <span class="title-purple">APP</span> <span class="title-blue">SETTINGS</span>
+        </h1>
+        <span class="page-subtitle">Audio, Notifications &amp; Preferences</span>
+      </div>
+      <div class="version-tag">
+        v2.4.0
+      </div>
+    </div>
+
+    <!-- MAIN BODY -->
+    <main class="settings-body">
+
+      <!-- SECTION 1: AUDIO & SOUND -->
+      <section class="settings-group-card">
+        <span class="group-header-label">🔊 AUDIO &amp; HAPTICS</span>
+        
+        <div class="setting-row">
+          <div class="setting-left">
+            <span class="setting-icon">🎵</span>
+            <div class="setting-texts">
+              <span class="setting-title">Sound Effects</span>
+              <span class="setting-sub">Dice roll, victory sound &amp; clicks</span>
+            </div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked onchange="showToast('Sound Effects ' + (this.checked ? 'Enabled' : 'Muted'), '🔊')">
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-left">
+            <span class="setting-icon">📳</span>
+            <div class="setting-texts">
+              <span class="setting-title">Vibration &amp; Haptics</span>
+              <span class="setting-sub">Haptic feedback on dice roll and turns</span>
+            </div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked onchange="showToast('Vibration ' + (this.checked ? 'Enabled' : 'Disabled'), '📳')">
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- SECTION 2: NOTIFICATIONS -->
+      <section class="settings-group-card">
+        <span class="group-header-label">🔔 NOTIFICATION ALERTS</span>
+        
+        <div class="setting-row">
+          <div class="setting-left">
+            <span class="setting-icon">⚔️</span>
+            <div class="setting-texts">
+              <span class="setting-title">Battle Match Invites</span>
+              <span class="setting-sub">Alert when opponent accepts battle</span>
+            </div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+
+        <div class="setting-row">
+          <div class="setting-left">
+            <span class="setting-icon">💰</span>
+            <div class="setting-texts">
+              <span class="setting-title">Wallet &amp; Cash Credits</span>
+              <span class="setting-sub">Instant alerts for prize payouts</span>
+            </div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- SECTION 3: LANGUAGE -->
+      <section class="settings-group-card">
+        <span class="group-header-label">🌐 APP LANGUAGE</span>
+        
+        <div class="language-options-grid">
+          <button class="lang-option-btn active" onclick="selectLang(this)">
+            <span>🇬🇧 English</span>
+            <span class="check-mark">✓</span>
+          </button>
+          <button class="lang-option-btn" onclick="selectLang(this)">
+            <span>🇮🇳 हिन्दी (Hindi)</span>
+            <span class="check-mark"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- SECTION 4: DANGER ZONE -->
+      <section class="settings-group-card danger">
+        <span class="group-header-label danger">🚪 ACCOUNT MANAGEMENT</span>
+        
+        <div class="setting-row clickable" onclick="openLogoutModal()">
+          <div class="setting-left">
+            <span class="setting-icon">🚪</span>
+            <div class="setting-texts">
+              <span class="setting-title text-red">Log Out Account</span>
+              <span class="setting-sub">Securely exit on this device</span>
+            </div>
+          </div>
+          <span class="arrow-right">›</span>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav">
+        <button class="nav-tab" onclick="window.location.href='index.html'">
+          <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ludo-classic.html'">
+          <img class="nav-icon-svg" src="assets/chip.svg" alt="Battles">
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ranking.html'">
+          <img class="nav-icon-svg" src="assets/ranking.svg" alt="Leaderboard">
+          <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='wallet.html'">
+          <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+          <span class="nav-label">Wallet</span>
+        </button>
+        <button class="nav-tab active" onclick="window.location.href='profile.html'">
+          <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- Logout Confirmation Modal -->
+  <div class="modal-backdrop" id="logout-modal" onclick="closeLogoutModal()">
+    <div class="modal-card" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <span class="modal-title">🚪 LOGOUT CONFIRMATION</span>
+        <button class="modal-close-btn" onclick="closeLogoutModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-text">Are you sure you want to log out of <strong>Rajendra (LD10458)</strong>? Your wallet balance will remain 100% secure.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="modal-btn outline" onclick="closeLogoutModal()">Cancel</button>
+        <button class="modal-btn danger" onclick="confirmLogout()">Log Out</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="app-toast" id="app-toast">
+    <span class="toast-icon" id="toast-icon">⚡</span>
+    <span class="toast-msg" id="toast-msg">Notification</span>
+  </div>
+
+  <script>
+    function selectLang(btn) {
+      document.querySelectorAll('.lang-option-btn').forEach(b => {
+        b.classList.remove('active');
+        b.querySelector('.check-mark').innerText = '';
+      });
+      btn.classList.add('active');
+      btn.querySelector('.check-mark').innerText = '✓';
+      showToast('Language preference saved', '🌐');
+    }
+
+    function openLogoutModal() {
+      document.getElementById('logout-modal').classList.add('show');
+    }
+
+    function closeLogoutModal() {
+      document.getElementById('logout-modal').classList.remove('show');
+    }
+
+    function confirmLogout() {
+      closeLogoutModal();
+      showToast('Logged out securely', '🚪');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1000);
+    }
+
+    function showToast(msg, icon = '⚡') {
+      const toast = document.getElementById('app-toast');
+      const msgEl = document.getElementById('toast-msg');
+      const iconEl = document.getElementById('toast-icon');
+      if (!toast || !msgEl) return;
+      msgEl.innerText = msg;
+      if (iconEl) iconEl.innerText = icon;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+  </script>
+</body>
+</html>

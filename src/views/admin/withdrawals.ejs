@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player Management — Ludo Bet Admin</title>
-  <meta name="description" content="Manage and inspect all players on Ludo Bet platform.">
+  <title>Withdrawals &amp; Payouts — Ludo Bet Admin</title>
+  <meta name="description" content="Withdrawal Payout Requests &amp; TDS Desk">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -27,12 +27,12 @@
 
       <!-- 2. Players Dropdown -->
       <div class="nav-dropdown-group">
-        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
           <div class="nav-left-group"><span class="nav-item-icon">👥</span><span>Players</span></div>
           <span class="nav-dropdown-arrow">▼</span>
         </a>
-        <div class="sidebar-submenu open">
-          <a class="submenu-item-btn active" href="players.html">All Players (1,24,580)</a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="players.html">All Players (1,24,580)</a>
           <a class="submenu-item-btn" href="players-banned.html">🚫 Banned Accounts (152)</a>
           <a class="submenu-item-btn" href="player-view.html?id=LD10458">👤 Player Profile View</a>
         </div>
@@ -40,14 +40,14 @@
 
       <!-- 3. Finance Dropdown -->
       <div class="nav-dropdown-group">
-        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
           <div class="nav-left-group"><span class="nav-item-icon">💰</span><span>Finance</span></div>
           <span class="nav-dropdown-arrow">▼</span>
         </a>
-        <div class="sidebar-submenu">
+        <div class="sidebar-submenu open">
           <a class="submenu-item-btn" href="finance.html">Overview</a>
           <a class="submenu-item-btn" href="finance-deposits.html">Deposits (₹24,45,230)</a>
-          <a class="submenu-item-btn" href="finance-withdrawals.html">Withdrawals (₹17,82,120)</a>
+          <a class="submenu-item-btn active" href="finance-withdrawals.html">Withdrawals (₹17,82,120)</a>
           <a class="submenu-item-btn" href="finance-adjustments.html">Manual Adjustments</a>
           <a class="submenu-item-btn" href="finance-ledger.html">Double-Entry Ledger</a>
         </div>
@@ -180,7 +180,7 @@
     <header class="admin-top-header">
       <div class="header-left-group">
         <button class="btn-sidebar-toggle" onclick="document.getElementById('admin-sidebar').classList.toggle('open')">☰</button>
-        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">Player Management</h2>
+        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">Withdrawals &amp; Payouts Desk</h2>
       </div>
 
       <div class="header-right-group">
@@ -197,110 +197,65 @@
     </header>
 
     <main class="admin-body-container">
+      
+      <!-- Payout Summary Strip -->
+      <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:14px;">
+        <div class="kpi-stat-card">
+          <span class="kpi-label-text">TOTAL PAID (TODAY)</span>
+          <div class="kpi-amount-val" style="color:#10b981;">₹17,82,120</div>
+          <span style="font-size:10px; color:#10b981;">● 1,120 Payouts Processed</span>
+        </div>
+        <div class="kpi-stat-card">
+          <span class="kpi-label-text">PENDING PAYOUT QUEUE</span>
+          <div class="kpi-amount-val" style="color:#f59e0b;">2 Requests</div>
+          <span style="font-size:10px; color:#f59e0b;">₹1,500 Total Amount</span>
+        </div>
+        <div class="kpi-stat-card">
+          <span class="kpi-label-text">TDS DEDUCTED (30%)</span>
+          <div class="kpi-amount-val" style="color:#6366f1;">₹5,34,636</div>
+          <span style="font-size:10px; color:#64748b;">Govt Compliance Tax</span>
+        </div>
+        <div class="kpi-stat-card">
+          <span class="kpi-label-text">AVERAGE PAYOUT SPEED</span>
+          <div class="kpi-amount-val" style="color:#0288d1;">4.2 Mins</div>
+          <span style="font-size:10px; color:#0288d1;">Instant IMPS / UPI</span>
+        </div>
+      </div>
+
       <div class="admin-data-panel">
         <div class="data-panel-top-bar">
           <div>
-            <h1 class="page-title-main">Player Directory</h1>
-            <p class="page-title-sub">Search, inspect wallets, view game stats, and adjust account permissions.</p>
+            <h1 class="page-title-main">Withdrawal Requests Desk</h1>
+            <p class="page-title-sub">Maker-Checker Payout queue with automated 30% TDS calculation and UTR tracking.</p>
           </div>
-
-          <!-- Search, Sort & Filters -->
-          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-            <div class="data-search-input-box">
-              <span>🔍</span>
-              <input type="text" class="data-search-field" id="player-search-input" placeholder="Search by ID, Name, Phone...">
-            </div>
-
-            <!-- Sort Dropdown -->
-            <div style="display:flex; align-items:center; gap:6px;">
-              <span style="font-size:11px; font-weight:800; color:#64748b;">Sort:</span>
-              <select class="chart-filter-select" id="player-sort-select" onchange="setPlayerSort(this.value)" style="padding:6px 10px; border-radius:10px;">
-                <option value="newest">📅 Registration Date (Newest)</option>
-                <option value="oldest">📅 Registration Date (Oldest)</option>
-                <option value="balance_desc">💰 Total Balance (Highest)</option>
-                <option value="balance_asc">💰 Total Balance (Lowest)</option>
-                <option value="battles_desc">⚔️ Battles (Most Played)</option>
-                <option value="winrate_desc">🏆 Win Rate (Highest)</option>
-                <option value="name_asc">👤 Player Name (A-Z)</option>
-              </select>
-            </div>
-
-            <!-- Filter Chips -->
-            <div class="filter-chips-row" id="player-filter-chips">
-              <button class="filter-chip-btn active" id="chip-all" onclick="setPlayerFilter(this, 'all')">ALL (6)</button>
-              <button class="filter-chip-btn" id="chip-kyc" onclick="setPlayerFilter(this, 'approved')">KYC VERIFIED (3)</button>
-              <button class="filter-chip-btn" id="chip-pending" onclick="setPlayerFilter(this, 'pending')">KYC PENDING (1)</button>
-              <button class="filter-chip-btn" id="chip-banned" onclick="setPlayerFilter(this, 'banned')">BANNED (1)</button>
-            </div>
+          <div class="data-search-input-box">
+            <span>🔍</span>
+            <input type="text" class="data-search-field" placeholder="Search by Player, UPI, Request ID...">
           </div>
         </div>
 
-        <!-- Table with Clickable Sort Headers -->
         <div class="admin-table-frame">
           <table class="admin-data-table">
             <thead>
               <tr>
-                <th class="sort-col-header" onclick="toggleSortColumn('id')">Player ID <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('name')">Player Name &amp; Phone <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('joined')">Joined Date <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('kyc')">KYC Status <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('balance')">Total Balance <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('status')">Account Status <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('battles')">Battles (Win Rate) <span class="sort-indicator-arrow">▲▼</span></th>
-                <th>Actions</th>
+                <th>Request ID</th>
+                <th>Player ID &amp; Name</th>
+                <th>Requested</th>
+                <th>TDS (30%)</th>
+                <th>Net Payable</th>
+                <th>Payout Address</th>
+                <th>Status</th>
+                <th>Requested Time</th>
+                <th>Maker-Checker Actions</th>
               </tr>
             </thead>
-            <tbody id="players-table-body">
+            <tbody id="withdrawals-table-body">
               <!-- Dynamically populated via admin.js -->
             </tbody>
           </table>
         </div>
       </div>
     </main>
-  </div>
-
-  <!-- WALLET ADJUSTMENT MODAL -->
-  <div class="admin-audit-modal" id="modal-wallet-adjust">
-    <div class="audit-modal-box">
-      <h3 style="font-size:16px; font-weight:900; color:#0f172a;">Manual Wallet Adjustment</h3>
-      <p style="font-size:11.5px; color:#64748b;">Adjust player wallet. Every change is permanently logged.</p>
-
-      <div style="margin-top:12px; font-size:12px; font-weight:800; color:#6366f1;">
-        Target Player: <span id="adj-target-player">LD10458</span>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Action Type:</label>
-        <select id="adj-type-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
-          <option value="credit">➕ CREDIT (Add Funds)</option>
-          <option value="debit">➖ DEBIT (Deduct Funds)</option>
-        </select>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Target Wallet:</label>
-        <select id="adj-wallet-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
-          <option value="winnings">🏆 Winnings Cash</option>
-          <option value="deposit">💳 Deposit Cash</option>
-          <option value="bonus">🎁 Bonus Cash</option>
-        </select>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Amount (₹):</label>
-        <input type="number" id="adj-amount-input" value="100" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit; font-weight:800;">
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#ef4444;">Mandatory Admin Reason (Audit Log):</label>
-        <textarea class="audit-reason-textarea" id="adj-reason-input" placeholder="Enter reason (e.g. Tournament compensation, refund reversal...)"></textarea>
-      </div>
-
-      <div style="display:flex; gap:10px; margin-top:16px;">
-        <button class="btn-table-action" style="flex:1; padding:10px 0;" onclick="closeWalletAdjustModal()">CANCEL</button>
-        <button class="btn-table-action" style="flex:1; padding:10px 0; background:#6366f1; color:#fff;" onclick="submitWalletAdjustment()">CONFIRM &amp; LOG ➔</button>
-      </div>
-    </div>
   </div>
 
   <script src="admin.js"></script>

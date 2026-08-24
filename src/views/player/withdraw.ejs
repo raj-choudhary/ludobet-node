@@ -1,154 +1,303 @@
-<link rel="stylesheet" href="/css/classic-battle.css">
-<link rel="stylesheet" href="/css/withdraw.css">
-
-<!-- 2. SUB-HEADER WITH BACK BUTTON & TITLE -->
-<div class="sub-header-bar">
-  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
-    ←
-  </button>
-  <div class="page-title-group">
-    <div class="withdraw-page-title">
-      <span class="title-purple">INSTANT</span><span class="title-green">WITHDRAW</span>
-    </div>
-    <div class="page-subtitle">24x7 Direct Payouts to UPI &amp; Bank</div>
-  </div>
-  <div class="kyc-badge-pill">
-    ✅ KYC VERIFIED
-  </div>
-</div>
-
-<!-- MAIN WITHDRAWAL BODY -->
-<main class="withdraw-body">
-
-  <!-- 1. WINNINGS BALANCE HERO CARD -->
-  <section class="withdraw-hero-card">
-    <div class="hero-balance-left">
-      <span class="balance-tag">WITHDRAWABLE WINNINGS</span>
-      <span class="balance-amount-large">₹<%= parseFloat(wallet.winning_balance || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
-      <span class="balance-sub">0% TDS on net winnings under ₹10,000</span>
-    </div>
-    <div class="hero-icon-right">💸</div>
-  </section>
-
-  <!-- 2. WITHDRAWAL METHOD SELECTOR -->
-  <section class="method-selection-section">
-    <span class="section-label">SELECT TRANSFER DESTINATION:</span>
-    <div class="method-tabs-grid">
-      <button class="method-tab-btn active" id="tab-upi" onclick="switchWithdrawMethod('upi')">
-        <span class="method-icon">⚡</span>
-        <div class="method-texts">
-          <span class="method-title">UPI Instant</span>
-          <span class="method-sub">GPay, PhonePe, Paytm</span>
-        </div>
-        <span class="method-radio">✓</span>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Withdraw Cash | Ludo Tournament King</title>
+  <meta name="description" content="Instant 24x7 withdrawal of winning prize money to UPI ID and Bank Account.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="withdraw.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 1. TOP HEADER (Menu + Resource Pill) -->
+    <header class="top-header">
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
       </button>
 
-      <button class="method-tab-btn" id="tab-bank" onclick="switchWithdrawMethod('bank')">
-        <span class="method-icon">🏛️</span>
-        <div class="method-texts">
-          <span class="method-title">Bank Transfer</span>
-          <span class="method-sub">IMPS / NEFT Transfer</span>
-        </div>
-        <span class="method-radio"></span>
-      </button>
-    </div>
-  </section>
+      <div class="resource-pill">
+        <a href="wallet.html" class="res-item" style="text-decoration:none;" aria-label="Wallet Balance">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">₹1,250</span>
+            <span class="res-label">Cash</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
 
-  <!-- 3. INPUT FORM AREA -->
-  <section class="withdraw-form-card">
-    <!-- UPI Input Fields -->
-    <div class="form-block" id="form-upi-block">
-      <label class="form-lbl">ENTER YOUR UPI ID / VPA</label>
-      <div class="input-with-icon">
-        <span class="input-ico">🆔</span>
-        <input type="text" id="input-upi-id" class="text-input" placeholder="e.g. 9876543210@paytm or name@okaxis" value="player@upi">
-      </div>
-      <span class="input-helper">Money will be transferred to this UPI account instantly.</span>
-    </div>
-
-    <!-- Amount Input -->
-    <div class="form-block" style="margin-top: 10px;">
-      <div class="amount-header-row">
-        <label class="form-lbl">WITHDRAWAL AMOUNT</label>
-        <span class="amount-limits">Min: ₹100 • Max: ₹50,000</span>
-      </div>
-      <div class="input-with-icon">
-        <span class="input-ico currency">₹</span>
-        <input type="number" id="input-withdraw-amount" class="text-input amount" placeholder="Enter amount" value="100" min="100">
-      </div>
-
-      <!-- Quick Amount Chips -->
-      <div class="quick-chips-row">
-        <button class="quick-chip" onclick="setWithdrawAmount(100)">₹100</button>
-        <button class="quick-chip" onclick="setWithdrawAmount(500)">₹500</button>
-        <button class="quick-chip active" onclick="setWithdrawAmount(<%= parseFloat(wallet.winning_balance || 100) %>)">MAX</button>
-      </div>
-    </div>
-
-    <!-- Submit Button -->
-    <button class="btn-submit-withdraw" onclick="executeWithdrawAction()">
-      <span>🚀 TRANSFER TO ACCOUNT NOW</span>
-    </button>
-  </section>
-
-  <!-- 4. RECENT WITHDRAWALS HISTORY -->
-  <section class="recent-withdrawals-card">
-    <div class="card-header-row">
-      <span class="section-label">RECENT WITHDRAWAL PASSBOOK</span>
-    </div>
-
-    <div class="withdrawals-list">
-      <div class="w-item-row">
-        <div class="w-item-left">
-          <span class="w-icon-chip upi">⚡</span>
-          <div class="w-meta">
-            <span class="w-title">₹500.00 via UPI</span>
-            <span class="w-time">Today • Direct Payout</span>
+        <div class="res-item" aria-label="Gems">
+          <img class="res-icon" src="assets/diamond.svg" alt="Gems">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">20</span>
+            <span class="res-label">Gems</span>
           </div>
         </div>
-        <span class="w-status success">SUCCESS ✅</span>
+
+        <button class="bell-item" onclick="window.location.href='notifications.html'" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Header Bar -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='wallet.html'" aria-label="Go Back">←</button>
+      <div class="page-title-group">
+        <h1 class="withdraw-page-title">
+          <span class="title-green">WITHDRAW</span> <span class="title-blue">CASH</span>
+        </h1>
+        <span class="page-subtitle">Instant 24x7 Payouts via UPI &amp; IMPS</span>
+      </div>
+      <div class="kyc-badge-pill">
+        ✅ KYC VERIFIED
       </div>
     </div>
-  </section>
-</main>
 
-<script>
-  function setWithdrawAmount(amt) {
-    document.getElementById('input-withdraw-amount').value = amt;
-  }
+    <!-- MAIN WITHDRAWAL BODY -->
+    <main class="withdraw-body">
 
-  function switchWithdrawMethod(method) {
-    document.querySelectorAll('.method-tab-btn').forEach(b => b.classList.remove('active'));
-    if (method === 'upi') {
-      document.getElementById('tab-upi').classList.add('active');
-    } else {
-      document.getElementById('tab-bank').classList.add('active');
-    }
-  }
+      <!-- 1. WINNINGS BALANCE HERO CARD -->
+      <section class="withdraw-hero-card">
+        <div class="hero-balance-left">
+          <span class="balance-tag">WITHDRAWABLE WINNINGS</span>
+          <span class="balance-amount-large">₹980.00</span>
+          <span class="balance-sub">0% TDS on withdrawals under ₹10,000</span>
+        </div>
+        <div class="hero-icon-right">💸</div>
+      </section>
 
-  async function executeWithdrawAction() {
-    const amt = parseFloat(document.getElementById('input-withdraw-amount').value);
-    const upi = document.getElementById('input-upi-id').value;
+      <!-- 2. WITHDRAWAL METHOD SELECTOR -->
+      <section class="method-selection-section">
+        <span class="section-label">SELECT TRANSFER DESTINATION:</span>
+        <div class="method-tabs-grid">
+          <button class="method-tab-btn active" id="tab-upi" onclick="switchWithdrawMethod('upi')">
+            <span class="method-icon">⚡</span>
+            <div class="method-texts">
+              <span class="method-title">UPI Instant</span>
+              <span class="method-sub">GPay, PhonePe, Paytm</span>
+            </div>
+            <span class="method-radio">✓</span>
+          </button>
 
-    if (!amt || amt < 100) return alert('Minimum withdrawal is ₹100.00');
-    if (!upi) return alert('Please enter a valid UPI ID');
+          <button class="method-tab-btn" id="tab-bank" onclick="switchWithdrawMethod('bank')">
+            <span class="method-icon">🏛️</span>
+            <div class="method-texts">
+              <span class="method-title">Bank Transfer</span>
+              <span class="method-sub">IMPS / NEFT Transfer</span>
+            </div>
+            <span class="method-radio"></span>
+          </button>
+        </div>
+      </section>
 
-    try {
-      const res = await fetch('/api/wallet/withdraw', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 1, amount: amt, upiId: upi })
+      <!-- 3. INPUT FORM AREA -->
+      <section class="withdraw-form-card">
+        
+        <!-- UPI Input Fields -->
+        <div class="form-block" id="form-upi-block">
+          <label class="form-lbl">ENTER YOUR UPI ID / VPA</label>
+          <div class="input-with-icon">
+            <span class="input-ico">🆔</span>
+            <input type="text" id="input-upi-id" class="text-input" placeholder="e.g. 9876543210@paytm or name@okaxis" value="rajendra@okaxis">
+          </div>
+          <span class="input-helper">Money will be transferred to this UPI account instantly.</span>
+        </div>
+
+        <!-- Bank Input Fields (Hidden by default) -->
+        <div class="form-block" id="form-bank-block" style="display:none;">
+          <label class="form-lbl">ACCOUNT NUMBER</label>
+          <div class="input-with-icon">
+            <span class="input-ico">🔢</span>
+            <input type="text" class="text-input" placeholder="Enter bank account number" value="389201948210">
+          </div>
+
+          <label class="form-lbl" style="margin-top:8px;">IFSC CODE</label>
+          <div class="input-with-icon">
+            <span class="input-ico">🏛️</span>
+            <input type="text" class="text-input" placeholder="e.g. SBIN0001234" value="SBIN0004921">
+          </div>
+
+          <label class="form-lbl" style="margin-top:8px;">ACCOUNT HOLDER NAME</label>
+          <div class="input-with-icon">
+            <span class="input-ico">👤</span>
+            <input type="text" class="text-input" placeholder="Full name on bank account" value="Rajendra Kumar">
+          </div>
+        </div>
+
+        <!-- Amount Input -->
+        <div class="form-block" style="margin-top: 10px;">
+          <div class="amount-header-row">
+            <label class="form-lbl">WITHDRAWAL AMOUNT</label>
+            <span class="amount-limits">Min: ₹100 • Max: ₹50,000</span>
+          </div>
+          <div class="input-with-icon">
+            <span class="input-ico currency">₹</span>
+            <input type="number" id="input-withdraw-amount" class="text-input amount" placeholder="Enter amount" value="500">
+          </div>
+
+          <!-- Quick Amount Chips -->
+          <div class="quick-chips-row">
+            <button class="quick-chip" onclick="setAmount(100)">₹100</button>
+            <button class="quick-chip active" onclick="setAmount(500)">₹500</button>
+            <button class="quick-chip" onclick="setAmount(980)">MAX (₹980)</button>
+          </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button class="btn-submit-withdraw" onclick="processWithdrawal()">
+          <span>🚀 TRANSFER TO ACCOUNT NOW</span>
+        </button>
+      </section>
+
+      <!-- 4. RECENT WITHDRAWALS HISTORY -->
+      <section class="recent-withdrawals-card">
+        <div class="card-header-row">
+          <span class="section-label">RECENT WITHDRAWAL PASSBOOK</span>
+          <span class="header-link" onclick="window.location.href='transactions.html'">VIEW ALL</span>
+        </div>
+
+        <div class="withdrawals-list">
+          <div class="w-item-row">
+            <div class="w-item-left">
+              <span class="w-icon-chip upi">⚡</span>
+              <div class="w-meta">
+                <span class="w-title">₹500.00 via UPI (rajendra@okaxis)</span>
+                <span class="w-time">Today, 11:20 AM • #WDR-4982</span>
+              </div>
+            </div>
+            <span class="w-status success">SUCCESS ✅</span>
+          </div>
+
+          <div class="w-item-row">
+            <div class="w-item-left">
+              <span class="w-icon-chip bank">🏛️</span>
+              <div class="w-meta">
+                <span class="w-title">₹200.00 via Bank (SBI ...8210)</span>
+                <span class="w-time">20 Aug, 04:45 PM • #WDR-4811</span>
+              </div>
+            </div>
+            <span class="w-status success">SUCCESS ✅</span>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav">
+        <button class="nav-tab" onclick="window.location.href='index.html'">
+          <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ludo-classic.html'">
+          <img class="nav-icon-svg" src="assets/chip.svg" alt="Battles">
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ranking.html'">
+          <img class="nav-icon-svg" src="assets/ranking.svg" alt="Leaderboard">
+          <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-tab active" onclick="window.location.href='wallet.html'">
+          <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+          <span class="nav-label">Wallet</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='profile.html'">
+          <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- SUCCESS CONFIRMATION MODAL -->
+  <div class="modal-backdrop" id="withdraw-success-modal">
+    <div class="modal-card victory-card" onclick="event.stopPropagation()">
+      <div class="victory-trophy-wrap">
+        <div style="font-size: 52px;">💸</div>
+      </div>
+      <h2 class="victory-title" style="color: #16a34a;">WITHDRAWAL SUCCESSFUL!</h2>
+      <p class="victory-sub" id="w-success-sub">₹500.00 has been transferred to your account instantly.</p>
+      
+      <div class="victory-prize-box">
+        <span class="prize-tag-label">TRANSACTION ID</span>
+        <span class="prize-amount-large" style="font-size: 16px; font-family: 'JetBrains Mono', monospace;">TXN-WDR-928410</span>
+        <span class="prize-wallet-note">Reference ID will reflect on your bank statement</span>
+      </div>
+
+      <div class="victory-actions">
+        <button class="modal-btn success" onclick="window.location.href='transactions.html'">VIEW TRANSACTION PASSBOOK 📜</button>
+        <button class="modal-btn outline" onclick="window.location.href='wallet.html'">BACK TO WALLET 💰</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="app-toast" id="app-toast">
+    <span class="toast-icon" id="toast-icon">⚡</span>
+    <span class="toast-msg" id="toast-msg">Notification</span>
+  </div>
+
+  <script>
+    function switchWithdrawMethod(method) {
+      document.querySelectorAll('.method-tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.querySelector('.method-radio').innerText = '';
       });
-      const data = await res.json();
-      if (data.success) {
-        alert(`Withdrawal request for ₹${amt.toFixed(2)} submitted successfully!`);
-        window.location.reload();
-      } else {
-        alert(data.error || 'Withdrawal failed');
+
+      const activeBtn = document.getElementById(`tab-${method}`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.querySelector('.method-radio').innerText = '✓';
       }
-    } catch (e) {
-      alert('Withdrawal request submitted.');
-      window.location.reload();
+
+      document.getElementById('form-upi-block').style.display = method === 'upi' ? 'block' : 'none';
+      document.getElementById('form-bank-block').style.display = method === 'bank' ? 'block' : 'none';
     }
-  }
-</script>
+
+    function setAmount(amt) {
+      document.getElementById('input-withdraw-amount').value = amt;
+      document.querySelectorAll('.quick-chip').forEach(c => c.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function processWithdrawal() {
+      const amt = parseInt(document.getElementById('input-withdraw-amount').value, 10);
+      if (isNaN(amt) || amt < 100) {
+        showToast('Minimum withdrawal amount is ₹100', '⚠️');
+        return;
+      }
+      if (amt > 980) {
+        showToast('Amount exceeds your Withdrawable Winnings (₹980)', '⚠️');
+        return;
+      }
+
+      document.getElementById('w-success-sub').innerText = `₹${amt}.00 has been transferred to your account instantly.`;
+      document.getElementById('withdraw-success-modal').classList.add('show');
+    }
+
+    function showToast(msg, icon = '⚡') {
+      const toast = document.getElementById('app-toast');
+      const msgEl = document.getElementById('toast-msg');
+      const iconEl = document.getElementById('toast-icon');
+      if (!toast || !msgEl) return;
+      msgEl.innerText = msg;
+      if (iconEl) iconEl.innerText = icon;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+  </script>
+</body>
+</html>

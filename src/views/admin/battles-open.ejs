@@ -3,9 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player Management — Ludo Bet Admin</title>
-  <meta name="description" content="Manage and inspect all players on Ludo Bet platform.">
+  <title>Open Battle Market — Ludo Bet Admin</title>
+  <meta name="description" content="View open challenges waiting for opponents, inject ghost bot battles, or cancel & refund.">
   <link rel="stylesheet" href="admin.css">
+  <style>
+    .ghost-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: #f5f3ff;
+      border: 1px solid #ddd6fe;
+      color: #7c3aed;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 800;
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +41,12 @@
 
       <!-- 2. Players Dropdown -->
       <div class="nav-dropdown-group">
-        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
           <div class="nav-left-group"><span class="nav-item-icon">👥</span><span>Players</span></div>
           <span class="nav-dropdown-arrow">▼</span>
         </a>
-        <div class="sidebar-submenu open">
-          <a class="submenu-item-btn active" href="players.html">All Players (1,24,580)</a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="players.html">All Players (1,24,580)</a>
           <a class="submenu-item-btn" href="players-banned.html">🚫 Banned Accounts (152)</a>
           <a class="submenu-item-btn" href="player-view.html?id=LD10458">👤 Player Profile View</a>
         </div>
@@ -80,12 +94,12 @@
 
       <!-- 6. Battles Dropdown -->
       <div class="nav-dropdown-group">
-        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
           <div class="nav-left-group"><span class="nav-item-icon">⚔️</span><span>Battles</span></div>
           <span class="nav-dropdown-arrow">▼</span>
         </a>
-        <div class="sidebar-submenu">
-          <a class="submenu-item-btn" href="battles-open.html">Open Challenges (2,150)</a>
+        <div class="sidebar-submenu open">
+          <a class="submenu-item-btn active" href="battles-open.html">Open Challenges (2,150)</a>
           <a class="submenu-item-btn" href="battles-running.html">Live Running (3,820)</a>
           <a class="submenu-item-btn" href="battles-completed.html">Completed (5,650)</a>
           <a class="submenu-item-btn" href="battles-cancelled.html">Cancelled &amp; Refunded</a>
@@ -179,13 +193,13 @@
   <div class="admin-main-wrapper">
     <header class="admin-top-header">
       <div class="header-left-group">
-        <button class="btn-sidebar-toggle" onclick="document.getElementById('admin-sidebar').classList.toggle('open')">☰</button>
-        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">Player Management</h2>
+        <button class="btn-sidebar-toggle" onclick="toggleMobileSidebar()">☰</button>
+        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">⚔️ Open Battles Market</h2>
       </div>
 
       <div class="header-right-group">
-        <button class="header-icon-btn">🔍</button>
-        <button class="header-icon-btn">🔔</button>
+        <button class="header-icon-btn" onclick="showToast('Searching open battles...', '🔍')">🔍</button>
+        <button class="header-icon-btn" onclick="showToast('Lobby market live', '🔔')">🔔</button>
         <div class="admin-user-pill">
           <div class="admin-avatar-circle"><span>👨‍💼</span></div>
           <div class="admin-user-info">
@@ -197,61 +211,128 @@
     </header>
 
     <main class="admin-body-container">
+      
+      <!-- Subnav Navigation Pill Strip -->
+      <div class="player-drawer-tabs-bar" style="background:#ffffff; border:1px solid var(--border-color); border-radius:14px; padding:4px 14px; margin-bottom:16px;">
+        <a class="player-drawer-tab-btn active" href="battles-open.html" style="text-decoration:none;">⚔️ Open (2,150)</a>
+        <a class="player-drawer-tab-btn" href="battles-running.html" style="text-decoration:none;">🔴 Live Running (3,820)</a>
+        <a class="player-drawer-tab-btn" href="battles-completed.html" style="text-decoration:none;">✅ Completed (5,650)</a>
+        <a class="player-drawer-tab-btn" href="battles-cancelled.html" style="text-decoration:none;">🚫 Cancelled</a>
+        <a class="player-drawer-tab-btn" href="battles-disputes.html" style="text-decoration:none;">⚖️ Disputes (7)</a>
+      </div>
+
       <div class="admin-data-panel">
         <div class="data-panel-top-bar">
           <div>
-            <h1 class="page-title-main">Player Directory</h1>
-            <p class="page-title-sub">Search, inspect wallets, view game stats, and adjust account permissions.</p>
+            <h1 class="page-title-main">Open Battle Market</h1>
+            <p class="page-title-sub">Player created challenges &amp; Admin injected ghost battles waiting for an opponent to join.</p>
           </div>
-
-          <!-- Search, Sort & Filters -->
-          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-            <div class="data-search-input-box">
-              <span>🔍</span>
-              <input type="text" class="data-search-field" id="player-search-input" placeholder="Search by ID, Name, Phone...">
-            </div>
-
-            <!-- Sort Dropdown -->
-            <div style="display:flex; align-items:center; gap:6px;">
-              <span style="font-size:11px; font-weight:800; color:#64748b;">Sort:</span>
-              <select class="chart-filter-select" id="player-sort-select" onchange="setPlayerSort(this.value)" style="padding:6px 10px; border-radius:10px;">
-                <option value="newest">📅 Registration Date (Newest)</option>
-                <option value="oldest">📅 Registration Date (Oldest)</option>
-                <option value="balance_desc">💰 Total Balance (Highest)</option>
-                <option value="balance_asc">💰 Total Balance (Lowest)</option>
-                <option value="battles_desc">⚔️ Battles (Most Played)</option>
-                <option value="winrate_desc">🏆 Win Rate (Highest)</option>
-                <option value="name_asc">👤 Player Name (A-Z)</option>
-              </select>
-            </div>
-
-            <!-- Filter Chips -->
-            <div class="filter-chips-row" id="player-filter-chips">
-              <button class="filter-chip-btn active" id="chip-all" onclick="setPlayerFilter(this, 'all')">ALL (6)</button>
-              <button class="filter-chip-btn" id="chip-kyc" onclick="setPlayerFilter(this, 'approved')">KYC VERIFIED (3)</button>
-              <button class="filter-chip-btn" id="chip-pending" onclick="setPlayerFilter(this, 'pending')">KYC PENDING (1)</button>
-              <button class="filter-chip-btn" id="chip-banned" onclick="setPlayerFilter(this, 'banned')">BANNED (1)</button>
-            </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn-table-action" style="background:#7c3aed; color:#fff; font-weight:800; padding:10px 18px;" onclick="window.location.href='games-classic.html'">
+              🕵️ + INJECT GHOST CLASSIC BATTLE
+            </button>
+            <button class="btn-table-action" style="background:#2563eb; color:#fff; font-weight:800; padding:10px 18px;" onclick="window.location.href='games-quick.html'">
+              ⚡ + CREATE QUICK CONTEST
+            </button>
           </div>
         </div>
 
-        <!-- Table with Clickable Sort Headers -->
+        <!-- Filter Row -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; gap:8px;">
+            <button class="btn-table-action" style="background:#0f172a; color:#fff; font-size:11.5px; font-weight:700;" onclick="filterTable('all')">ALL OPEN (2,150)</button>
+            <button class="btn-table-action" style="background:#f1f5f9; color:#475569; font-size:11.5px; font-weight:700;" onclick="filterTable('classic')">🎲 CLASSIC (1,240)</button>
+            <button class="btn-table-action" style="background:#f1f5f9; color:#475569; font-size:11.5px; font-weight:700;" onclick="filterTable('quick')">⚡ QUICK (726)</button>
+            <button class="btn-table-action" style="background:#f5f3ff; color:#7c3aed; font-size:11.5px; font-weight:800;" onclick="filterTable('ghost')">🤖 GHOST INJECTED (184)</button>
+          </div>
+
+          <div class="data-search-input-box">
+            <span>🔍</span>
+            <input type="text" class="data-search-field" placeholder="Search by Battle ID, Host...">
+          </div>
+        </div>
+
         <div class="admin-table-frame">
           <table class="admin-data-table">
             <thead>
               <tr>
-                <th class="sort-col-header" onclick="toggleSortColumn('id')">Player ID <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('name')">Player Name &amp; Phone <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('joined')">Joined Date <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('kyc')">KYC Status <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('balance')">Total Balance <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('status')">Account Status <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('battles')">Battles (Win Rate) <span class="sort-indicator-arrow">▲▼</span></th>
-                <th>Actions</th>
+                <th>Battle ID</th>
+                <th>Game Mode</th>
+                <th>Creator (Host)</th>
+                <th>Type</th>
+                <th>Entry Fee</th>
+                <th>Prize Pool</th>
+                <th>Platform Escrow</th>
+                <th>Created At</th>
+                <th>Admin Actions</th>
               </tr>
             </thead>
-            <tbody id="players-table-body">
-              <!-- Dynamically populated via admin.js -->
+            <tbody id="openBattlesTbody">
+              <tr data-mode="ghost">
+                <td><code>BTL-99105</code></td>
+                <td>🎲 Ludo Classic</td>
+                <td><strong>Rahul_Gamer</strong> <small style="color:#7c3aed;">(Ghost Host)</small></td>
+                <td><span class="ghost-badge">🤖 GHOST INJECTED</span></td>
+                <td><strong style="color:#0f172a;">₹100.00</strong></td>
+                <td><strong style="color:#10b981;">₹190.00</strong></td>
+                <td><span class="status-pill-badge approved">AUTO ESCROW</span></td>
+                <td>Just Now</td>
+                <td>
+                  <button class="btn-table-action danger" onclick="this.closest('tr').remove(); showToast('Ghost battle BTL-99105 removed from lobby!', '🗑️')">REMOVE</button>
+                </td>
+              </tr>
+              <tr data-mode="classic">
+                <td><code>BTL-99102</code></td>
+                <td>🎲 Ludo Classic</td>
+                <td><strong>Rajendra (LD10458)</strong></td>
+                <td><span class="nav-pill-badge blue">👤 REAL PLAYER</span></td>
+                <td><strong style="color:#0f172a;">₹50.00</strong></td>
+                <td><strong style="color:#10b981;">₹95.00</strong></td>
+                <td><span class="status-pill-badge approved">₹50 LOCKED</span></td>
+                <td>2 Mins ago</td>
+                <td>
+                  <button class="btn-table-action danger" onclick="showToast('Battle BTL-99102 cancelled & refunded!', '🚫')">CANCEL &amp; REFUND</button>
+                </td>
+              </tr>
+              <tr data-mode="quick">
+                <td><code>BTL-99103</code></td>
+                <td>⚡ Ludo Quick</td>
+                <td><strong>Rohit_King</strong> <small style="color:#2563eb;">(Quick Contest)</small></td>
+                <td><span class="nav-pill-badge green">⚡ QUICK BOT CONTEST</span></td>
+                <td><strong style="color:#0f172a;">₹50.00</strong></td>
+                <td><strong style="color:#10b981;">₹94.00</strong></td>
+                <td><span class="status-pill-badge approved">AUTO RESTOCK</span></td>
+                <td>4 Mins ago</td>
+                <td>
+                  <button class="btn-table-action danger" onclick="showToast('Quick battle BTL-99103 paused!', '⏸️')">PAUSE</button>
+                </td>
+              </tr>
+              <tr data-mode="ghost">
+                <td><code>BTL-99101</code></td>
+                <td>🎲 Ludo Classic</td>
+                <td><strong>Pooja_Patel</strong> <small style="color:#7c3aed;">(Ghost Host)</small></td>
+                <td><span class="ghost-badge">🤖 GHOST INJECTED</span></td>
+                <td><strong style="color:#0f172a;">₹250.00</strong></td>
+                <td><strong style="color:#10b981;">₹475.00</strong></td>
+                <td><span class="status-pill-badge approved">AUTO ESCROW</span></td>
+                <td>6 Mins ago</td>
+                <td>
+                  <button class="btn-table-action danger" onclick="this.closest('tr').remove(); showToast('Ghost battle BTL-99101 removed!', '🗑️')">REMOVE</button>
+                </td>
+              </tr>
+              <tr data-mode="classic">
+                <td><code>BTL-99098</code></td>
+                <td>🎲 Ludo Classic</td>
+                <td><strong>Vikas_Sharma (LD40192)</strong></td>
+                <td><span class="nav-pill-badge blue">👤 REAL PLAYER</span></td>
+                <td><strong style="color:#0f172a;">₹100.00</strong></td>
+                <td><strong style="color:#10b981;">₹190.00</strong></td>
+                <td><span class="status-pill-badge approved">₹100 LOCKED</span></td>
+                <td>8 Mins ago</td>
+                <td>
+                  <button class="btn-table-action danger" onclick="showToast('Battle BTL-99098 cancelled & refunded!', '🚫')">CANCEL &amp; REFUND</button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -259,50 +340,17 @@
     </main>
   </div>
 
-  <!-- WALLET ADJUSTMENT MODAL -->
-  <div class="admin-audit-modal" id="modal-wallet-adjust">
-    <div class="audit-modal-box">
-      <h3 style="font-size:16px; font-weight:900; color:#0f172a;">Manual Wallet Adjustment</h3>
-      <p style="font-size:11.5px; color:#64748b;">Adjust player wallet. Every change is permanently logged.</p>
-
-      <div style="margin-top:12px; font-size:12px; font-weight:800; color:#6366f1;">
-        Target Player: <span id="adj-target-player">LD10458</span>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Action Type:</label>
-        <select id="adj-type-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
-          <option value="credit">➕ CREDIT (Add Funds)</option>
-          <option value="debit">➖ DEBIT (Deduct Funds)</option>
-        </select>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Target Wallet:</label>
-        <select id="adj-wallet-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
-          <option value="winnings">🏆 Winnings Cash</option>
-          <option value="deposit">💳 Deposit Cash</option>
-          <option value="bonus">🎁 Bonus Cash</option>
-        </select>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Amount (₹):</label>
-        <input type="number" id="adj-amount-input" value="100" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit; font-weight:800;">
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#ef4444;">Mandatory Admin Reason (Audit Log):</label>
-        <textarea class="audit-reason-textarea" id="adj-reason-input" placeholder="Enter reason (e.g. Tournament compensation, refund reversal...)"></textarea>
-      </div>
-
-      <div style="display:flex; gap:10px; margin-top:16px;">
-        <button class="btn-table-action" style="flex:1; padding:10px 0;" onclick="closeWalletAdjustModal()">CANCEL</button>
-        <button class="btn-table-action" style="flex:1; padding:10px 0; background:#6366f1; color:#fff;" onclick="submitWalletAdjustment()">CONFIRM &amp; LOG ➔</button>
-      </div>
-    </div>
-  </div>
-
   <script src="admin.js"></script>
+  <script>
+    function filterTable(mode) {
+      const rows = document.querySelectorAll('#openBattlesTbody tr');
+      rows.forEach(r => {
+        if (mode === 'all') r.style.display = '';
+        else if (r.getAttribute('data-mode') === mode) r.style.display = '';
+        else r.style.display = 'none';
+      });
+      showToast(`Filtered open battles by ${mode.toUpperCase()}`, '🔍');
+    }
+  </script>
 </body>
 </html>

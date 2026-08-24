@@ -1,91 +1,192 @@
-<link rel="stylesheet" href="/css/classic-battle.css">
-<link rel="stylesheet" href="/css/kyc.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>KYC Identity Verification | Ludo Tournament King</title>
+  <meta name="description" content="Aadhaar and PAN card identity verification status and document uploads.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="kyc.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 1. TOP HEADER (Menu + Resource Pill) -->
+    <header class="top-header">
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
 
-<!-- Sub-Header Bar -->
-<div class="sub-header-bar">
-  <button class="btn-back" onclick="window.location.href='/profile'" aria-label="Go Back">←</button>
-  <div class="page-title-group">
-    <h1 class="kyc-page-title">
-      <span class="title-green">KYC</span> <span class="title-blue">VERIFICATION</span>
-    </h1>
-    <span class="page-subtitle">Government ID &amp; Bank Authentication</span>
-  </div>
-  <div class="status-verified-badge" style="background:#10b981; color:#fff; padding:4px 8px; border-radius:8px; font-weight:800; font-size:11px;">
-    <%= user.kyc_status || 'VERIFIED' %> ✓
-  </div>
-</div>
+      <div class="resource-pill">
+        <a href="wallet.html" class="res-item" style="text-decoration:none;" aria-label="Wallet Balance">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">₹1,250</span>
+            <span class="res-label">Cash</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
 
-<!-- MAIN BODY -->
-<main class="kyc-body">
+        <div class="res-item" aria-label="Gems">
+          <img class="res-icon" src="assets/diamond.svg" alt="Gems">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">20</span>
+            <span class="res-label">Gems</span>
+          </div>
+        </div>
 
-  <!-- 1. KYC STATUS HERO BANNER -->
-  <section class="kyc-hero-card">
-    <div class="kyc-hero-left">
-      <span class="kyc-level-tag">LEVEL 2 COMPLETE</span>
-      <span class="kyc-hero-title">Account 100% Verified ✅</span>
-      <span class="kyc-hero-desc">Enjoy unlimited instant withdrawals up to ₹50,000 per day.</span>
+        <button class="bell-item" onclick="window.location.href='notifications.html'" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Header Bar -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='profile.html'" aria-label="Go Back">←</button>
+      <div class="page-title-group">
+        <h1 class="kyc-page-title">
+          <span class="title-green">KYC</span> <span class="title-blue">VERIFICATION</span>
+        </h1>
+        <span class="page-subtitle">Government ID &amp; Bank Authentication</span>
+      </div>
+      <div class="status-verified-badge">
+        VERIFIED ✓
+      </div>
     </div>
-    <div class="kyc-hero-badge">🛡️</div>
-  </section>
 
-  <!-- 2. DOCUMENT TILES -->
-  <section class="kyc-docs-section">
-    <span class="section-label">VERIFIED GOVERNMENT DOCUMENTS:</span>
+    <!-- MAIN BODY -->
+    <main class="kyc-body">
 
-    <!-- Document 1: Aadhaar Card -->
-    <div class="doc-card verified">
-      <div class="doc-left">
-        <div class="doc-icon-circle green">🆔</div>
-        <div class="doc-meta">
-          <span class="doc-title">Aadhaar Card Verification</span>
-          <span class="doc-number">XXXX-XXXX-4819</span>
-          <span class="doc-name">Name: <%= user.name %></span>
+      <!-- 1. KYC STATUS HERO BANNER -->
+      <section class="kyc-hero-card">
+        <div class="kyc-hero-left">
+          <span class="kyc-level-tag">LEVEL 2 COMPLETE</span>
+          <span class="kyc-hero-title">Account 100% Verified ✅</span>
+          <span class="kyc-hero-desc">Enjoy unlimited instant withdrawals up to ₹50,000 per day.</span>
+        </div>
+        <div class="kyc-hero-badge">🛡️</div>
+      </section>
+
+      <!-- 2. DOCUMENT TILES -->
+      <section class="kyc-docs-section">
+        <span class="section-label">VERIFIED GOVERNMENT DOCUMENTS:</span>
+
+        <!-- Document 1: Aadhaar Card -->
+        <div class="doc-card verified">
+          <div class="doc-left">
+            <div class="doc-icon-circle green">🆔</div>
+            <div class="doc-meta">
+              <span class="doc-title">Aadhaar Card Verification</span>
+              <span class="doc-number">XXXX-XXXX-4819</span>
+              <span class="doc-name">Name: Rajendra Kumar</span>
+            </div>
+          </div>
+          <span class="doc-badge success">VERIFIED ✓</span>
+        </div>
+
+        <!-- Document 2: PAN Card -->
+        <div class="doc-card verified">
+          <div class="doc-left">
+            <div class="doc-icon-circle green">💳</div>
+            <div class="doc-meta">
+              <span class="doc-title">PAN Card Verification</span>
+              <span class="doc-number">ABCDE1234F</span>
+              <span class="doc-name">Name: Rajendra Kumar</span>
+            </div>
+          </div>
+          <span class="doc-badge success">VERIFIED ✓</span>
+        </div>
+
+        <!-- Document 3: Bank Account -->
+        <div class="doc-card verified">
+          <div class="doc-left">
+            <div class="doc-icon-circle green">🏛️</div>
+            <div class="doc-meta">
+              <span class="doc-title">Bank Account (IMPS/NEFT)</span>
+              <span class="doc-number">A/C: *******8210 • SBI Bank</span>
+              <span class="doc-name">IFSC: SBIN0004921</span>
+            </div>
+          </div>
+          <span class="doc-badge success">VERIFIED ✓</span>
+        </div>
+      </section>
+
+      <!-- 3. PRIVACY & DATA SECURITY GUARANTEE -->
+      <div class="security-guarantee-card">
+        <div class="sec-icon">🔒</div>
+        <div class="sec-texts">
+          <span class="sec-title">256-BIT ENCRYPTED &amp; SAFE</span>
+          <span class="sec-desc">Your government ID documents are strictly protected under the Information Technology Act. We never share your data with third parties.</span>
         </div>
       </div>
-      <span class="doc-badge success">VERIFIED ✓</span>
-    </div>
 
-    <!-- Document 2: PAN Card -->
-    <div class="doc-card verified">
-      <div class="doc-left">
-        <div class="doc-icon-circle green">💳</div>
-        <div class="doc-meta">
-          <span class="doc-title">PAN Card Verification</span>
-          <span class="doc-number">ABCDE1234F</span>
-          <span class="doc-name">Name: <%= user.name %></span>
-        </div>
+      <!-- 4. ACTION BUTTONS -->
+      <div class="kyc-actions-wrap">
+        <button class="btn-kyc-primary" onclick="window.location.href='withdraw.html'">
+          <span>💸 PROCEED TO WITHDRAW CASH</span>
+        </button>
+        <button class="btn-kyc-outline" onclick="showToast('Your KYC is already up to date!', '✅')">
+          <span>🔄 Re-verify / Update Document</span>
+        </button>
       </div>
-      <span class="doc-badge success">VERIFIED ✓</span>
-    </div>
 
-    <!-- Document 3: Bank Account -->
-    <div class="doc-card verified">
-      <div class="doc-left">
-        <div class="doc-icon-circle green">🏛️</div>
-        <div class="doc-meta">
-          <span class="doc-title">Bank Account (IMPS/NEFT)</span>
-          <span class="doc-number">A/C: *******8210 • Verified</span>
-          <span class="doc-name">Status: Active</span>
-        </div>
-      </div>
-      <span class="doc-badge success">VERIFIED ✓</span>
-    </div>
-  </section>
+    </main>
 
-  <!-- 3. PRIVACY & DATA SECURITY GUARANTEE -->
-  <div class="security-guarantee-card">
-    <div class="sec-icon">🔒</div>
-    <div class="sec-texts">
-      <span class="sec-title">256-BIT ENCRYPTED &amp; SAFE</span>
-      <span class="sec-desc">Your government ID documents are strictly protected under the Information Technology Act. We never share your data with third parties.</span>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav">
+        <button class="nav-tab" onclick="window.location.href='index.html'">
+          <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ludo-classic.html'">
+          <img class="nav-icon-svg" src="assets/chip.svg" alt="Battles">
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ranking.html'">
+          <img class="nav-icon-svg" src="assets/ranking.svg" alt="Leaderboard">
+          <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='wallet.html'">
+          <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+          <span class="nav-label">Wallet</span>
+        </button>
+        <button class="nav-tab active" onclick="window.location.href='profile.html'">
+          <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+      <div class="home-indicator"></div>
     </div>
   </div>
 
-  <!-- 4. ACTION BUTTONS -->
-  <div class="kyc-actions-wrap" style="margin-top:16px;">
-    <button class="btn-kyc-primary" onclick="window.location.href='/withdraw'" style="width:100%; background:linear-gradient(135deg,#10b981 0%,#059669 100%); color:#fff; border:none; padding:14px; border-radius:14px; font-weight:800; cursor:pointer;">
-      <span>💸 PROCEED TO WITHDRAW CASH</span>
-    </button>
+  <!-- Toast -->
+  <div class="app-toast" id="app-toast">
+    <span class="toast-icon" id="toast-icon">⚡</span>
+    <span class="toast-msg" id="toast-msg">Notification</span>
   </div>
 
-</main>
+  <script>
+    function showToast(msg, icon = '⚡') {
+      const toast = document.getElementById('app-toast');
+      const msgEl = document.getElementById('toast-msg');
+      const iconEl = document.getElementById('toast-icon');
+      if (!toast || !msgEl) return;
+      msgEl.innerText = msg;
+      if (iconEl) iconEl.innerText = icon;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+  </script>
+</body>
+</html>

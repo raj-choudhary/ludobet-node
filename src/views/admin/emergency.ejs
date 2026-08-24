@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Player Management — Ludo Bet Admin</title>
-  <meta name="description" content="Manage and inspect all players on Ludo Bet platform.">
+  <title>Emergency Controls — Ludo Bet Admin</title>
+  <meta name="description" content="Global Emergency Lockdown Controls">
   <link rel="stylesheet" href="admin.css">
 </head>
 <body>
@@ -27,12 +27,12 @@
 
       <!-- 2. Players Dropdown -->
       <div class="nav-dropdown-group">
-        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
           <div class="nav-left-group"><span class="nav-item-icon">👥</span><span>Players</span></div>
           <span class="nav-dropdown-arrow">▼</span>
         </a>
-        <div class="sidebar-submenu open">
-          <a class="submenu-item-btn active" href="players.html">All Players (1,24,580)</a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="players.html">All Players (1,24,580)</a>
           <a class="submenu-item-btn" href="players-banned.html">🚫 Banned Accounts (152)</a>
           <a class="submenu-item-btn" href="player-view.html?id=LD10458">👤 Player Profile View</a>
         </div>
@@ -162,7 +162,7 @@
       </a>
 
       <!-- 15. Emergency Controls -->
-      <a class="nav-item-btn" href="emergency.html">
+      <a class="nav-item-btn active" href="emergency.html">
         <div class="nav-left-group"><span class="nav-item-icon">🚨</span><span style="color:#ef4444;">Emergency Controls</span></div>
       </a>
     </div>
@@ -180,7 +180,7 @@
     <header class="admin-top-header">
       <div class="header-left-group">
         <button class="btn-sidebar-toggle" onclick="document.getElementById('admin-sidebar').classList.toggle('open')">☰</button>
-        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">Player Management</h2>
+        <h2 style="font-size:16px; font-weight:800; color:#b91c1c;">🚨 Emergency Lockdown Cockpit</h2>
       </div>
 
       <div class="header-right-group">
@@ -197,110 +197,41 @@
     </header>
 
     <main class="admin-body-container">
-      <div class="admin-data-panel">
+      <div class="admin-data-panel" style="border:1.5px solid #fca5a5;">
         <div class="data-panel-top-bar">
           <div>
-            <h1 class="page-title-main">Player Directory</h1>
-            <p class="page-title-sub">Search, inspect wallets, view game stats, and adjust account permissions.</p>
-          </div>
-
-          <!-- Search, Sort & Filters -->
-          <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-            <div class="data-search-input-box">
-              <span>🔍</span>
-              <input type="text" class="data-search-field" id="player-search-input" placeholder="Search by ID, Name, Phone...">
-            </div>
-
-            <!-- Sort Dropdown -->
-            <div style="display:flex; align-items:center; gap:6px;">
-              <span style="font-size:11px; font-weight:800; color:#64748b;">Sort:</span>
-              <select class="chart-filter-select" id="player-sort-select" onchange="setPlayerSort(this.value)" style="padding:6px 10px; border-radius:10px;">
-                <option value="newest">📅 Registration Date (Newest)</option>
-                <option value="oldest">📅 Registration Date (Oldest)</option>
-                <option value="balance_desc">💰 Total Balance (Highest)</option>
-                <option value="balance_asc">💰 Total Balance (Lowest)</option>
-                <option value="battles_desc">⚔️ Battles (Most Played)</option>
-                <option value="winrate_desc">🏆 Win Rate (Highest)</option>
-                <option value="name_asc">👤 Player Name (A-Z)</option>
-              </select>
-            </div>
-
-            <!-- Filter Chips -->
-            <div class="filter-chips-row" id="player-filter-chips">
-              <button class="filter-chip-btn active" id="chip-all" onclick="setPlayerFilter(this, 'all')">ALL (6)</button>
-              <button class="filter-chip-btn" id="chip-kyc" onclick="setPlayerFilter(this, 'approved')">KYC VERIFIED (3)</button>
-              <button class="filter-chip-btn" id="chip-pending" onclick="setPlayerFilter(this, 'pending')">KYC PENDING (1)</button>
-              <button class="filter-chip-btn" id="chip-banned" onclick="setPlayerFilter(this, 'banned')">BANNED (1)</button>
-            </div>
+            <h1 class="page-title-main" style="color:#b91c1c;">Emergency Lockdown Controls</h1>
+            <p class="page-title-sub">Instant kill-switches for server maintenance, gateway downtimes, and attack containment.</p>
           </div>
         </div>
 
-        <!-- Table with Clickable Sort Headers -->
-        <div class="admin-table-frame">
-          <table class="admin-data-table">
-            <thead>
-              <tr>
-                <th class="sort-col-header" onclick="toggleSortColumn('id')">Player ID <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('name')">Player Name &amp; Phone <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('joined')">Joined Date <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('kyc')">KYC Status <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('balance')">Total Balance <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('status')">Account Status <span class="sort-indicator-arrow">▲▼</span></th>
-                <th class="sort-col-header" onclick="toggleSortColumn('battles')">Battles (Win Rate) <span class="sort-indicator-arrow">▲▼</span></th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="players-table-body">
-              <!-- Dynamically populated via admin.js -->
-            </tbody>
-          </table>
+        <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; margin-top:10px;">
+          <div style="background:#fff1f2; border:1.5px solid #fecdd3; border-radius:14px; padding:18px;">
+            <h4 style="color:#b91c1c; font-size:14px;">🔒 Global App Maintenance</h4>
+            <p style="font-size:11px; color:#64748b; margin:6px 0 14px;">Locks the player mobile frontend with a luxury Maintenance Screen. Real-money betting halted.</p>
+            <button class="btn-table-action danger" style="width:100%; padding:10px 0;" onclick="toggleEmergencyMaintenance({checked: true})">
+              ACTIVATE LOCKDOWN 🚨
+            </button>
+          </div>
+
+          <div style="background:#ffffff; border:1.5px solid #fca5a5; border-radius:14px; padding:18px;">
+            <h4 style="color:#b91c1c; font-size:14px;">⏸️ Freeze New Battles</h4>
+            <p style="font-size:11px; color:#64748b; margin:6px 0 14px;">Prevents players from creating new challenges while letting active games finish safely.</p>
+            <button class="btn-table-action danger" style="width:100%; padding:10px 0;" onclick="showToast('New battle creation frozen globally!', '⏸️')">
+              FREEZE NEW BATTLES ⏸️
+            </button>
+          </div>
+
+          <div style="background:#ffffff; border:1.5px solid #fca5a5; border-radius:14px; padding:18px;">
+            <h4 style="color:#b91c1c; font-size:14px;">💳 Freeze UPI Gateways</h4>
+            <p style="font-size:11px; color:#64748b; margin:6px 0 14px;">Halts all payment processing in case of banking partner downtime or network latency.</p>
+            <button class="btn-table-action danger" style="width:100%; padding:10px 0;" onclick="showToast('Deposit & payout gateways frozen!', '🚫')">
+              FREEZE GATEWAYS 🚫
+            </button>
+          </div>
         </div>
       </div>
     </main>
-  </div>
-
-  <!-- WALLET ADJUSTMENT MODAL -->
-  <div class="admin-audit-modal" id="modal-wallet-adjust">
-    <div class="audit-modal-box">
-      <h3 style="font-size:16px; font-weight:900; color:#0f172a;">Manual Wallet Adjustment</h3>
-      <p style="font-size:11.5px; color:#64748b;">Adjust player wallet. Every change is permanently logged.</p>
-
-      <div style="margin-top:12px; font-size:12px; font-weight:800; color:#6366f1;">
-        Target Player: <span id="adj-target-player">LD10458</span>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Action Type:</label>
-        <select id="adj-type-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
-          <option value="credit">➕ CREDIT (Add Funds)</option>
-          <option value="debit">➖ DEBIT (Deduct Funds)</option>
-        </select>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Target Wallet:</label>
-        <select id="adj-wallet-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
-          <option value="winnings">🏆 Winnings Cash</option>
-          <option value="deposit">💳 Deposit Cash</option>
-          <option value="bonus">🎁 Bonus Cash</option>
-        </select>
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#475569;">Amount (₹):</label>
-        <input type="number" id="adj-amount-input" value="100" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit; font-weight:800;">
-      </div>
-
-      <div class="audit-field-group">
-        <label style="font-size:11px; font-weight:800; color:#ef4444;">Mandatory Admin Reason (Audit Log):</label>
-        <textarea class="audit-reason-textarea" id="adj-reason-input" placeholder="Enter reason (e.g. Tournament compensation, refund reversal...)"></textarea>
-      </div>
-
-      <div style="display:flex; gap:10px; margin-top:16px;">
-        <button class="btn-table-action" style="flex:1; padding:10px 0;" onclick="closeWalletAdjustModal()">CANCEL</button>
-        <button class="btn-table-action" style="flex:1; padding:10px 0; background:#6366f1; color:#fff;" onclick="submitWalletAdjustment()">CONFIRM &amp; LOG ➔</button>
-      </div>
-    </div>
   </div>
 
   <script src="admin.js"></script>

@@ -1,12 +1,12 @@
 const express = require('express');
-const path = require('path');
 const router = express.Router();
 
-const adminDir = path.join(__dirname, '../../public/admin');
+const Admin = require('../models/Admin');
+const User = require('../models/User');
+const Battle = require('../models/Battle');
 
-// Serve all 46 Admin Pages (Both clean URLs and .html extensions)
+// All 46 Enterprise Admin Pages
 const adminPages = [
-  'index',
   'dashboard',
   'login',
   'players',
@@ -53,12 +53,34 @@ const adminPages = [
   'withdrawals'
 ];
 
-router.get('/', (req, res) => res.sendFile(path.join(adminDir, 'index.html')));
+router.get('/', (req, res) => {
+  res.render('admin/dashboard', { layout: false, title: 'Ludo Bet — Super Admin Cockpit' });
+});
 
 adminPages.forEach(page => {
-  const targetFile = page === 'dashboard' ? 'index.html' : `${page}.html`;
-  router.get(`/${page}`, (req, res) => res.sendFile(path.join(adminDir, targetFile)));
-  router.get(`/${page}.html`, (req, res) => res.sendFile(path.join(adminDir, targetFile)));
+  router.get(`/${page}`, async (req, res) => {
+    let stats = null;
+    let bots = [];
+    let openBattles = [];
+    try {
+      stats = await Admin.getFinancialStats();
+      bots = await User.getBots();
+      openBattles = await Battle.getOpenBattles();
+    } catch(e) {}
+    res.render(`admin/${page}`, { layout: false, stats, bots, openBattles, title: `Ludo Bet Admin — ${page}` });
+  });
+
+  router.get(`/${page}.html`, async (req, res) => {
+    let stats = null;
+    let bots = [];
+    let openBattles = [];
+    try {
+      stats = await Admin.getFinancialStats();
+      bots = await User.getBots();
+      openBattles = await Battle.getOpenBattles();
+    } catch(e) {}
+    res.render(`admin/${page}`, { layout: false, stats, bots, openBattles, title: `Ludo Bet Admin — ${page}` });
+  });
 });
 
 module.exports = router;
