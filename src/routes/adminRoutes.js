@@ -1,21 +1,64 @@
 const express = require('express');
 const path = require('path');
 const router = express.Router();
-const AdminController = require('../controllers/adminController');
 
-router.get('/login', AdminController.renderLogin);
-router.get('/', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/index.html')));
-router.get('/dashboard', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/index.html')));
-router.get('/players', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/players.html')));
-router.get('/finance', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/finance.html')));
-router.get('/kyc', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/kyc.html')));
-router.get('/emergency', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/emergency.html')));
-router.get('/settings', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/settings.html')));
-router.get('/tournaments', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/tournaments.html')));
-router.get('/battles', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/battles.html')));
-router.get('/support', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/support.html')));
-router.get('/security', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/security.html')));
-router.get('/employees', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/employees.html')));
-router.get('/audit-logs', (req, res) => res.sendFile(path.join(__dirname, '../../public/admin/audit-logs.html')));
+const adminDir = path.join(__dirname, '../../public/admin');
+
+// Serve all 46 Admin Pages (Both clean URLs and .html extensions)
+const adminPages = [
+  'index',
+  'dashboard',
+  'login',
+  'players',
+  'players-banned',
+  'player-view',
+  'finance',
+  'finance-deposits',
+  'finance-withdrawals',
+  'finance-adjustments',
+  'finance-ledger',
+  'kyc',
+  'kyc-history',
+  'games-classic',
+  'games-quick',
+  'games-snake',
+  'battles',
+  'battles-open',
+  'battles-running',
+  'battles-completed',
+  'battles-cancelled',
+  'battles-disputes',
+  'tournaments',
+  'rewards',
+  'rewards-bonuses',
+  'rewards-referrals',
+  'rewards-spin',
+  'marketing',
+  'marketing-banners',
+  'marketing-notifications',
+  'support',
+  'security',
+  'employees',
+  'settings',
+  'settings-financial',
+  'settings-game-engine',
+  'settings-payment-gateways',
+  'settings-sms-gateways',
+  'settings-notifications-templates',
+  'settings-system-security',
+  'audit-logs',
+  'emergency',
+  'bonuses',
+  'disputes',
+  'withdrawals'
+];
+
+router.get('/', (req, res) => res.sendFile(path.join(adminDir, 'index.html')));
+
+adminPages.forEach(page => {
+  const targetFile = page === 'dashboard' ? 'index.html' : `${page}.html`;
+  router.get(`/${page}`, (req, res) => res.sendFile(path.join(adminDir, targetFile)));
+  router.get(`/${page}.html`, (req, res) => res.sendFile(path.join(adminDir, targetFile)));
+});
 
 module.exports = router;
