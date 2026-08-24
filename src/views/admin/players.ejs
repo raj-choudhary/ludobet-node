@@ -1,55 +1,81 @@
-<div style="background:#0f172a; border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:24px;">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+<div class="admin-data-panel">
+  <div class="data-panel-top-bar">
     <div>
-      <h3 style="font-size:18px; font-weight:800;">Registered Players Master Records</h3>
-      <span style="font-size:12px; color:#94a3b8;">Real player accounts, KYC verification statuses, and balance controls</span>
+      <h1 class="page-title-main">Player Directory</h1>
+      <p class="page-title-sub">Search, inspect wallets, view game stats, and adjust account permissions.</p>
+    </div>
+
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <div class="data-search-input-box">
+        <span>🔍</span>
+        <input type="text" class="data-search-field" id="player-search-input" placeholder="Search by ID, Name, Phone..." onkeyup="filterPlayerTable()">
+      </div>
     </div>
   </div>
 
-  <table style="width:100%; border-collapse:collapse; text-align:left; font-size:12.5px;">
-    <thead>
-      <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#94a3b8;">
-        <th style="padding:10px;">ID</th>
-        <th style="padding:10px;">PLAYER NAME</th>
-        <th style="padding:10px;">MOBILE</th>
-        <th style="padding:10px;">DEPOSIT</th>
-        <th style="padding:10px;">WINNINGS</th>
-        <th style="padding:10px;">KYC</th>
-        <th style="padding:10px;">STATUS</th>
-        <th style="padding:10px;">ACTION</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% if (players && players.length > 0) { %>
-        <% players.forEach(function(p) { %>
-          <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
-            <td style="padding:10px; color:#64748b;">#<%= p.id %></td>
-            <td style="padding:10px;"><strong><%= p.name %></strong> <%= p.is_bot ? '🤖' : '' %></td>
-            <td style="padding:10px; color:#94a3b8;"><%= p.mobile %></td>
-            <td style="padding:10px;">₹<%= parseFloat(p.deposit_balance || 0).toFixed(2) %></td>
-            <td style="padding:10px; color:#10b981; font-weight:700;">₹<%= parseFloat(p.winning_balance || 0).toFixed(2) %></td>
-            <td style="padding:10px;">
-              <span style="background:<%= p.kyc_status === 'VERIFIED' ? 'rgba(16,185,129,0.15)' : 'rgba(245,158,11,0.15)' %>; color:<%= p.kyc_status === 'VERIFIED' ? '#10b981' : '#f59e0b' %>; padding:3px 8px; border-radius:6px; font-weight:800; font-size:10px;">
-                <%= p.kyc_status %>
-              </span>
-            </td>
-            <td style="padding:10px;">
-              <span style="color:<%= p.is_banned ? '#ef4444' : '#10b981' %>; font-weight:800;">
-                <%= p.is_banned ? 'BANNED' : 'ACTIVE' %>
-              </span>
-            </td>
-            <td style="padding:10px;">
-              <button onclick="alert('Player status toggled.')" style="background:#1e293b; color:#fff; border:1px solid rgba(255,255,255,0.1); padding:4px 10px; border-radius:6px; cursor:pointer; font-size:11px;">
-                <%= p.is_banned ? 'Unban' : 'Ban' %>
-              </button>
-            </td>
-          </tr>
-        <% }); %>
-      <% } else { %>
+  <!-- Table -->
+  <div class="admin-table-frame">
+    <table class="admin-data-table" id="players-table">
+      <thead>
         <tr>
-          <td colspan="8" style="padding:20px; text-align:center; color:#64748b;">No players found.</td>
+          <th>Player ID</th>
+          <th>Player Name &amp; Phone</th>
+          <th>Joined Date</th>
+          <th>KYC Status</th>
+          <th>Total Balance</th>
+          <th>Account Type</th>
+          <th>Actions</th>
         </tr>
-      <% } %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody id="players-table-body">
+        <% if (players && players.length > 0) { %>
+          <% players.forEach(function(p) { %>
+            <tr>
+              <td><strong>#LD<%= p.id %></strong></td>
+              <td>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="font-size:16px;">👤</span>
+                  <div>
+                    <strong style="color:#0f172a;"><%= p.name %></strong>
+                    <div style="font-size:11px; color:#64748b;"><%= p.mobile %></div>
+                  </div>
+                </div>
+              </td>
+              <td><%= new Date(p.created_at).toLocaleDateString('en-IN') %></td>
+              <td>
+                <span class="status-tag <%= p.kyc_status === 'VERIFIED' ? 'verified' : 'pending' %>">
+                  <%= p.kyc_status %>
+                </span>
+              </td>
+              <td>
+                <strong style="color:#059669;">₹<%= (parseFloat(p.deposit_balance || 0) + parseFloat(p.winning_balance || 0)).toFixed(2) %></strong>
+              </td>
+              <td>
+                <span class="badge-role <%= p.is_bot ? 'bot' : 'player' %>">
+                  <%= p.is_bot ? '🤖 HOUSE BOT' : 'REAL PLAYER' %>
+                </span>
+              </td>
+              <td>
+                <button class="btn-table-action" onclick="alert('Player #LD<%= p.id %>: <%= p.name %>')">Inspect</button>
+              </td>
+            </tr>
+          <% }); %>
+        <% } else { %>
+          <tr>
+            <td colspan="7" style="text-align:center; padding:20px; color:#94a3b8;">No players found in database.</td>
+          </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </div>
 </div>
+
+<script>
+  function filterPlayerTable() {
+    const q = document.getElementById('player-search-input').value.toLowerCase();
+    const rows = document.querySelectorAll('#players-table-body tr');
+    rows.forEach(r => {
+      r.style.display = r.innerText.toLowerCase().includes(q) ? '' : 'none';
+    });
+  }
+</script>

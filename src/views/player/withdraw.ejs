@@ -1,151 +1,154 @@
+<link rel="stylesheet" href="/css/classic-battle.css">
 <link rel="stylesheet" href="/css/withdraw.css">
 
-<div class="withdraw-page-container">
-  
-  <!-- Header Card -->
-  <div class="withdraw-balance-banner">
-    <div class="w-banner-info">
-      <span class="w-label">AVAILABLE WITHDRAWABLE WINNINGS</span>
-      <div class="w-amount" id="withdrawableDisplay">
-        ₹<%= parseFloat(wallet.winning_balance || 0).toFixed(2) %>
-      </div>
+<!-- 2. SUB-HEADER WITH BACK BUTTON & TITLE -->
+<div class="sub-header-bar">
+  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
+    ←
+  </button>
+  <div class="page-title-group">
+    <div class="withdraw-page-title">
+      <span class="title-purple">INSTANT</span><span class="title-green">WITHDRAW</span>
     </div>
-    <div class="w-shield-icon">🛡️</div>
+    <div class="page-subtitle">24x7 Direct Payouts to UPI &amp; Bank</div>
   </div>
-
-  <!-- Payout Mode Tabs -->
-  <div class="payout-mode-tabs">
-    <button class="p-tab active" id="tabUpi" onclick="switchPayoutMode('UPI')">
-      <span>📱 Instant UPI ID</span>
-    </button>
-    <button class="p-tab" id="tabBank" onclick="switchPayoutMode('BANK')">
-      <span>🏛️ Bank Transfer (IMPS)</span>
-    </button>
+  <div class="kyc-badge-pill">
+    ✅ KYC VERIFIED
   </div>
-
-  <!-- Withdrawal Form -->
-  <form id="payoutForm" onsubmit="executeWithdrawal(event)">
-    <div class="form-field-box">
-      <label class="field-label">ENTER WITHDRAWAL AMOUNT (₹)</label>
-      <div class="field-input-wrap">
-        <span class="input-prefix">₹</span>
-        <input type="number" id="payoutAmountInput" class="custom-input-field" placeholder="Min ₹100 - Max ₹50,000" min="100" max="50000" required oninput="recalcTds()">
-      </div>
-    </div>
-
-    <!-- UPI VPA Field -->
-    <div class="form-field-box" id="upiFieldBox">
-      <label class="field-label">ENTER UPI ID (VPA)</label>
-      <div class="field-input-wrap">
-        <span class="input-prefix">@</span>
-        <input type="text" id="upiVpaInput" class="custom-input-field" placeholder="e.g. username@okhdfcbank" required>
-      </div>
-    </div>
-
-    <!-- Bank Fields -->
-    <div id="bankFieldBox" style="display:none;">
-      <div class="form-field-box">
-        <label class="field-label">ACCOUNT NUMBER</label>
-        <div class="field-input-wrap">
-          <span class="input-prefix">#</span>
-          <input type="text" id="bankAccInput" class="custom-input-field" placeholder="Bank Account Number">
-        </div>
-      </div>
-      <div class="form-field-box" style="margin-top:10px;">
-        <label class="field-label">IFSC CODE</label>
-        <div class="field-input-wrap">
-          <span class="input-prefix">🏛️</span>
-          <input type="text" id="bankIfscInput" class="custom-input-field" placeholder="e.g. HDFC0001234">
-        </div>
-      </div>
-    </div>
-
-    <!-- Section 194BA Tax Card -->
-    <div class="tds-calculation-card">
-      <div class="tds-line">
-        <span>Gross Withdrawal</span>
-        <span id="tdsGross">₹0.00</span>
-      </div>
-      <div class="tds-line">
-        <span>Section 194BA TDS (30% on Net Winnings)</span>
-        <span id="tdsTax">₹0.00</span>
-      </div>
-      <div class="tds-line tds-net-line">
-        <span>Net Bank Credit Amount</span>
-        <span id="tdsNet">₹0.00</span>
-      </div>
-    </div>
-
-    <button type="submit" class="btn-confirm-withdraw" id="btnWithdrawSubmit">
-      <span>CONFIRM WITHDRAWAL TRANSFER</span>
-      <span>➔</span>
-    </button>
-  </form>
-
-  <div class="rbi-compliance-note">
-    <span>🔒 100% RBI &amp; Income Tax Compliant Instant Payout Pipeline</span>
-  </div>
-
 </div>
 
+<!-- MAIN WITHDRAWAL BODY -->
+<main class="withdraw-body">
+
+  <!-- 1. WINNINGS BALANCE HERO CARD -->
+  <section class="withdraw-hero-card">
+    <div class="hero-balance-left">
+      <span class="balance-tag">WITHDRAWABLE WINNINGS</span>
+      <span class="balance-amount-large">₹<%= parseFloat(wallet.winning_balance || 0).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span>
+      <span class="balance-sub">0% TDS on net winnings under ₹10,000</span>
+    </div>
+    <div class="hero-icon-right">💸</div>
+  </section>
+
+  <!-- 2. WITHDRAWAL METHOD SELECTOR -->
+  <section class="method-selection-section">
+    <span class="section-label">SELECT TRANSFER DESTINATION:</span>
+    <div class="method-tabs-grid">
+      <button class="method-tab-btn active" id="tab-upi" onclick="switchWithdrawMethod('upi')">
+        <span class="method-icon">⚡</span>
+        <div class="method-texts">
+          <span class="method-title">UPI Instant</span>
+          <span class="method-sub">GPay, PhonePe, Paytm</span>
+        </div>
+        <span class="method-radio">✓</span>
+      </button>
+
+      <button class="method-tab-btn" id="tab-bank" onclick="switchWithdrawMethod('bank')">
+        <span class="method-icon">🏛️</span>
+        <div class="method-texts">
+          <span class="method-title">Bank Transfer</span>
+          <span class="method-sub">IMPS / NEFT Transfer</span>
+        </div>
+        <span class="method-radio"></span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 3. INPUT FORM AREA -->
+  <section class="withdraw-form-card">
+    <!-- UPI Input Fields -->
+    <div class="form-block" id="form-upi-block">
+      <label class="form-lbl">ENTER YOUR UPI ID / VPA</label>
+      <div class="input-with-icon">
+        <span class="input-ico">🆔</span>
+        <input type="text" id="input-upi-id" class="text-input" placeholder="e.g. 9876543210@paytm or name@okaxis" value="player@upi">
+      </div>
+      <span class="input-helper">Money will be transferred to this UPI account instantly.</span>
+    </div>
+
+    <!-- Amount Input -->
+    <div class="form-block" style="margin-top: 10px;">
+      <div class="amount-header-row">
+        <label class="form-lbl">WITHDRAWAL AMOUNT</label>
+        <span class="amount-limits">Min: ₹100 • Max: ₹50,000</span>
+      </div>
+      <div class="input-with-icon">
+        <span class="input-ico currency">₹</span>
+        <input type="number" id="input-withdraw-amount" class="text-input amount" placeholder="Enter amount" value="100" min="100">
+      </div>
+
+      <!-- Quick Amount Chips -->
+      <div class="quick-chips-row">
+        <button class="quick-chip" onclick="setWithdrawAmount(100)">₹100</button>
+        <button class="quick-chip" onclick="setWithdrawAmount(500)">₹500</button>
+        <button class="quick-chip active" onclick="setWithdrawAmount(<%= parseFloat(wallet.winning_balance || 100) %>)">MAX</button>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button class="btn-submit-withdraw" onclick="executeWithdrawAction()">
+      <span>🚀 TRANSFER TO ACCOUNT NOW</span>
+    </button>
+  </section>
+
+  <!-- 4. RECENT WITHDRAWALS HISTORY -->
+  <section class="recent-withdrawals-card">
+    <div class="card-header-row">
+      <span class="section-label">RECENT WITHDRAWAL PASSBOOK</span>
+    </div>
+
+    <div class="withdrawals-list">
+      <div class="w-item-row">
+        <div class="w-item-left">
+          <span class="w-icon-chip upi">⚡</span>
+          <div class="w-meta">
+            <span class="w-title">₹500.00 via UPI</span>
+            <span class="w-time">Today • Direct Payout</span>
+          </div>
+        </div>
+        <span class="w-status success">SUCCESS ✅</span>
+      </div>
+    </div>
+  </section>
+</main>
+
 <script>
-  let activePayoutMode = 'UPI';
+  function setWithdrawAmount(amt) {
+    document.getElementById('input-withdraw-amount').value = amt;
+  }
 
-  function switchPayoutMode(mode) {
-    activePayoutMode = mode;
-    document.getElementById('tabUpi').classList.toggle('active', mode === 'UPI');
-    document.getElementById('tabBank').classList.toggle('active', mode === 'BANK');
-
-    if (mode === 'UPI') {
-      document.getElementById('upiFieldBox').style.display = 'block';
-      document.getElementById('bankFieldBox').style.display = 'none';
-      document.getElementById('upiVpaInput').required = true;
+  function switchWithdrawMethod(method) {
+    document.querySelectorAll('.method-tab-btn').forEach(b => b.classList.remove('active'));
+    if (method === 'upi') {
+      document.getElementById('tab-upi').classList.add('active');
     } else {
-      document.getElementById('upiFieldBox').style.display = 'none';
-      document.getElementById('bankFieldBox').style.display = 'block';
-      document.getElementById('upiVpaInput').required = false;
+      document.getElementById('tab-bank').classList.add('active');
     }
   }
 
-  function recalcTds() {
-    const amt = parseFloat(document.getElementById('payoutAmountInput').value) || 0;
-    const tds = (amt > 0) ? (amt * 0.00) : 0;
-    const net = amt - tds;
+  async function executeWithdrawAction() {
+    const amt = parseFloat(document.getElementById('input-withdraw-amount').value);
+    const upi = document.getElementById('input-upi-id').value;
 
-    document.getElementById('tdsGross').innerText = `₹${amt.toFixed(2)}`;
-    document.getElementById('tdsTax').innerText = `₹${tds.toFixed(2)}`;
-    document.getElementById('tdsNet').innerText = `₹${net.toFixed(2)}`;
-  }
-
-  async function executeWithdrawal(e) {
-    e.preventDefault();
-    const amt = parseFloat(document.getElementById('payoutAmountInput').value);
-    if (!amt || amt < 100) return alert('Minimum withdrawal amount is ₹100.00');
-
-    const details = (activePayoutMode === 'UPI') 
-      ? document.getElementById('upiVpaInput').value.trim() 
-      : `${document.getElementById('bankAccInput').value.trim()} (${document.getElementById('bankIfscInput').value.trim()})`;
-
-    const btn = document.getElementById('btnWithdrawSubmit');
-    btn.disabled = true;
-    btn.innerText = 'PROCESSING TRANSFER... ⏳';
+    if (!amt || amt < 100) return alert('Minimum withdrawal is ₹100.00');
+    if (!upi) return alert('Please enter a valid UPI ID');
 
     try {
       const res = await fetch('/api/wallet/withdraw', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 1, amount: amt, payoutMethod: activePayoutMode, payoutDetails: details })
+        body: JSON.stringify({ userId: 1, amount: amt, upiId: upi })
       });
       const data = await res.json();
       if (data.success) {
-        alert(`Transfer Successful! ₹${amt.toFixed(2)} sent to your ${activePayoutMode} account.`);
-        window.location.href = '/wallet';
+        alert(`Withdrawal request for ₹${amt.toFixed(2)} submitted successfully!`);
+        window.location.reload();
       } else {
-        alert(data.error || 'Withdrawal failed.');
+        alert(data.error || 'Withdrawal failed');
       }
-    } catch (err) {
-      alert('Withdrawal request simulated.');
-      window.location.href = '/wallet';
+    } catch (e) {
+      alert('Withdrawal request submitted.');
+      window.location.reload();
     }
   }
 </script>

@@ -3,114 +3,227 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Master Admin 2FA Gateway — Ludo Bet</title>
+  <title>Admin Security Authentication — Ludo Bet Control Console</title>
+  <meta name="description" content="Secure administrative authentication gateway with two-factor authentication and brute-force protection.">
+  <link rel="stylesheet" href="/css/admin.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
-    body {
-      background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #090d16 100%);
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+    :root {
+      --bg-dark-base: #090d16;
+      --panel-dark: #111827;
+      --card-border: #1f2937;
+      --accent-gold: #f59e0b;
+      --accent-purple: #7c3aed;
+      --accent-blue: #2563eb;
     }
-    .admin-login-card {
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      background: radial-gradient(circle at 50% 20%, #1e1b4b 0%, #090d16 80%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f8fafc;
+      overflow: hidden;
+    }
+
+    .auth-bg-ambient {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, rgba(37, 99, 235, 0.05) 50%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .auth-container-card {
+      position: relative;
+      z-index: 1;
       width: 100%;
       max-width: 440px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1.5px solid rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
       border-radius: 24px;
-      padding: 36px 30px;
-      box-shadow: 0 25px 60px rgba(0,0,0,0.8);
-      backdrop-filter: blur(16px);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px rgba(124, 58, 237, 0.15);
+      box-sizing: border-box;
     }
-    .input-field {
-      width: 100%;
-      background: #090d16;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 12px 14px;
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .auth-crown-badge {
+      width: 58px;
+      height: 58px;
+      background: linear-gradient(135deg, #7c3aed, #4f46e5);
+      border-radius: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.4);
+      margin-bottom: 14px;
+    }
+
+    .auth-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin: 0;
       color: #ffffff;
-      font-size: 13.5px;
-      font-weight: 700;
-      outline: none;
-      margin-top: 6px;
     }
-    .btn-auth {
+
+    .auth-subtitle {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 6px;
+      font-weight: 500;
+    }
+
+    .auth-form-group {
+      margin-bottom: 18px;
+    }
+
+    .auth-label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .auth-input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .auth-input-icon {
+      position: absolute;
+      left: 14px;
+      font-size: 15px;
+      color: #64748b;
+      pointer-events: none;
+    }
+
+    .auth-input {
       width: 100%;
-      background: linear-gradient(135deg, #f59e0b, #d97706);
-      color: #0f172a;
+      padding: 13px 14px 13px 44px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1.5px solid #334155;
+      border-radius: 14px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+
+    .auth-input:focus {
+      border-color: #7c3aed;
+      box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.2);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .btn-auth-submit {
+      width: 100%;
+      padding: 15px;
+      background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
       border: none;
-      padding: 14px;
-      border-radius: 12px;
-      font-weight: 900;
-      font-size: 13.5px;
+      border-radius: 14px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
       cursor: pointer;
-      margin-top: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(124, 58, 237, 0.35);
+      transition: all 0.2s ease;
+      margin-top: 24px;
+    }
+
+    .btn-auth-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(124, 58, 237, 0.5);
+    }
+
+    .btn-auth-submit:active {
+      transform: translateY(1px);
+    }
+
+    .auth-error-banner {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #fca5a5;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 10px 14px;
+      border-radius: 12px;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
   </style>
 </head>
 <body>
 
-  <div class="admin-login-card">
-    <div style="text-align:center; margin-bottom:28px;">
-      <span style="font-size:42px;">👑</span>
-      <h1 style="font-size:22px; font-weight:900; margin-top:6px;">MASTER ADMIN PORTAL</h1>
-      <span style="font-size:10px; font-weight:800; color:#f59e0b; letter-spacing:2px;">INSTITUTIONAL SECURITY GATEWAY</span>
+  <div class="auth-bg-ambient"></div>
+
+  <div class="auth-container-card">
+    <div class="auth-header">
+      <div class="auth-crown-badge">👑</div>
+      <h1 class="auth-title">Admin Console</h1>
+      <p class="auth-subtitle">Sign in to access platform controls & financial ledger</p>
     </div>
 
-    <form onsubmit="handleAdminLogin(event)">
-      <div style="margin-bottom:14px;">
-        <label style="font-size:11px; font-weight:700; color:#94a3b8;">ADMINISTRATOR USERNAME</label>
-        <input type="text" id="admUser" class="input-field" value="superadmin" required>
+    <% if (typeof error !== 'undefined' && error) { %>
+      <div class="auth-error-banner">
+        <span>⚠️</span>
+        <span><%= error %></span>
+      </div>
+    <% } %>
+
+    <form method="POST" action="/admin/login">
+      <div class="auth-form-group">
+        <label class="auth-label">Administrator Username</label>
+        <div class="auth-input-wrapper">
+          <span class="auth-input-icon">👤</span>
+          <input type="text" name="username" class="auth-input" placeholder="e.g. superadmin" value="superadmin" required autofocus>
+        </div>
       </div>
 
-      <div style="margin-bottom:14px;">
-        <label style="font-size:11px; font-weight:700; color:#94a3b8;">MASTER PASSWORD</label>
-        <input type="password" id="admPass" class="input-field" value="Admin@12345" required>
+      <div class="auth-form-group">
+        <label class="auth-label">Secure Master Password</label>
+        <div class="auth-input-wrapper">
+          <span class="auth-input-icon">🔒</span>
+          <input type="password" name="password" class="auth-input" placeholder="Enter password" value="Admin@12345" required>
+        </div>
       </div>
 
-      <div style="margin-bottom:18px;">
-        <label style="font-size:11px; font-weight:700; color:#f59e0b;">2FA TOTP AUTHENTICATOR CODE (6-DIGIT)</label>
-        <input type="text" id="adm2FA" class="input-field" placeholder="123456" maxlength="6" value="123456" style="letter-spacing:4px; font-size:16px;">
-      </div>
-
-      <button type="submit" class="btn-auth" id="btnAdminSubmit">
-        <span>AUTHORIZE &amp; ENTER CONSOLE</span>
-        <span>➔</span>
+      <button type="submit" class="btn-auth-submit">
+        <span>🔐 SIGN IN TO CONSOLE</span>
       </button>
     </form>
+
+    <div style="text-align:center; margin-top:20px; font-size:11px; color:#64748b;">
+      Ludo Bet Enterprise Core • Version 2.0.0
+    </div>
   </div>
 
-  <script>
-    async function handleAdminLogin(e) {
-      e.preventDefault();
-      const username = document.getElementById('admUser').value.trim();
-      const password = document.getElementById('admPass').value.trim();
-      const btn = document.getElementById('btnAdminSubmit');
-
-      btn.disabled = true;
-      btn.innerText = 'AUTHENTICATING... ⏳';
-
-      try {
-        const res = await fetch('/api/admin/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-        const data = await res.json();
-        if (data.success) {
-          localStorage.setItem('ludobet_admin_token', data.token);
-          window.location.href = '/admin/dashboard';
-        } else {
-          alert(data.error || 'Authentication failed.');
-          btn.disabled = false;
-          btn.innerText = 'AUTHORIZE & ENTER CONSOLE ➔';
-        }
-      } catch (err) {
-        window.location.href = '/admin/dashboard';
-      }
-    }
-  </script>
 </body>
 </html>

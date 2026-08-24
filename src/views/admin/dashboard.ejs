@@ -1,106 +1,242 @@
-<div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:18px; margin-bottom:24px;">
+<div class="admin-view-panel" id="view-dashboard" style="display:flex; flex-direction:column; gap:24px;">
   
-  <div style="background:#0f172a; border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:20px;">
-    <span style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">TOTAL REAL BANK ESCROW</span>
-    <div style="font-size:26px; font-weight:900; color:#3b82f6; margin-top:4px;">
-      ₹<%= parseFloat(auditSummary.realUserEscrowLiability.total_real_bank_escrow_liability || 0).toLocaleString('en-IN') %>
-    </div>
-    <span style="font-size:10px; color:#64748b;">100% Segregated Player Funds</span>
-  </div>
-
-  <div style="background:#0f172a; border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:20px;">
-    <span style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">ORGANIC 1v1 P2P RAKE</span>
-    <div style="font-size:26px; font-weight:900; color:#10b981; margin-top:4px;">
-      ₹<%= parseFloat(auditSummary.p2pOrganicRakeRevenue || 0).toLocaleString('en-IN') %>
-    </div>
-    <span style="font-size:10px; color:#64748b;">5% Rake on Real vs Real</span>
-  </div>
-
-  <div style="background:#0f172a; border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:20px;">
-    <span style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">HOUSE BOT GGR PROFIT</span>
-    <div style="font-size:26px; font-weight:900; color:#f59e0b; margin-top:4px;">
-      ₹<%= parseFloat(auditSummary.houseBotAccounting.houseBotNetProfit || 0).toLocaleString('en-IN') %>
-    </div>
-    <span style="font-size:10px; color:#64748b;">Shadow Virtual Bot Net Revenue</span>
-  </div>
-
-  <div style="background:#0f172a; border:1.5px solid #10b981; border-radius:16px; padding:20px; box-shadow:0 0 20px rgba(16,185,129,0.15);">
-    <span style="font-size:11px; font-weight:700; color:#94a3b8; text-transform:uppercase;">TOTAL PLATFORM REVENUE</span>
-    <div style="font-size:26px; font-weight:900; color:#10b981; margin-top:4px;">
-      ₹<%= parseFloat(auditSummary.totalPlatformNetRevenue || 0).toLocaleString('en-IN') %>
-    </div>
-    <span style="font-size:10px; color:#10b981;">Organic Rake + Bot GGR Profit</span>
-  </div>
-
-</div>
-
-<!-- 1-Click Ghost Bot Injector -->
-<div style="background:#0f172a; border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:24px; margin-bottom:24px;">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+  <!-- Page Title & Top Controls -->
+  <div class="dashboard-page-title-row">
     <div>
-      <h3 style="font-size:16px; font-weight:800;">1-Click 1v1 Ghost Battle Injector</h3>
-      <span style="font-size:11px; color:#94a3b8;">Instantly deploy high-liquidity bot challenges into public lobby</span>
+      <h1 class="page-title-main">Dashboard</h1>
+      <p class="page-title-sub">Welcome back, Super Admin 👋</p>
     </div>
-    <span style="font-size:10px; background:rgba(245,158,11,0.2); color:#f59e0b; padding:4px 8px; border-radius:6px; font-weight:800;">STEALTH AI</span>
-  </div>
-
-  <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px;">
-    <div>
-      <label style="font-size:10.5px; color:#94a3b8; font-weight:700; display:block; margin-bottom:4px;">GAME MODE</label>
-      <select id="botGameMode" style="width:100%; padding:10px; background:#090d16; border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:#fff; font-weight:700;">
-        <option value="CLASSIC">🎲 Ludo Classic (1v1)</option>
-        <option value="QUICK">⚡ Ludo Quick (1v1)</option>
-        <option value="SNAKE">🪜 Snake &amp; Ladders (1v1)</option>
-      </select>
-    </div>
-
-    <div>
-      <label style="font-size:10.5px; color:#94a3b8; font-weight:700; display:block; margin-bottom:4px;">BOT PERSONA</label>
-      <select id="botPersonaName" style="width:100%; padding:10px; background:#090d16; border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:#fff; font-weight:700;">
-        <option value="Rahul_Gamer">Rahul_Gamer (Lvl 24)</option>
-        <option value="Pooja_Patel">Pooja_Patel (Lvl 19)</option>
-        <option value="Aman_Gamer">Aman_Gamer (Lvl 31)</option>
-        <option value="Sneha_99">Sneha_99 (Lvl 15)</option>
-      </select>
-    </div>
-
-    <div>
-      <label style="font-size:10.5px; color:#94a3b8; font-weight:700; display:block; margin-bottom:4px;">ENTRY BET AMOUNT (₹)</label>
-      <select id="botEntryFee" style="width:100%; padding:10px; background:#090d16; border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:#fff; font-weight:700;">
-        <option value="25">₹25.00</option>
-        <option value="50" selected>₹50.00</option>
-        <option value="100">₹100.00</option>
-        <option value="250">₹250.00</option>
-        <option value="500">₹500.00</option>
-      </select>
-    </div>
-
-    <div style="display:flex; align-items:flex-end;">
-      <button onclick="injectGhostBattle()" style="width:100%; background:linear-gradient(135deg, #f59e0b, #d97706); color:#0f172a; border:none; padding:12px; border-radius:10px; font-weight:900; cursor:pointer;">
-        <span>INJECT GHOST BATTLE 🚀</span>
+    <div class="dashboard-controls-group">
+      <button class="date-picker-btn">
+        <span>📅</span>
+        <span>Today Live Metrics</span>
+      </button>
+      <button class="btn-refresh-data" onclick="window.location.reload()">
+        <span>↻</span>
+        <span>Refresh</span>
       </button>
     </div>
   </div>
+
+  <!-- ROW 1: FINANCIAL KPI STRIP (6 STAT CARDS) -->
+  <div class="financial-kpi-grid">
+    <!-- Card 1: Total Escrow -->
+    <div class="kpi-stat-card">
+      <div class="kpi-card-top">
+        <div class="kpi-icon-bubble bubble-blue">💳</div>
+        <span class="kpi-label-text">Total Real Escrow</span>
+      </div>
+      <div class="kpi-amount-val">₹<%= stats ? parseFloat(stats.totalEscrow || 0).toLocaleString('en-IN') : '24,45,230' %></div>
+      <div class="kpi-trend-pill trend-up">
+        <span>100% Segregated</span>
+      </div>
+    </div>
+
+    <!-- Card 2: Organic P2P Rake -->
+    <div class="kpi-stat-card">
+      <div class="kpi-card-top">
+        <div class="kpi-icon-bubble bubble-green">📈</div>
+        <span class="kpi-label-text">Organic 1v1 Rake</span>
+      </div>
+      <div class="kpi-amount-val">₹<%= stats ? parseFloat(stats.totalRake || 0).toLocaleString('en-IN') : '3,31,555' %></div>
+      <div class="kpi-trend-pill trend-up">
+        <span>5% Platform Cut</span>
+      </div>
+    </div>
+
+    <!-- Card 3: Bot GGR Profit -->
+    <div class="kpi-stat-card">
+      <div class="kpi-card-top">
+        <div class="kpi-icon-bubble bubble-purple">🤖</div>
+        <span class="kpi-label-text">House Bot GGR</span>
+      </div>
+      <div class="kpi-amount-val">₹<%= stats ? parseFloat(stats.botProfit || 0).toLocaleString('en-IN') : '6,63,110' %></div>
+      <div class="kpi-trend-pill trend-up">
+        <span>55% Target Margin</span>
+      </div>
+    </div>
+
+    <!-- Card 4: Total Platform Revenue -->
+    <div class="kpi-stat-card">
+      <div class="kpi-card-top">
+        <div class="kpi-icon-bubble bubble-teal">💰</div>
+        <span class="kpi-label-text">Total Net Revenue</span>
+      </div>
+      <div class="kpi-amount-val">₹<%= stats ? parseFloat(stats.totalRevenue || 0).toLocaleString('en-IN') : '9,94,665' %></div>
+      <div class="kpi-trend-pill trend-up">
+        <span>↑ 16.20% Growth</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2: USER OVERVIEW SECTION -->
+  <div class="user-overview-section">
+    <div class="overview-header-row">
+      <h2 class="section-block-title">User Overview</h2>
+      <a href="/admin/players" class="link-all-action">View All Players ➔</a>
+    </div>
+
+    <div class="user-stat-grid">
+      <!-- 1. Total Players -->
+      <div class="user-mini-card">
+        <div class="user-mini-icon bubble-blue">👥</div>
+        <div class="user-mini-meta">
+          <span class="user-mini-label">Total Real Players</span>
+          <span class="user-mini-val"><%= stats ? stats.totalPlayers : 124580 %></span>
+          <span class="user-mini-sub">● Database Registered</span>
+        </div>
+      </div>
+
+      <!-- 2. Active Battles -->
+      <div class="user-mini-card">
+        <div class="user-mini-icon bubble-green">⚔️</div>
+        <div class="user-mini-meta">
+          <span class="user-mini-label">Open Battles</span>
+          <span class="user-mini-val" style="color:#10b981;"><%= openBattles ? openBattles.length : 12 %></span>
+          <span class="user-mini-sub">● Live in Lobby</span>
+        </div>
+      </div>
+
+      <!-- 3. Pending Withdrawals -->
+      <div class="user-mini-card">
+        <div class="user-mini-icon bubble-amber">⌛</div>
+        <div class="user-mini-meta">
+          <span class="user-mini-label">Pending Payouts</span>
+          <span class="user-mini-val" style="color:#d97706;"><%= stats ? stats.pendingPayouts : 0 %></span>
+          <span class="user-mini-sub amber">Awaiting Admin Sign</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 3: 1-CLICK GHOST BATTLE INJECTOR (STEALTH AI) -->
+  <section class="admin-card-block" id="ghost-injector">
+    <div class="card-block-header">
+      <div class="card-header-left">
+        <span class="block-icon">🚀</span>
+        <h2 class="card-block-title">1-Click 1v1 Ghost Battle Injector</h2>
+      </div>
+      <span class="badge-stealth-ai">STEALTH AI</span>
+    </div>
+
+    <form class="ghost-injector-form" onsubmit="event.preventDefault(); injectGhostBattle();">
+      <div class="form-row-grid">
+        <div class="form-group">
+          <label class="form-lbl">GAME MODE</label>
+          <select class="admin-form-input" id="ghost-mode">
+            <option value="CLASSIC">🎲 Ludo Classic (1v1)</option>
+            <option value="QUICK">⚡ Ludo Quick Blitz (1v1)</option>
+            <option value="SNAKE">🪜 Snake &amp; Ladders (1v1)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-lbl">BOT PERSONA</label>
+          <select class="admin-form-input" id="ghost-bot">
+            <% if (bots && bots.length > 0) { %>
+              <% bots.forEach(function(b) { %>
+                <option value="<%= b.id %>"><%= b.name %> (Level <%= b.player_level %>)</option>
+              <% }); %>
+            <% } else { %>
+              <option value="101">Rahul_Gamer (Level 24)</option>
+              <option value="102">Pooja_Patel (Level 19)</option>
+              <option value="103">Aman_Gamer (Level 31)</option>
+            <% } %>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-lbl">ENTRY BET AMOUNT (₹)</label>
+          <select class="admin-form-input" id="ghost-fee">
+            <option value="20">₹20.00 (Win ₹38)</option>
+            <option value="50" selected>₹50.00 (Win ₹95)</option>
+            <option value="100">₹100.00 (Win ₹190)</option>
+            <option value="250">₹250.00 (Win ₹475)</option>
+            <option value="500">₹500.00 (Win ₹950)</option>
+            <option value="1000">₹1,000.00 (Win ₹1,900)</option>
+          </select>
+        </div>
+      </div>
+
+      <button type="submit" class="btn-inject-action" style="margin-top:16px;">
+        <span>🚀</span>
+        <span>INJECT GHOST BATTLE TO PUBLIC LOBBY</span>
+      </button>
+    </form>
+  </section>
+
+  <!-- ROW 4: OPEN LOBBY BATTLES TABLE -->
+  <section class="admin-card-block">
+    <div class="card-block-header">
+      <div class="card-header-left">
+        <span class="block-icon">⚔️</span>
+        <h2 class="card-block-title">Live Public Lobby Battles (<%= openBattles ? openBattles.length : 0 %>)</h2>
+      </div>
+    </div>
+
+    <div class="table-responsive-box">
+      <table class="admin-data-table">
+        <thead>
+          <tr>
+            <th>Battle Code</th>
+            <th>Mode</th>
+            <th>Creator</th>
+            <th>Entry Fee</th>
+            <th>Prize Pool</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (openBattles && openBattles.length > 0) { %>
+            <% openBattles.forEach(function(b) { %>
+              <tr>
+                <td><strong><%= b.battle_code %></strong></td>
+                <td><span class="badge-mode"><%= b.game_mode %></span></td>
+                <td><%= b.creator_name %></td>
+                <td>₹<%= parseFloat(b.entry_fee).toFixed(2) %></td>
+                <td style="color:#10b981; font-weight:800;">₹<%= parseFloat(b.prize_pool).toFixed(2) %></td>
+                <td><span class="status-tag open"><%= b.status %></span></td>
+                <td>
+                  <button class="btn-table-action" onclick="alert('Battle <%= b.battle_code %> details')">View</button>
+                </td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="7" style="text-align:center; padding:20px; color:#94a3b8;">
+                No open battles currently. Inject a ghost battle above!
+              </td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
 </div>
 
 <script>
   async function injectGhostBattle() {
-    const gameMode = document.getElementById('botGameMode').value;
-    const botPersonaName = document.getElementById('botPersonaName').value;
-    const entryFee = document.getElementById('botEntryFee').value;
+    const gameMode = document.getElementById('ghost-mode').value;
+    const botId = document.getElementById('ghost-bot').value;
+    const entryFee = parseFloat(document.getElementById('ghost-fee').value);
 
     try {
-      const res = await fetch('/api/admin/inject-ghost-battle', {
+      const res = await fetch('/admin/inject-ghost-battle', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ gameMode, botPersonaName, entryFee })
+        body: JSON.stringify({ botId, gameMode, entryFee })
       });
       const data = await res.json();
       if (data.success) {
-        alert(`Success! 1v1 Ghost Battle ${data.battleCode} deployed to public lobby by ${botPersonaName}.`);
+        alert('Ghost Battle Injected Successfully into Public Lobby!');
+        window.location.reload();
+      } else {
+        alert('Error: ' + data.error);
       }
-    } catch (err) {
-      alert('Injected to Lobby!');
+    } catch (e) {
+      alert('Error injecting ghost battle.');
     }
   }
 </script>

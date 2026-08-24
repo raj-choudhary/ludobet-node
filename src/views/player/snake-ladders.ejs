@@ -1,135 +1,138 @@
-<link rel="stylesheet" href="/css/snake-gameplay.css">
+<link rel="stylesheet" href="/css/classic-battle.css">
 
-<div class="classic-arena-container">
+<!-- 2. SUB-HEADER WITH BACK BUTTON & TITLE -->
+<div class="sub-header-bar">
+  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
+    ←
+  </button>
+  <div class="page-title-group">
+    <div class="ludo-classic-title">
+      <span class="title-l" style="color:#2e7d32;">SNAKE</span>
+      <span class="title-classic" style="color:#1b5e20;">&amp; LADDERS</span>
+    </div>
+    <div class="page-subtitle">1-100 Duel • First to Cell 100 Wins Cash</div>
+  </div>
+</div>
+
+<!-- 3. "CREATE BATTLE" MAIN CARD -->
+<section class="create-battle-card">
+  <div class="create-battle-badge" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);">1-100 DUEL</div>
   
-  <!-- Arena Header -->
-  <div class="arena-header-banner" style="background:linear-gradient(135deg, #064e3b, #047857);">
-    <div class="ah-info">
-      <span class="ah-mode-tag" style="background:rgba(16,185,129,0.2); color:#10b981;">1-100 HAZARD DUEL</span>
-      <h2 class="ah-title">🪜 SNAKES &amp; LADDERS</h2>
-      <p class="ah-sub">Climb Ladders &amp; Dodge Venomous Snakes!</p>
-    </div>
-    <div class="ah-icon-wrap">🪜</div>
+  <!-- 3D Board Artwork -->
+  <img class="create-battle-art-img" src="/assets/card_snake_exact.png" alt="Snake & Ladders Board" style="border-radius:14px; max-height:160px; object-fit:cover; width:100%;">
+  
+  <div class="entry-amount-label">Entry Amount (₹)</div>
+  
+  <div class="amount-input-wrapper">
+    <span class="currency-symbol">₹</span>
+    <input type="number" class="amount-input" id="create-entry-amount" value="50" min="10" max="10000" step="10">
   </div>
 
-  <!-- Create Challenge Action Box -->
-  <div class="create-challenge-card">
-    <div class="ccc-header">
-      <span class="ccc-title">CREATE SNAKE &amp; LADDERS MATCH</span>
-      <span class="ccc-live-tag" style="color:#10b981;">● 1v1 DUEL</span>
-    </div>
-
-    <div class="chip-amount-row">
-      <button class="chip-val-btn" onclick="setSnakeFee(25)">₹25</button>
-      <button class="chip-val-btn active" onclick="setSnakeFee(50)">₹50</button>
-      <button class="chip-val-btn" onclick="setSnakeFee(100)">₹100</button>
-      <button class="chip-val-btn" onclick="setSnakeFee(250)">₹250</button>
-    </div>
-
-    <div class="prize-payout-preview">
-      <span class="pp-label">WINNER TAKES ALL:</span>
-      <strong class="pp-amount" id="previewSnakePrize">₹95.00</strong>
-      <span class="pp-rake-note">(5% Rake)</span>
-    </div>
-
-    <button class="btn-deploy-match" id="btnCreateSnake" style="background:linear-gradient(135deg, #10b981, #059669);" onclick="executeCreateSnake()">
-      <span>DEPLOY SNAKE CHALLENGE</span>
-      <span>🪜</span>
-    </button>
+  <!-- Preset Quick Chips -->
+  <div class="amount-presets">
+    <button class="preset-chip-btn" onclick="setPresetAmount(10, this)">₹10</button>
+    <button class="preset-chip-btn" onclick="setPresetAmount(20, this)">₹20</button>
+    <button class="preset-chip-btn active" onclick="setPresetAmount(50, this)">₹50</button>
+    <button class="preset-chip-btn" onclick="setPresetAmount(100, this)">₹100</button>
+    <button class="preset-chip-btn" onclick="setPresetAmount(200, this)">₹200</button>
   </div>
 
-  <!-- Open Battles Feed -->
-  <div class="open-battles-section">
-    <div class="obs-header">
-      <h3 class="obs-title">OPEN SNAKE DUELS (<%= openBattles.length %>)</h3>
-    </div>
+  <button class="btn-create-battle" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);" onclick="executeCreateBattleFlow()">CREATE SNAKE BATTLE</button>
+</section>
 
-    <div class="battles-feed-list">
-      <% if (openBattles && openBattles.length > 0) { %>
-        <% openBattles.forEach(function(b) { %>
-          <div class="battle-card-item">
-            <div class="bci-player">
-              <div class="bci-avatar" style="background:#10b981;">🪜</div>
-              <div class="bci-meta">
-                <strong class="bci-name"><%= b.creator_name %></strong>
-                <span class="bci-mode" style="color:#10b981;">1v1 SNAKE</span>
-              </div>
-            </div>
-            <div class="bci-pricing">
-              <span class="bci-fee">Entry: ₹<%= parseFloat(b.entry_fee).toFixed(0) %></span>
-              <strong class="bci-prize" style="color:#10b981;">Win: ₹<%= parseFloat(b.prize_pool).toFixed(0) %></strong>
-            </div>
-            <button class="btn-accept-battle" style="background:#10b981;" onclick="acceptBattle(<%= b.id %>)">
-              ACCEPT
-            </button>
+<!-- 5. BATTLE LIST TABS -->
+<div class="battle-tabs-container">
+  <button class="battle-tab-btn active" id="tab-open-battles">
+    OPEN SNAKE DUELS (<%= openBattles.length %>)
+  </button>
+  <button class="battle-tab-btn" id="tab-running-battles">
+    RUNNING <span class="badge-live-pulse">● LIVE</span>
+  </button>
+</div>
+
+<!-- 7. OPEN BATTLES LIST CONTAINER -->
+<div class="battles-list" id="battles-list-container">
+  <% if (openBattles && openBattles.length > 0) { %>
+    <% openBattles.forEach(function(b) { %>
+      <div class="battle-card-item">
+        <div class="bci-player">
+          <div class="bci-avatar" style="background:#2e7d32;">🪜</div>
+          <div class="bci-meta">
+            <strong class="bci-name"><%= b.creator_name %></strong>
+            <span class="bci-mode">1v1 SNAKE</span>
           </div>
-        <% }); %>
-      <% } else { %>
-        <div class="battle-card-item">
-          <div class="bci-player">
-            <div class="bci-avatar" style="background:#10b981;">🪜</div>
-            <div class="bci-meta">
-              <strong class="bci-name">Aman_Gamer</strong>
-              <span class="bci-mode" style="color:#10b981;">1v1 SNAKE</span>
-            </div>
-          </div>
-          <div class="bci-pricing">
-            <span class="bci-fee">Entry: ₹50</span>
-            <strong class="bci-prize" style="color:#10b981;">Win: ₹95</strong>
-          </div>
-          <button class="btn-accept-battle" style="background:#10b981;" onclick="alert('Entering Snake Duel Arena...')">
-            ACCEPT
-          </button>
         </div>
-      <% } %>
+        <div class="bci-pricing">
+          <span class="bci-fee">Entry: ₹<%= parseFloat(b.entry_fee).toFixed(0) %></span>
+          <strong class="bci-prize">Win: ₹<%= parseFloat(b.prize_pool).toFixed(0) %></strong>
+        </div>
+        <button class="btn-accept-battle" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);" onclick="joinMatchAction(<%= b.id %>)">
+          ACCEPT
+        </button>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <div class="battle-card-item">
+      <div class="bci-player">
+        <div class="bci-avatar" style="background:#2e7d32;">🪜</div>
+        <div class="bci-meta">
+          <strong class="bci-name">Rohit_King</strong>
+          <span class="bci-mode">1v1 SNAKE &amp; LADDERS</span>
+        </div>
+      </div>
+      <div class="bci-pricing">
+        <span class="bci-fee">Entry: ₹50</span>
+        <strong class="bci-prize">Win: ₹95</strong>
+      </div>
+      <button class="btn-accept-battle" style="background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%);" onclick="alert('Joining Snake & Ladders Duel...')">
+        ACCEPT
+      </button>
     </div>
-  </div>
-
+  <% } %>
 </div>
 
 <script>
-  let snakeFee = 50;
-
-  function setSnakeFee(fee) {
-    snakeFee = fee;
-    const prize = (fee * 2) - (fee * 2 * 0.05);
-    document.getElementById('previewSnakePrize').innerText = `₹${prize.toFixed(2)}`;
-    document.querySelectorAll('.chip-val-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+  function setPresetAmount(amt, elem) {
+    document.getElementById('create-entry-amount').value = amt;
+    document.querySelectorAll('.preset-chip-btn').forEach(b => b.classList.remove('active'));
+    if (elem) elem.classList.add('active');
   }
 
-  async function executeCreateSnake() {
+  async function executeCreateBattleFlow() {
+    const amt = parseFloat(document.getElementById('create-entry-amount').value);
+    if (!amt || amt < 10) return alert('Minimum battle entry is ₹10.00');
+
     try {
       const res = await fetch('/api/battles/create', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 1, gameMode: 'SNAKE', entryFee: snakeFee })
+        body: JSON.stringify({ userId: 1, gameMode: 'SNAKE', entryFee: amt })
       });
       const data = await res.json();
       if (data.success) {
-        alert('Snake & Ladders Challenge Deployed!');
+        alert('1v1 Snake Duel Deployed to Lobby!');
         window.location.reload();
       }
-    } catch (err) {
-      alert('Challenge Deployed!');
+    } catch (e) {
+      alert('Battle Deployed!');
       window.location.reload();
     }
   }
 
-  async function acceptBattle(battleId) {
+  async function joinMatchAction(id) {
     try {
       const res = await fetch('/api/battles/join', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userId: 1, battleId })
+        body: JSON.stringify({ userId: 1, battleId: id })
       });
       const data = await res.json();
       if (data.success) {
-        alert('Snake Match Joined!');
+        alert('Match Joined! Launching Snake Board...');
         window.location.reload();
       }
-    } catch (err) {
-      alert('Entering Snake Arena...');
+    } catch (e) {
+      alert('Entering Snake Duel...');
     }
   }
 </script>

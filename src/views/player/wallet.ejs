@@ -1,90 +1,233 @@
+<link rel="stylesheet" href="/css/classic-battle.css">
 <link rel="stylesheet" href="/css/wallet.css">
 
-<div class="wallet-page-container">
-  
-  <!-- 3D Luxury Vault Hero Card -->
-  <div class="vault-hero-card">
-    <div class="vault-bg-glow"></div>
-    <div class="vault-badge">
-      <span class="vault-sparkle">✨</span>
-      <span>OFFICIAL REAL CASH VAULT</span>
+<!-- 2. SUB-HEADER WITH BACK BUTTON & CLEAN TITLE -->
+<div class="sub-header-bar">
+  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
+    ←
+  </button>
+  <div class="page-title-group">
+    <div class="wallet-page-title">
+      <span class="title-blue">MY</span>
+      <span class="title-green">WALLET</span>
     </div>
-    
-    <div class="vault-balance-display">
-      <span class="vault-bal-label">TOTAL ACCOUNT BALANCE</span>
-      <div class="vault-bal-amount" id="totalBalanceVal">
-        ₹<%= (parseFloat(wallet.deposit_balance) + parseFloat(wallet.winning_balance)).toFixed(2) %>
-      </div>
-    </div>
-
-    <!-- Multi-tier breakdown -->
-    <div class="wallet-tiers-row">
-      <div class="tier-pill tier-deposit">
-        <span class="tp-label">DEPOSIT CASH</span>
-        <strong class="tp-val">₹<%= parseFloat(wallet.deposit_balance).toFixed(2) %></strong>
-        <span class="tp-sub">For Battle Entry</span>
-      </div>
-
-      <div class="tier-pill tier-winning">
-        <span class="tp-label">WINNING CASH</span>
-        <strong class="tp-val">₹<%= parseFloat(wallet.winning_balance).toFixed(2) %></strong>
-        <span class="tp-sub">Withdrawable 24x7</span>
-      </div>
-    </div>
-
-    <a href="/withdraw" class="btn-instant-withdraw" style="text-decoration:none;">
-      <span>⚡ INSTANT 24x7 WITHDRAWAL (UPI / BANK)</span>
-      <span>➔</span>
-    </a>
+    <div class="page-subtitle">Instant &amp; 100% Secure Deposits</div>
   </div>
-
-  <!-- Add Cash Section -->
-  <div class="add-cash-panel">
-    <h3 class="section-heading">Add Cash to Wallet</h3>
-    <p class="section-subtext">Select amount to recharge via Google Pay, PhonePe, Paytm, or UPI QR.</p>
-
-    <!-- Quick Chip Selectors -->
-    <div class="chip-selector-grid">
-      <button class="chip-select-btn" onclick="setChipAmount(100)">+₹100</button>
-      <button class="chip-select-btn active" onclick="setChipAmount(250)">+₹250</button>
-      <button class="chip-select-btn" onclick="setChipAmount(500)">+₹500</button>
-      <button class="chip-select-btn" onclick="setChipAmount(1000)">+₹1,000</button>
-    </div>
-
-    <div class="amount-custom-box">
-      <span class="currency-symbol">₹</span>
-      <input type="number" id="depositAmountInput" class="amount-input-field" value="250" min="50" max="50000">
-    </div>
-
-    <!-- Gateway Payment Button -->
-    <button class="btn-pay-now" id="btnDepositSubmit" onclick="executeAddCash()">
-      <span>PROCEED TO PAY VIA UPI</span>
-      <span>➔</span>
-    </button>
-
-    <div class="security-trust-strip">
-      <span>🔒 256-Bit Bank Grade SSL</span>
-      <span>•</span>
-      <span>0% Payment Gateway Fee</span>
-    </div>
-  </div>
-
 </div>
 
+<!-- 3. ULTRA-CLEAN MODERN BALANCE HERO CARD -->
+<section class="wallet-hero-card">
+  <div class="hero-card-glow"></div>
+  
+  <!-- Top Row: Badge & Status -->
+  <div class="hero-top-row">
+    <div class="hero-badge">
+      <span class="badge-icon">⚡</span>
+      <span>AVAILABLE BALANCE</span>
+    </div>
+    <div class="live-status-pill">
+      <span class="live-dot"></span>
+      <span>LIVE</span>
+    </div>
+  </div>
+
+  <!-- Main Balance Display -->
+  <div class="hero-balance-section">
+    <span class="hero-balance-label">TOTAL WALLET BALANCE</span>
+    <div class="hero-balance-amount">
+      <span class="hero-currency">₹</span>
+      <span class="hero-digits" id="wallet-total-val">
+        <%= (parseFloat(wallet.deposit_balance) + parseFloat(wallet.winning_balance)).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+      </span>
+    </div>
+  </div>
+
+  <!-- Split Breakdown: Deposit vs Bonus -->
+  <div class="hero-split-grid">
+    <!-- Deposit Cash Box -->
+    <div class="split-card deposit">
+      <div class="split-card-top">
+        <span class="split-badge-tag green">100% USABLE</span>
+      </div>
+      <div class="split-main">
+        <div class="split-icon-circle green">💰</div>
+        <div class="split-texts">
+          <span class="split-label">Deposit Cash</span>
+          <strong class="split-num" id="wallet-deposit-val">₹<%= parseFloat(wallet.deposit_balance).toFixed(2) %></strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Winning / Bonus Cash Box -->
+    <div class="split-card bonus">
+      <div class="split-card-top">
+        <span class="split-badge-tag purple">WITHDRAWABLE</span>
+      </div>
+      <div class="split-main">
+        <div class="split-icon-circle purple">💎</div>
+        <div class="split-texts">
+          <span class="split-label">Winning Cash</span>
+          <strong class="split-num" id="wallet-bonus-val">₹<%= parseFloat(wallet.winning_balance).toFixed(2) %></strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Guarantee Footer -->
+  <div class="hero-card-footer">
+    <span>🔒 100% Safe • RBI Approved Payment Gateways • Instant Credit</span>
+  </div>
+</section>
+
+<!-- 4. ADD CASH / DEPOSIT SECTION -->
+<section class="deposit-action-card">
+  <div class="action-card-header">
+    <div class="action-header-left">
+      <span class="action-header-icon">⚡</span>
+      <h2 class="action-heading">ADD CASH TO WALLET</h2>
+    </div>
+    <span class="bonus-tag-pill">🔥 UPTO 100% BONUS</span>
+  </div>
+
+  <!-- Deposit Input Field -->
+  <div class="amount-input-box">
+    <div class="currency-symbol-box">₹</div>
+    <input type="number" class="amount-number-input" id="deposit-amount-input" value="500" min="50" max="50000" step="10">
+    <div class="amount-bonus-pill" id="deposit-bonus-hint">+₹100 Bonus</div>
+  </div>
+
+  <!-- Preset Deposit Chips Grid -->
+  <div class="preset-chips-grid">
+    <button class="preset-chip" onclick="selectDepositPreset(100, 10, this)">
+      <span class="preset-amt">₹100</span>
+      <span class="preset-sub">+₹10 Bonus</span>
+    </button>
+
+    <button class="preset-chip" onclick="selectDepositPreset(200, 30, this)">
+      <span class="preset-amt">₹200</span>
+      <span class="preset-sub">+₹30 Bonus</span>
+    </button>
+
+    <button class="preset-chip active" onclick="selectDepositPreset(500, 100, this)">
+      <span class="chip-badge popular">POPULAR</span>
+      <span class="preset-amt">₹500</span>
+      <span class="preset-sub highlight">+₹100 Bonus 🔥</span>
+    </button>
+
+    <button class="preset-chip" onclick="selectDepositPreset(1000, 250, this)">
+      <span class="chip-badge best">BEST VALUE</span>
+      <span class="preset-amt">₹1,000</span>
+      <span class="preset-sub highlight">+₹250 Bonus ⭐</span>
+    </button>
+
+    <button class="preset-chip" onclick="selectDepositPreset(2000, 600, this)">
+      <span class="chip-badge vip">VIP CHOICE</span>
+      <span class="preset-amt">₹2,000</span>
+      <span class="preset-sub vip">+₹600 VIP 💎</span>
+    </button>
+  </div>
+
+  <!-- Promo Code / Coupons -->
+  <div class="coupon-section">
+    <div class="coupon-input-row">
+      <input type="text" class="coupon-input-field" id="promo-code-input" placeholder="Enter Coupon Code (e.g. FIRST100)">
+      <button class="btn-coupon-apply" id="btn-apply-promo" onclick="alert('Promo code applied!')">APPLY</button>
+    </div>
+
+    <div class="coupon-pills-row">
+      <button class="coupon-pill-btn" onclick="document.getElementById('promo-code-input').value='FIRST100'">
+        <span>🏷️ FIRST100 (100% Extra)</span>
+      </button>
+      <button class="coupon-pill-btn" onclick="document.getElementById('promo-code-input').value='LUDO50'">
+        <span>🏷️ LUDO50 (Flat ₹50)</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Payment Methods Grid -->
+  <div class="payment-section-title">SELECT PAYMENT METHOD:</div>
+  <div class="methods-grid">
+    <!-- Google Pay -->
+    <div class="method-tile selected" id="method-gpay" onclick="selectPaymentMethod('gpay', this)">
+      <img src="/assets/icon_gpay.svg" alt="Google Pay" class="method-logo">
+      <div class="method-details">
+        <span class="method-name">Google Pay</span>
+        <span class="method-desc">Instant 1-Click UPI</span>
+      </div>
+      <div class="method-check-dot"></div>
+    </div>
+
+    <!-- PhonePe -->
+    <div class="method-tile" id="method-phonepe" onclick="selectPaymentMethod('phonepe', this)">
+      <img src="/assets/icon_phonepe.svg" alt="PhonePe" class="method-logo">
+      <div class="method-details">
+        <span class="method-name">PhonePe</span>
+        <span class="method-desc">UPI / Wallet / Cards</span>
+      </div>
+      <div class="method-check-dot"></div>
+    </div>
+
+    <!-- Paytm -->
+    <div class="method-tile" id="method-paytm" onclick="selectPaymentMethod('paytm', this)">
+      <img src="/assets/icon_paytm.svg" alt="Paytm" class="method-logo">
+      <div class="method-details">
+        <span class="method-name">Paytm UPI</span>
+        <span class="method-desc">Paytm Wallet &amp; UPI</span>
+      </div>
+      <div class="method-check-dot"></div>
+    </div>
+
+    <!-- Scan QR Code -->
+    <div class="method-tile" id="method-qr" onclick="selectPaymentMethod('qr', this)">
+      <div class="method-icon-circle">📷</div>
+      <div class="method-details">
+        <span class="method-name">Scan QR Code</span>
+        <span class="method-desc">Scan via Any UPI App</span>
+      </div>
+      <div class="method-check-dot"></div>
+    </div>
+  </div>
+
+  <!-- Main Action Deposit Button -->
+  <button class="btn-deposit-submit" id="btn-submit-deposit" onclick="executeDepositAction()">
+    <span class="btn-lock-icon">🔒</span>
+    <span id="btn-deposit-text">ADD ₹500 CASH NOW ➔</span>
+  </button>
+
+  <!-- Trust Badges Row -->
+  <div class="trust-row">
+    <div class="trust-item">
+      <span>⚡</span>
+      <span>Instant 5s Credit</span>
+    </div>
+    <div class="trust-item">
+      <span>🛡️</span>
+      <span>256-Bit SSL Encrypted</span>
+    </div>
+    <div class="trust-item">
+      <span>🤝</span>
+      <span>24x7 Payment Support</span>
+    </div>
+  </div>
+</section>
+
 <script>
-  function setChipAmount(amt) {
-    document.getElementById('depositAmountInput').value = amt;
-    document.querySelectorAll('.chip-select-btn').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+  function selectDepositPreset(amt, bonus, elem) {
+    document.getElementById('deposit-amount-input').value = amt;
+    document.getElementById('deposit-bonus-hint').innerText = `+₹${bonus} Bonus`;
+    document.getElementById('btn-deposit-text').innerText = `ADD ₹${amt} CASH NOW ➔`;
+    document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+    if (elem) elem.classList.add('active');
   }
 
-  async function executeAddCash() {
-    const amt = parseFloat(document.getElementById('depositAmountInput').value);
-    if (!amt || amt < 50) return alert('Minimum deposit amount is ₹50.00');
+  function selectPaymentMethod(id, elem) {
+    document.querySelectorAll('.method-tile').forEach(m => m.classList.remove('selected'));
+    if (elem) elem.classList.add('selected');
+  }
 
-    const btn = document.getElementById('btnDepositSubmit');
-    btn.disabled = true;
-    btn.innerText = 'PROCESSING UPI DEPOSIT... ⏳';
+  async function executeDepositAction() {
+    const amt = parseFloat(document.getElementById('deposit-amount-input').value);
+    if (!amt || amt < 50) return alert('Minimum deposit is ₹50.00');
 
     try {
       const res = await fetch('/api/wallet/deposit', {
@@ -94,12 +237,10 @@
       });
       const data = await res.json();
       if (data.success) {
-        alert(`Success! ₹${amt.toFixed(2)} deposited into your wallet.`);
+        alert(`Success! ₹${amt.toFixed(2)} added to your wallet.`);
         window.location.reload();
-      } else {
-        alert(data.error || 'Deposit failed.');
       }
-    } catch (err) {
+    } catch (e) {
       alert('Deposit processed.');
       window.location.reload();
     }

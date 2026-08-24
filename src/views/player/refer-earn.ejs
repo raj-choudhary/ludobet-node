@@ -1,32 +1,92 @@
+<link rel="stylesheet" href="/css/classic-battle.css">
 <link rel="stylesheet" href="/css/refer-earn.css">
 
-<div class="refer-page-container">
-  
-  <div class="refer-hero-banner">
-    <div class="rf-badge">EARN REAL CASH</div>
-    <h2 class="rf-title">REFER &amp; EARN ₹500</h2>
-    <p class="rf-sub">Get ₹50 for every friend who joins &amp; plays their first 1v1 battle!</p>
-  </div>
-
-  <div class="refer-code-card">
-    <span class="rc-label">YOUR EXCLUSIVE REFERRAL CODE</span>
-    <div class="rc-code-box">
-      <strong class="rc-code"><%= user.referral_code || 'LUDO999' %></strong>
-      <button class="rc-copy-btn" onclick="navigator.clipboard.writeText('<%= user.referral_code || 'LUDO999' %>'); alert('Referral code copied to clipboard!');">
-        COPY
-      </button>
+<!-- 2. SUB-HEADER WITH BACK BUTTON & 3-COLOR TITLE -->
+<div class="sub-header-bar">
+  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
+    ←
+  </button>
+  <div class="page-title-group">
+    <div class="refer-page-title">
+      <span class="title-refer-purple">REFER</span>
+      <span class="title-refer-blue">&amp;</span>
+      <span class="title-refer-gold">EARN</span>
     </div>
+    <div class="page-subtitle">Invite friends &amp; earn unlimited cash forever!</div>
   </div>
-
-  <div class="refer-rewards-grid">
-    <div class="rr-box">
-      <span class="rr-val">₹2,450</span>
-      <span class="rr-lbl">Total Earned</span>
-    </div>
-    <div class="rr-box">
-      <span class="rr-val">49</span>
-      <span class="rr-lbl">Friends Joined</span>
-    </div>
-  </div>
-
 </div>
+
+<!-- 3. HERO 3D REFERRAL SHOWCASE CARD -->
+<section class="refer-hero-card">
+  <div class="refer-badge-top">UNLIMITED EARNINGS</div>
+  
+  <!-- 3D Gift Box Illustration -->
+  <img class="refer-hero-img" src="/assets/refer_hero_3d.png" alt="Refer & Earn 3D Rewards">
+
+  <h1 class="refer-hero-headline">
+    Earn <span class="highlight-green">₹100 Cash</span> + <span class="highlight-gold">5% Lifetime</span> Comm.
+  </h1>
+  <p class="refer-hero-desc">
+    When your friend joins with your code and plays their first battle, you both get cash rewards!
+  </p>
+
+  <!-- Live Referral Summary Stats Bar -->
+  <div class="refer-stats-grid">
+    <div class="refer-stat-cell">
+      <span class="stat-icon">👥</span>
+      <span class="stat-val" id="stat-total-friends">14</span>
+      <span class="stat-label">Friends Joined</span>
+    </div>
+
+    <div class="refer-stat-divider"></div>
+
+    <div class="refer-stat-cell">
+      <span class="stat-icon">💰</span>
+      <span class="stat-val" id="stat-total-earned">₹1,400</span>
+      <span class="stat-label">Total Earned</span>
+    </div>
+
+    <div class="refer-stat-divider"></div>
+
+    <div class="refer-stat-cell">
+      <span class="stat-icon">⚡</span>
+      <span class="stat-val highlight" id="stat-claimable">₹350</span>
+      <span class="stat-label">Claimable</span>
+    </div>
+  </div>
+
+  <!-- Instant Claim Earnings Button -->
+  <button class="btn-claim-earnings" id="btn-claim-rewards" onclick="alert('Claimed ₹350 into your main wallet!')">
+    <span>💎</span>
+    <span>CLAIM EARNINGS (₹350)</span>
+  </button>
+</section>
+
+<!-- 4. YOUR REFERRAL CODE & SHARING BOX -->
+<section class="refer-code-box">
+  <div class="code-box-header">
+    <span class="code-box-title">YOUR EXCLUSIVE REFERRAL CODE</span>
+    <span class="code-bonus-tag">BONUS ACTIVE</span>
+  </div>
+
+  <div class="code-display-row">
+    <div class="code-value-wrapper" onclick="navigator.clipboard.writeText('<%= user.referral_code || 'LUDOBET100' %>'); alert('Copied code!');">
+      <span class="code-text" id="user-referral-code"><%= user.referral_code || 'LUDOBET100' %></span>
+      <span class="code-tap-hint">Tap to copy</span>
+    </div>
+    <button class="btn-copy-code" id="btn-copy-code" onclick="navigator.clipboard.writeText('<%= user.referral_code || 'LUDOBET100' %>'); alert('Copied code!');">
+      <span>📋</span>
+      <span id="copy-btn-text">COPY</span>
+    </button>
+  </div>
+
+  <!-- Social 1-Click Sharing Grid -->
+  <div class="social-share-label">SHARE VIA 1-CLICK:</div>
+  <div class="social-share-grid">
+    <!-- WhatsApp Share -->
+    <a class="btn-social-share btn-wa" href="https://api.whatsapp.com/send?text=Play%20Ludo%20and%20Win%20Real%20Cash!%20Use%20my%20code:%20<%= user.referral_code || 'LUDOBET100' %>" target="_blank" style="text-decoration:none;">
+      <img src="/assets/icon_whatsapp.svg" alt="WhatsApp">
+      <span>WhatsApp</span>
+    </a>
+  </div>
+</section>

@@ -1,60 +1,178 @@
+<link rel="stylesheet" href="/css/classic-battle.css">
 <link rel="stylesheet" href="/css/profile.css">
 
-<div class="profile-page-container">
-  
-  <!-- Profile Hero Banner -->
-  <div class="profile-hero-card">
-    <div class="profile-avatar-large">👑</div>
-    <h2 class="profile-name-text"><%= user.name %></h2>
-    <span class="profile-mobile-text"><%= user.mobile %></span>
+<!-- 2. SUB-HEADER WITH BACK BUTTON & SETTINGS SHORTCUT -->
+<div class="sub-header-bar profile-sub-header">
+  <button class="btn-back" onclick="window.location.href='/'" aria-label="Back to Home">
+    ←
+  </button>
+  <div class="page-title-group">
+    <div class="profile-page-title">
+      <span class="title-blue">PRO</span><span class="title-purple">FILE</span>
+    </div>
+    <div class="page-subtitle">Player Identity &amp; Lifetime Records</div>
+  </div>
+  <button class="header-settings-btn" onclick="alert('Settings menu')" aria-label="Settings" title="Game Settings">
+    ⚙️
+  </button>
+</div>
 
-    <div class="profile-stats-row">
-      <div class="p-stat-box">
-        <span class="ps-label">PLAYER LEVEL</span>
-        <strong class="ps-val">Level <%= user.player_level || 5 %></strong>
-      </div>
-      <div class="p-stat-box">
-        <span class="ps-label">KYC STATUS</span>
-        <strong class="ps-val" style="color:<%= user.kyc_status === 'VERIFIED' ? '#10b981' : '#f59e0b' %>;">
-          <%= user.kyc_status || 'PENDING' %>
-        </strong>
-      </div>
+<!-- 3. PROFILE HERO CARD (AVATAR, BADGE, EDIT PROFILE) -->
+<section class="profile-hero-card">
+  <!-- Top Tier Rank Badge -->
+  <div class="profile-tier-badge">
+    <span class="tier-shield">🛡️</span>
+    <div class="tier-texts">
+      <span class="tier-title">DIAMOND I</span>
+      <span class="tier-stars">⭐ <%= (user.player_level || 5) * 4 %></span>
     </div>
   </div>
 
-  <!-- Profile Menu Links -->
-  <div class="profile-links-card">
-    <a href="/kyc" class="p-link-item">
-      <div class="pl-left">
-        <span class="pl-icon">🆔</span>
-        <span>Complete KYC Verification</span>
-      </div>
-      <span class="pl-arrow">➔</span>
-    </a>
-
-    <a href="/wallet" class="p-link-item">
-      <div class="pl-left">
-        <span class="pl-icon">💰</span>
-        <span>My Real Cash Wallet</span>
-      </div>
-      <span class="pl-arrow">➔</span>
-    </a>
-
-    <a href="/refer-earn" class="p-link-item">
-      <div class="pl-left">
-        <span class="pl-icon">🎁</span>
-        <span>Refer &amp; Earn Cash Rewards</span>
-      </div>
-      <span class="pl-arrow">➔</span>
-    </a>
-
-    <a href="/rules" class="p-link-item">
-      <div class="pl-left">
-        <span class="pl-icon">📜</span>
-        <span>Game Rules &amp; Safe Play</span>
-      </div>
-      <span class="pl-arrow">➔</span>
-    </a>
+  <!-- Avatar with Edit Badge -->
+  <div class="profile-avatar-container">
+    <img src="/assets/<%= user.avatar_id || 'avatar_rajendra.png' %>" alt="<%= user.name %>" class="profile-main-avatar" id="user-display-avatar" onerror="this.src='/assets/avatar_rajendra.png'">
+    <div class="avatar-camera-btn">📷</div>
   </div>
 
-</div>
+  <!-- Player Name & Verified Tick -->
+  <div class="profile-name-row">
+    <h1 class="profile-user-name" id="user-display-name"><%= user.name %></h1>
+    <span class="verified-blue-tick" title="Verified Player">✓</span>
+  </div>
+
+  <!-- Player ID with Copy Button -->
+  <div class="profile-id-row" onclick="navigator.clipboard.writeText('LD<%= user.id || 10458 %>'); alert('Player ID Copied: LD<%= user.id || 10458 %>');">
+    <span class="player-id-label">Player ID: <strong id="user-player-id">LD<%= user.id || 10458 %></strong></span>
+    <span class="id-copy-icon">📋</span>
+  </div>
+
+  <!-- Overall Stats Grid (Battles, Wins, Losses) -->
+  <div class="overall-stats-grid">
+    <div class="stat-box">
+      <span class="stat-header">BATTLES</span>
+      <span class="stat-number" id="stat-total-battles">126</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-box">
+      <span class="stat-header">WINS</span>
+      <span class="stat-number green" id="stat-total-wins">78</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-box">
+      <span class="stat-header">LOSSES</span>
+      <span class="stat-number red" id="stat-total-losses">48</span>
+    </div>
+  </div>
+
+  <!-- Performance Overview (Win Rate, Rank, Rating) -->
+  <div class="performance-overview-grid">
+    <div class="perf-item">
+      <div class="perf-icon">🏆</div>
+      <span class="perf-lbl">WIN RATE</span>
+      <strong class="perf-val" id="stat-win-rate">61.9%</strong>
+    </div>
+    <div class="perf-item">
+      <div class="perf-icon">🥇</div>
+      <span class="perf-lbl">CURRENT RANK</span>
+      <strong class="perf-val" id="stat-current-rank">#248</strong>
+    </div>
+    <div class="perf-item">
+      <div class="perf-icon">🎯</div>
+      <span class="perf-lbl">SCORE / RATING</span>
+      <strong class="perf-val" id="stat-rating">1,580</strong>
+    </div>
+  </div>
+</section>
+
+<!-- 4. QUICK LINKS & ACCOUNT VERIFICATION -->
+<section class="profile-section-card">
+  <div class="section-card-header">
+    <h2 class="section-card-title">ACCOUNT ACTIONS</h2>
+  </div>
+
+  <div class="account-actions-list" style="display:flex; flex-direction:column; gap:8px; padding:10px 0;">
+    <a href="/kyc" class="menu-action-item" style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; text-decoration:none; color:#1e293b; font-weight:700; font-size:13px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:18px;">🪪</span>
+        <span>KYC Document Verification</span>
+      </div>
+      <span style="color:#10b981; font-size:11px; font-weight:800;"><%= user.kyc_status || 'VERIFIED' %> ›</span>
+    </a>
+
+    <a href="/wallet" class="menu-action-item" style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; text-decoration:none; color:#1e293b; font-weight:700; font-size:13px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:18px;">💰</span>
+        <span>My Real Cash Wallet</span>
+      </div>
+      <span style="color:#3b82f6; font-size:11px; font-weight:800;">₹<%= (parseFloat(wallet.deposit_balance) + parseFloat(wallet.winning_balance)).toFixed(2) %> ›</span>
+    </a>
+
+    <a href="/refer-earn" class="menu-action-item" style="display:flex; justify-content:space-between; align-items:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:12px 14px; text-decoration:none; color:#1e293b; font-weight:700; font-size:13px;">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <span style="font-size:18px;">🎁</span>
+        <span>Refer &amp; Earn Cash Rewards</span>
+      </div>
+      <span style="color:#f59e0b; font-size:11px; font-weight:800;">Earn ₹500 ›</span>
+    </a>
+  </div>
+</section>
+
+<!-- 5. GAME WISE STATS -->
+<section class="profile-section-card">
+  <div class="section-card-header">
+    <h2 class="section-card-title">GAME WISE STATS</h2>
+  </div>
+
+  <div class="gamewise-list">
+    <!-- Ludo Classic -->
+    <div class="gamewise-item clickable" onclick="window.location.href='/ludo-classic'" style="cursor:pointer;">
+      <div class="game-item-top">
+        <div class="game-item-title-col">
+          <span class="game-emoji">🎲</span>
+          <span class="game-title">LUDO CLASSIC</span>
+        </div>
+        <span class="game-arrow">›</span>
+      </div>
+      <div class="game-stats-mini-row">
+        <div>Matches: <strong>85</strong></div>
+        <div>Wins: <strong class="green">52</strong></div>
+        <div>Losses: <strong class="red">33</strong></div>
+        <div>Win Rate: <strong class="blue">61%</strong></div>
+      </div>
+    </div>
+
+    <!-- Ludo Quick -->
+    <div class="gamewise-item clickable" onclick="window.location.href='/ludo-quick'" style="cursor:pointer;">
+      <div class="game-item-top">
+        <div class="game-item-title-col">
+          <span class="game-emoji">⚡</span>
+          <span class="game-title">LUDO QUICK</span>
+        </div>
+        <span class="game-arrow">›</span>
+      </div>
+      <div class="game-stats-mini-row">
+        <div>Matches: <strong>25</strong></div>
+        <div>Wins: <strong class="green">16</strong></div>
+        <div>Losses: <strong class="red">9</strong></div>
+        <div>Win Rate: <strong class="blue">64%</strong></div>
+      </div>
+    </div>
+
+    <!-- Snake & Ladders -->
+    <div class="gamewise-item clickable" onclick="window.location.href='/snake-ladders'" style="cursor:pointer;">
+      <div class="game-item-top">
+        <div class="game-item-title-col">
+          <span class="game-emoji">🪜</span>
+          <span class="game-title">SNAKE &amp; LADDERS</span>
+        </div>
+        <span class="game-arrow">›</span>
+      </div>
+      <div class="game-stats-mini-row">
+        <div>Matches: <strong>16</strong></div>
+        <div>Wins: <strong class="green">10</strong></div>
+        <div>Losses: <strong class="red">6</strong></div>
+        <div>Win Rate: <strong class="blue">62.5%</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
