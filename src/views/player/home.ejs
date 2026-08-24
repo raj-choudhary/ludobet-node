@@ -1,96 +1,43 @@
 <!-- 2. HERO 3D TOURNAMENT SECTION -->
 <section class="hero-section">
-  <div class="hero-card">
-    <div class="hero-glow-ambient"></div>
-    <div class="hero-bg-wrapper">
-      <img class="hero-bg-art" src="/assets/hero_clean.png" alt="Ludo Championship Banner">
-    </div>
-    <div class="hero-overlay">
-      <div class="hero-badge">
-        <span class="badge-sparkle">✨</span>
-        <span>DAILY MEGA EVENT</span>
-      </div>
-      <h1 class="hero-title">
-        <span class="title-ludo">LUDO</span>
-        <span class="title-championship">TOURNAMENT</span>
-      </h1>
-      <p class="hero-subtitle">Compete in 1v1 Battles &amp; Win Real Cash!</p>
-      <div class="hero-cta-row">
-        <a href="/ludo-classic" class="btn-play-now" id="btn-play-hero" style="text-decoration:none;">
-          <span class="btn-play-text">PLAY NOW</span>
-          <span class="btn-play-arrow">▶</span>
-        </a>
-        <div class="hero-prize-pill">
-          <span class="prize-label">Prize Pool</span>
-          <span class="prize-amount">₹50,000</span>
-        </div>
-      </div>
-    </div>
+  <div class="hero-art-wrapper">
+    <img class="hero-art-img" src="/assets/hero_clean.png" alt="Ludo Tournament Champion Board">
+    <!-- Interactive trigger over the 3D board to launch Quick Play -->
+    <a href="/ludo-classic" class="hero-click-overlay" title="Tap to Play Ludo"></a>
   </div>
 </section>
 
-<!-- 3. CHOOSE GAME MODE SECTION -->
-<section class="choose-game-section">
-  <div class="section-title-wrapper">
-    <h2 class="section-title">CHOOSE GAME</h2>
-    <div class="section-title-line"></div>
-  </div>
+<!-- 3. "CHOOSE YOUR GAME" SECTION TITLE -->
+<div class="section-choose-game">
+  <img class="choose-game-header-img" src="/assets/choose_game_header.png" alt="Choose Your Game">
+</div>
 
-  <div class="game-cards-grid">
-    <!-- Card 1: Ludo Classic 1v1 -->
-    <a class="game-card card-classic" href="/ludo-classic" style="text-decoration:none;">
-      <div class="card-bg-wrap">
-        <img class="card-bg-img" src="/assets/game_ludo_classic.png" alt="Ludo Classic 1v1">
-      </div>
-      <div class="card-glass-panel">
-        <div class="card-content">
-          <h3 class="card-title">LUDO CLASSIC</h3>
-          <span class="card-subtitle">1v1 Traditional Rules</span>
-        </div>
-      </div>
-      <div class="card-border-glow"></div>
-    </a>
+<!-- 4. GAME CARDS GRID (2x2) -->
+<main class="games-grid">
+  <!-- Card 1: Ludo Classic -->
+  <a class="game-card" id="card-classic" href="/ludo-classic" aria-label="Play Ludo Classic">
+    <img class="game-card-img" src="/assets/card_ludo_classic_exact.png" alt="Ludo Classic - Play Now">
+  </a>
 
-    <!-- Card 2: Ludo Quick Blitz 1v1 -->
-    <a class="game-card card-quick" href="/ludo-quick" style="text-decoration:none;">
-      <div class="card-bg-wrap">
-        <img class="card-bg-img" src="/assets/game_ludo_quick.png" alt="Ludo Quick 1v1">
-      </div>
-      <div class="card-glass-panel">
-        <div class="card-content">
-          <h3 class="card-title">LUDO QUICK</h3>
-          <span class="card-subtitle">1v1 1-Token Blitz</span>
-        </div>
-      </div>
-      <div class="card-border-glow"></div>
-    </a>
+  <!-- Card 2: Ludo Quick -->
+  <a class="game-card" id="card-quick" href="/ludo-quick" aria-label="Play Ludo Quick">
+    <img class="game-card-img" src="/assets/card_ludo_quick_exact.png" alt="Ludo Quick - Play Now">
+  </a>
 
-    <!-- Card 3: Snakes & Ladders 1v1 -->
-    <a class="game-card card-snake" href="/snake-ladders" style="text-decoration:none;">
-      <div class="card-bg-wrap">
-        <img class="card-bg-img" src="/assets/game_snakes_ladders.png" alt="Snakes & Ladders 1v1">
-      </div>
-      <div class="card-glass-panel">
-        <div class="card-content">
-          <h3 class="card-title">SNAKES &amp; LADDERS</h3>
-          <span class="card-subtitle">1v1 1-100 Duel</span>
-        </div>
-      </div>
-      <div class="card-border-glow"></div>
-    </a>
+  <!-- Card 3: Snake & Ladders -->
+  <a class="game-card" id="card-snake" href="/snake-ladders" aria-label="Play Snake & Ladders">
+    <img class="game-card-img" src="/assets/card_snake_exact.png" alt="Snake & Ladders - Play Now">
+  </a>
 
-    <!-- Card 4: New Championship -->
-    <a class="game-card card-newgame" href="/ludo-classic" style="text-decoration:none;">
-      <div class="card-bg-wrap">
-        <img class="card-bg-img" src="/assets/game_new_game.png" alt="New Mega Tournament">
-      </div>
-      <div class="card-glass-panel">
-        <div class="card-content">
-          <h3 class="card-title">CHAMPIONSHIP</h3>
-          <span class="card-subtitle">Mega Daily Pool</span>
-        </div>
-      </div>
-      <div class="card-border-glow"></div>
-    </a>
-  </div>
+  <!-- Card 4: New Game (Coming Soon) -->
+  <a class="game-card" id="card-newgame" href="/ludo-classic" aria-label="New Game Coming Soon">
+    <img class="game-card-img" src="/assets/card_newgame_exact.png" alt="New Game - Coming Soon">
+  </a>
+</main>
+
+<!-- 5. UPCOMING TOURNAMENT BANNER -->
+<section class="tournament-banner-wrapper" onclick="window.location.href='/ludo-classic'" aria-label="Join Upcoming Tournament">
+  <img class="tournament-banner-img" src="/assets/tournament_banner_exact.png" alt="Upcoming Tournament - Daily Championship">
+  <div class="hotspot-view-all" onclick="window.location.href='/ranking'" title="View All Tournaments"></div>
+  <div class="hotspot-entry-btn" onclick="window.location.href='/ludo-classic'" title="Register ₹20"></div>
 </section>

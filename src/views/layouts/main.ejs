@@ -61,48 +61,44 @@
     </header>
 
     <!-- DYNAMIC BODY CONTENT -->
-    <main class="main-content-slot">
-      <%- body %>
-    </main>
+    <%- body %>
 
-    <!-- 5-TAB FLOATING BOTTOM NAVIGATION BAR -->
+  </div>
+
+  <!-- 6. BOTTOM FLOATING NAVIGATION DOCK -->
+  <div class="bottom-nav-container">
     <nav class="bottom-nav">
-      <a href="/" class="nav-item <%= activeNav === 'home' ? 'active' : '' %>" aria-label="Home">
-        <div class="nav-icon-wrapper">
-          <img class="nav-icon" src="/assets/home.svg" alt="Home">
-        </div>
+      <!-- Home Tab -->
+      <a href="/" class="nav-tab <%= activeNav === 'home' ? 'active' : '' %>" id="tab-home" style="text-decoration:none;">
+        <img class="nav-icon-svg" src="/assets/home.svg" alt="Home">
         <span class="nav-label">Home</span>
       </a>
 
-      <a href="/ranking" class="nav-item <%= activeNav === 'ranking' ? 'active' : '' %>" aria-label="Ranking">
-        <div class="nav-icon-wrapper">
-          <img class="nav-icon" src="/assets/ranking.svg" alt="Ranking">
-        </div>
+      <!-- Ranking Tab -->
+      <a href="/ranking" class="nav-tab <%= activeNav === 'ranking' ? 'active' : '' %>" id="tab-ranking" style="text-decoration:none;">
+        <img class="nav-icon-svg" src="/assets/ranking.svg" alt="Ranking">
         <span class="nav-label">Ranking</span>
       </a>
 
-      <a href="/wallet" class="nav-item <%= activeNav === 'wallet' ? 'active' : '' %>" aria-label="Wallet">
-        <div class="nav-icon-wrapper">
-          <img class="nav-icon" src="/assets/wallet.svg" alt="Wallet">
-        </div>
+      <!-- Wallet Tab -->
+      <a href="/wallet" class="nav-tab <%= activeNav === 'wallet' ? 'active' : '' %>" id="tab-wallet" style="text-decoration:none;">
+        <img class="nav-icon-svg" src="/assets/wallet.svg" alt="Wallet">
         <span class="nav-label">Wallet</span>
       </a>
 
-      <a href="/refer-earn" class="nav-item <%= activeNav === 'refer' ? 'active' : '' %>" aria-label="Refer & Earn">
-        <div class="nav-icon-wrapper">
-          <img class="nav-icon" src="/assets/refer.svg" alt="Refer">
-        </div>
-        <span class="nav-label">Refer &amp; Earn</span>
+      <!-- Refer Tab -->
+      <a href="/refer-earn" class="nav-tab <%= activeNav === 'refer' ? 'active' : '' %>" id="tab-refer" style="text-decoration:none;">
+        <img class="nav-icon-svg" src="/assets/refer.svg" alt="Refer">
+        <span class="nav-label">Refer</span>
       </a>
 
-      <a href="/profile" class="nav-item <%= activeNav === 'profile' ? 'active' : '' %>" aria-label="Profile">
-        <div class="nav-icon-wrapper">
-          <img class="nav-icon" src="/assets/profile.svg" alt="Profile">
-        </div>
+      <!-- Profile Tab -->
+      <a href="/profile" class="nav-tab <%= activeNav === 'profile' ? 'active' : '' %>" id="tab-profile" style="text-decoration:none;">
+        <img class="nav-icon-svg" src="/assets/profile.svg" alt="Profile">
         <span class="nav-label">Profile</span>
       </a>
     </nav>
-
+    <div class="home-indicator"></div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
