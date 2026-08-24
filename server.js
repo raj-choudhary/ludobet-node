@@ -82,9 +82,15 @@ server.listen(PORT, HOST, async () => {
   console.log(`========================================================`);
 
   try {
-    await db.testConnection();
+    const isOk = await db.testConnection();
+    if (isOk) {
+      const { runMigrations } = require('./src/database/migrate');
+      const { runSeeds } = require('./src/database/seed');
+      await runMigrations();
+      await runSeeds();
+    }
   } catch (err) {
-    console.warn('[DB TEST WARNING]', err.message);
+    console.warn('[DB AUTO-SETUP WARNING]', err.message);
   }
 });
 
