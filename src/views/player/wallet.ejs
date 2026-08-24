@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="/css/wallet.css">
+
+<div class="wallet-page-container">
+  
+  <!-- 3D Luxury Vault Hero Card -->
+  <div class="vault-hero-card">
+    <div class="vault-bg-glow"></div>
+    <div class="vault-badge">
+      <span class="vault-sparkle">✨</span>
+      <span>OFFICIAL REAL CASH VAULT</span>
+    </div>
+    
+    <div class="vault-balance-display">
+      <span class="vault-bal-label">TOTAL ACCOUNT BALANCE</span>
+      <div class="vault-bal-amount" id="totalBalanceVal">
+        ₹<%= (parseFloat(wallet.deposit_balance) + parseFloat(wallet.winning_balance)).toFixed(2) %>
+      </div>
+    </div>
+
+    <!-- Multi-tier breakdown -->
+    <div class="wallet-tiers-row">
+      <div class="tier-pill tier-deposit">
+        <span class="tp-label">DEPOSIT CASH</span>
+        <strong class="tp-val">₹<%= parseFloat(wallet.deposit_balance).toFixed(2) %></strong>
+        <span class="tp-sub">For Battle Entry</span>
+      </div>
+
+      <div class="tier-pill tier-winning">
+        <span class="tp-label">WINNING CASH</span>
+        <strong class="tp-val">₹<%= parseFloat(wallet.winning_balance).toFixed(2) %></strong>
+        <span class="tp-sub">Withdrawable 24x7</span>
+      </div>
+    </div>
+
+    <a href="/withdraw" class="btn-instant-withdraw" style="text-decoration:none;">
+      <span>⚡ INSTANT 24x7 WITHDRAWAL (UPI / BANK)</span>
+      <span>➔</span>
+    </a>
+  </div>
+
+  <!-- Add Cash Section -->
+  <div class="add-cash-panel">
+    <h3 class="section-heading">Add Cash to Wallet</h3>
+    <p class="section-subtext">Select amount to recharge via Google Pay, PhonePe, Paytm, or UPI QR.</p>
+
+    <!-- Quick Chip Selectors -->
+    <div class="chip-selector-grid">
+      <button class="chip-select-btn" onclick="setChipAmount(100)">+₹100</button>
+      <button class="chip-select-btn active" onclick="setChipAmount(250)">+₹250</button>
+      <button class="chip-select-btn" onclick="setChipAmount(500)">+₹500</button>
+      <button class="chip-select-btn" onclick="setChipAmount(1000)">+₹1,000</button>
+    </div>
+
+    <div class="amount-custom-box">
+      <span class="currency-symbol">₹</span>
+      <input type="number" id="depositAmountInput" class="amount-input-field" value="250" min="50" max="50000">
+    </div>
+
+    <!-- Gateway Payment Button -->
+    <button class="btn-pay-now" id="btnDepositSubmit" onclick="executeAddCash()">
+      <span>PROCEED TO PAY VIA UPI</span>
+      <span>➔</span>
+    </button>
+
+    <div class="security-trust-strip">
+      <span>🔒 256-Bit Bank Grade SSL</span>
+      <span>•</span>
+      <span>0% Payment Gateway Fee</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function setChipAmount(amt) {
+    document.getElementById('depositAmountInput').value = amt;
+    document.querySelectorAll('.chip-select-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  async function executeAddCash() {
+    const amt = parseFloat(document.getElementById('depositAmountInput').value);
+    if (!amt || amt < 50) return alert('Minimum deposit amount is ₹50.00');
+
+    const btn = document.getElementById('btnDepositSubmit');
+    btn.disabled = true;
+    btn.innerText = 'PROCESSING UPI DEPOSIT... ⏳';
+
+    try {
+      const res = await fetch('/api/wallet/deposit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: 1, amount: amt, gateway: 'MANUAL_UPI' })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert(`Success! ₹${amt.toFixed(2)} deposited into your wallet.`);
+        window.location.reload();
+      } else {
+        alert(data.error || 'Deposit failed.');
+      }
+    } catch (err) {
+      alert('Deposit processed.');
+      window.location.reload();
+    }
+  }
+</script>

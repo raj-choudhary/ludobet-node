@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="/css/profile.css">
+
+<div class="profile-page-container">
+  
+  <!-- Profile Hero Banner -->
+  <div class="profile-hero-card">
+    <div class="profile-avatar-large">👑</div>
+    <h2 class="profile-name-text"><%= user.name %></h2>
+    <span class="profile-mobile-text"><%= user.mobile %></span>
+
+    <div class="profile-stats-row">
+      <div class="p-stat-box">
+        <span class="ps-label">PLAYER LEVEL</span>
+        <strong class="ps-val">Level <%= user.player_level || 5 %></strong>
+      </div>
+      <div class="p-stat-box">
+        <span class="ps-label">KYC STATUS</span>
+        <strong class="ps-val" style="color:<%= user.kyc_status === 'VERIFIED' ? '#10b981' : '#f59e0b' %>;">
+          <%= user.kyc_status || 'PENDING' %>
+        </strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Menu Links -->
+  <div class="profile-links-card">
+    <a href="/kyc" class="p-link-item">
+      <div class="pl-left">
+        <span class="pl-icon">🆔</span>
+        <span>Complete KYC Verification</span>
+      </div>
+      <span class="pl-arrow">➔</span>
+    </a>
+
+    <a href="/wallet" class="p-link-item">
+      <div class="pl-left">
+        <span class="pl-icon">💰</span>
+        <span>My Real Cash Wallet</span>
+      </div>
+      <span class="pl-arrow">➔</span>
+    </a>
+
+    <a href="/refer-earn" class="p-link-item">
+      <div class="pl-left">
+        <span class="pl-icon">🎁</span>
+        <span>Refer &amp; Earn Cash Rewards</span>
+      </div>
+      <span class="pl-arrow">➔</span>
+    </a>
+
+    <a href="/rules" class="p-link-item">
+      <div class="pl-left">
+        <span class="pl-icon">📜</span>
+        <span>Game Rules &amp; Safe Play</span>
+      </div>
+      <span class="pl-arrow">➔</span>
+    </a>
+  </div>
+
+</div>

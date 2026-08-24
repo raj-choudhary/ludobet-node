@@ -1,0 +1,70 @@
+<link rel="stylesheet" href="/css/ranking.css">
+
+<div class="ranking-page-container">
+  
+  <!-- Header Banner -->
+  <div class="ranking-header-banner">
+    <div class="rh-info">
+      <span class="rh-tag">🏆 REAL-MONEY LEADERBOARD</span>
+      <h2 class="rh-title">TOP WINNERS</h2>
+      <p class="rh-sub">Daily, Weekly &amp; Monthly Real Cash Champions</p>
+    </div>
+    <div class="rh-trophy-icon">🏆</div>
+  </div>
+
+  <!-- Top 3 Podium Cards -->
+  <div class="podium-grid">
+    <!-- Rank 2 -->
+    <div class="podium-card rank-2">
+      <div class="podium-avatar">🥈</div>
+      <strong class="podium-name">Vikash_Pro</strong>
+      <span class="podium-won">₹84,500</span>
+      <span class="podium-badge">RANK 2</span>
+    </div>
+
+    <!-- Rank 1 (Center Champion) -->
+    <div class="podium-card rank-1">
+      <div class="podium-avatar">👑</div>
+      <strong class="podium-name">Rahul_King</strong>
+      <span class="podium-won" style="color:#f59e0b; font-size:18px;">₹1,45,200</span>
+      <span class="podium-badge" style="background:#f59e0b; color:#0f172a;">CHAMPION</span>
+    </div>
+
+    <!-- Rank 3 -->
+    <div class="podium-card rank-3">
+      <div class="podium-avatar">🥉</div>
+      <strong class="podium-name">Pooja_Patel</strong>
+      <span class="podium-won">₹62,100</span>
+      <span class="podium-badge">RANK 3</span>
+    </div>
+  </div>
+
+  <!-- Top Players List -->
+  <div class="leaderboard-table-card">
+    <h3 class="lt-heading">ALL CHAMPIONS</h3>
+    <div class="lt-rows-list">
+      <% if (topPlayers && topPlayers.length > 0) { %>
+        <% topPlayers.forEach(function(p, idx) { %>
+          <div class="lt-row-item">
+            <span class="lt-rank-num">#<%= idx + 1 %></span>
+            <div class="lt-player-meta">
+              <strong class="lt-p-name"><%= p.name %></strong>
+              <span class="lt-p-level">Level <%= p.player_level %></span>
+            </div>
+            <strong class="lt-p-winnings">₹<%= parseFloat(p.total_won || 0).toLocaleString('en-IN') %></strong>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="lt-row-item">
+          <span class="lt-rank-num">#1</span>
+          <div class="lt-player-meta">
+            <strong class="lt-p-name">Rahul_King</strong>
+            <span class="lt-p-level">Level 28</span>
+          </div>
+          <strong class="lt-p-winnings">₹1,45,200</strong>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+</div>

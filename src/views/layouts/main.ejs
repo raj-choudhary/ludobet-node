@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title><%= title || 'Ludo Tournament — Win Real Cash & Rewards' %></title>
+  <meta name="description" content="Play 1v1 Ludo Classic, Quick Blitz, and Snake & Ladders online. Win real cash with instant 24x7 withdrawals!">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Ambient background stars & sparkles -->
+  <div class="ambient-sparkles"></div>
+
+  <!-- Main Mobile Application Canvas -->
+  <div class="app-container">
+
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+      <!-- Menu Button -->
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='/profile'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- Resource Pill Container -->
+      <div class="resource-pill">
+        <!-- Chips Section (Deposit + Winnings) -->
+        <a class="res-item" href="/wallet" aria-label="Add Chips" style="text-decoration:none;">
+          <img class="res-icon" src="/assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">
+              <%= wallet ? (parseFloat(wallet.deposit_balance) + parseFloat(wallet.winning_balance)).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) : '12,450' %>
+            </span>
+            <span class="res-label">Chips</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
+
+        <!-- Earnings Section (Withdrawable Winnings) -->
+        <a class="res-item" href="/withdraw" aria-label="View Earnings" style="text-decoration:none;">
+          <img class="res-icon" src="/assets/diamond.svg" alt="Earnings">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">
+              <%= wallet ? parseFloat(wallet.winning_balance).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 2 }) : '350' %>
+            </span>
+            <span class="res-label">Earnings</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
+
+        <!-- Notification Bell Section -->
+        <button class="bell-item" aria-label="Notifications" onclick="alert('You have no new unread notifications.')">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="/assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- DYNAMIC BODY CONTENT -->
+    <main class="main-content-slot">
+      <%- body %>
+    </main>
+
+    <!-- 5-TAB FLOATING BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav">
+      <a href="/" class="nav-item <%= activeNav === 'home' ? 'active' : '' %>" aria-label="Home">
+        <div class="nav-icon-wrapper">
+          <img class="nav-icon" src="/assets/home.svg" alt="Home">
+        </div>
+        <span class="nav-label">Home</span>
+      </a>
+
+      <a href="/ranking" class="nav-item <%= activeNav === 'ranking' ? 'active' : '' %>" aria-label="Ranking">
+        <div class="nav-icon-wrapper">
+          <img class="nav-icon" src="/assets/ranking.svg" alt="Ranking">
+        </div>
+        <span class="nav-label">Ranking</span>
+      </a>
+
+      <a href="/wallet" class="nav-item <%= activeNav === 'wallet' ? 'active' : '' %>" aria-label="Wallet">
+        <div class="nav-icon-wrapper">
+          <img class="nav-icon" src="/assets/wallet.svg" alt="Wallet">
+        </div>
+        <span class="nav-label">Wallet</span>
+      </a>
+
+      <a href="/refer-earn" class="nav-item <%= activeNav === 'refer' ? 'active' : '' %>" aria-label="Refer & Earn">
+        <div class="nav-icon-wrapper">
+          <img class="nav-icon" src="/assets/refer.svg" alt="Refer">
+        </div>
+        <span class="nav-label">Refer &amp; Earn</span>
+      </a>
+
+      <a href="/profile" class="nav-item <%= activeNav === 'profile' ? 'active' : '' %>" aria-label="Profile">
+        <div class="nav-icon-wrapper">
+          <img class="nav-icon" src="/assets/profile.svg" alt="Profile">
+        </div>
+        <span class="nav-label">Profile</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/api.js"></script>
+</body>
+</html>

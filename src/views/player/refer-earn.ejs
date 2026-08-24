@@ -1,0 +1,32 @@
+<link rel="stylesheet" href="/css/refer-earn.css">
+
+<div class="refer-page-container">
+  
+  <div class="refer-hero-banner">
+    <div class="rf-badge">EARN REAL CASH</div>
+    <h2 class="rf-title">REFER &amp; EARN ₹500</h2>
+    <p class="rf-sub">Get ₹50 for every friend who joins &amp; plays their first 1v1 battle!</p>
+  </div>
+
+  <div class="refer-code-card">
+    <span class="rc-label">YOUR EXCLUSIVE REFERRAL CODE</span>
+    <div class="rc-code-box">
+      <strong class="rc-code"><%= user.referral_code || 'LUDO999' %></strong>
+      <button class="rc-copy-btn" onclick="navigator.clipboard.writeText('<%= user.referral_code || 'LUDO999' %>'); alert('Referral code copied to clipboard!');">
+        COPY
+      </button>
+    </div>
+  </div>
+
+  <div class="refer-rewards-grid">
+    <div class="rr-box">
+      <span class="rr-val">₹2,450</span>
+      <span class="rr-lbl">Total Earned</span>
+    </div>
+    <div class="rr-box">
+      <span class="rr-val">49</span>
+      <span class="rr-lbl">Friends Joined</span>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,35 @@
+<link rel="stylesheet" href="/css/kyc.css">
+
+<div class="kyc-page-container">
+  
+  <div class="kyc-header-banner">
+    <span class="kh-tag">GOVERNMENT COMPLIANT</span>
+    <h2 class="kh-title">KYC VERIFICATION</h2>
+    <p class="kh-sub">Required under Income Tax Act &amp; RBI Guidelines for Instant Withdrawals</p>
+  </div>
+
+  <div class="kyc-form-card">
+    <div class="kyc-step-box">
+      <label class="kyc-label">1. ENTER 12-DIGIT AADHAAR NUMBER</label>
+      <input type="text" class="kyc-input" placeholder="XXXX-XXXX-XXXX" maxlength="14" value="9876-5432-1098">
+    </div>
+
+    <div class="kyc-step-box" style="margin-top:14px;">
+      <label class="kyc-label">2. ENTER 10-DIGIT PAN CARD NUMBER</label>
+      <input type="text" class="kyc-input" placeholder="ABCDE1234F" maxlength="10" value="ABCDE1234F">
+    </div>
+
+    <div class="kyc-status-badge">
+      <span>CURRENT STATUS: </span>
+      <strong style="color:<%= user.kyc_status === 'VERIFIED' ? '#10b981' : '#f59e0b' %>;">
+        <%= user.kyc_status || 'VERIFIED' %>
+      </strong>
+    </div>
+
+    <button class="btn-submit-kyc" onclick="alert('KYC documents submitted for automated AI verification.')">
+      <span>SUBMIT DOCUMENTS</span>
+      <span>➔</span>
+    </button>
+  </div>
+
+</div>

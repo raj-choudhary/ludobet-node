@@ -1,0 +1,36 @@
+{
+  "name": "ludobet-fullstack",
+  "version": "2.0.0",
+  "description": "Ludo Bet - Enterprise Full-Stack Node.js MVC + MySQL 8.0 Real-Money Gaming Platform (1v1 Classic, Quick Blitz, Snake & Ladders)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "ejs",
+    "mysql2",
+    "socketio",
+    "real-money-gaming",
+    "ludo",
+    "1v1"
+  ],
+  "author": "Ludo Bet Engineering",
+  "license": "PROPRIETARY",
+  "dependencies": {
+    "axios": "^1.7.9",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-ejs-layouts": "^2.5.1",
+    "helmet": "^8.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.12.0",
+    "socket.io": "^4.8.1"
+  }
+}

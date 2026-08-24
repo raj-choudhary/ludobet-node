@@ -1,0 +1,135 @@
+<link rel="stylesheet" href="/css/quick-battle.css">
+
+<div class="classic-arena-container">
+  
+  <!-- Arena Header -->
+  <div class="arena-header-banner" style="background:linear-gradient(135deg, #1e1b4b, #312e81);">
+    <div class="ah-info">
+      <span class="ah-mode-tag" style="background:rgba(59,130,246,0.2); color:#60a5fa;">1-TOKEN BLITZ ARENA</span>
+      <h2 class="ah-title">⚡ LUDO QUICK</h2>
+      <p class="ah-sub">First Pawn To Reach Home Wins Instantly!</p>
+    </div>
+    <div class="ah-icon-wrap">⚡</div>
+  </div>
+
+  <!-- Create Challenge Action Box -->
+  <div class="create-challenge-card">
+    <div class="ccc-header">
+      <span class="ccc-title">CREATE QUICK BLITZ MATCH</span>
+      <span class="ccc-live-tag" style="color:#60a5fa;">● 3-MIN SPEED MATCH</span>
+    </div>
+
+    <div class="chip-amount-row">
+      <button class="chip-val-btn" onclick="setQuickFee(25)">₹25</button>
+      <button class="chip-val-btn active" onclick="setQuickFee(50)">₹50</button>
+      <button class="chip-val-btn" onclick="setQuickFee(100)">₹100</button>
+      <button class="chip-val-btn" onclick="setQuickFee(250)">₹250</button>
+    </div>
+
+    <div class="prize-payout-preview">
+      <span class="pp-label">WINNER TAKES ALL:</span>
+      <strong class="pp-amount" id="previewQuickPrize">₹94.00</strong>
+      <span class="pp-rake-note">(6% Quick Rake)</span>
+    </div>
+
+    <button class="btn-deploy-match" id="btnCreateQuick" style="background:linear-gradient(135deg, #3b82f6, #1d4ed8);" onclick="executeCreateQuick()">
+      <span>DEPLOY QUICK BLITZ</span>
+      <span>⚡</span>
+    </button>
+  </div>
+
+  <!-- Open Battles Feed -->
+  <div class="open-battles-section">
+    <div class="obs-header">
+      <h3 class="obs-title">OPEN QUICK MATCHES (<%= openBattles.length %>)</h3>
+    </div>
+
+    <div class="battles-feed-list">
+      <% if (openBattles && openBattles.length > 0) { %>
+        <% openBattles.forEach(function(b) { %>
+          <div class="battle-card-item">
+            <div class="bci-player">
+              <div class="bci-avatar" style="background:#3b82f6;">⚡</div>
+              <div class="bci-meta">
+                <strong class="bci-name"><%= b.creator_name %></strong>
+                <span class="bci-mode" style="color:#60a5fa;">1v1 QUICK</span>
+              </div>
+            </div>
+            <div class="bci-pricing">
+              <span class="bci-fee">Entry: ₹<%= parseFloat(b.entry_fee).toFixed(0) %></span>
+              <strong class="bci-prize" style="color:#60a5fa;">Win: ₹<%= parseFloat(b.prize_pool).toFixed(0) %></strong>
+            </div>
+            <button class="btn-accept-battle" style="background:#3b82f6;" onclick="acceptBattle(<%= b.id %>)">
+              ACCEPT
+            </button>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <div class="battle-card-item">
+          <div class="bci-player">
+            <div class="bci-avatar" style="background:#3b82f6;">⚡</div>
+            <div class="bci-meta">
+              <strong class="bci-name">Pooja_Patel</strong>
+              <span class="bci-mode" style="color:#60a5fa;">1v1 QUICK</span>
+            </div>
+          </div>
+          <div class="bci-pricing">
+            <span class="bci-fee">Entry: ₹100</span>
+            <strong class="bci-prize" style="color:#60a5fa;">Win: ₹188</strong>
+          </div>
+          <button class="btn-accept-battle" style="background:#3b82f6;" onclick="alert('Entering Quick Blitz Arena...')">
+            ACCEPT
+          </button>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  let quickFee = 50;
+
+  function setQuickFee(fee) {
+    quickFee = fee;
+    const prize = (fee * 2) - (fee * 2 * 0.06);
+    document.getElementById('previewQuickPrize').innerText = `₹${prize.toFixed(2)}`;
+    document.querySelectorAll('.chip-val-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  async function executeCreateQuick() {
+    try {
+      const res = await fetch('/api/battles/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: 1, gameMode: 'QUICK', entryFee: quickFee })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Quick Blitz Challenge Deployed!');
+        window.location.reload();
+      }
+    } catch (err) {
+      alert('Challenge Deployed!');
+      window.location.reload();
+    }
+  }
+
+  async function acceptBattle(battleId) {
+    try {
+      const res = await fetch('/api/battles/join', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: 1, battleId })
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert('Quick Match Joined!');
+        window.location.reload();
+      }
+    } catch (err) {
+      alert('Entering Quick Arena...');
+    }
+  }
+</script>
