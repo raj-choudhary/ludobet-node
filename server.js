@@ -35,6 +35,7 @@ app.set('layout', 'layouts/main');
 
 // Serve Static Assets & CSS/JS from public/
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/admin', express.static(path.join(__dirname, 'public/admin')));
 
 // Health Check for Hostinger Container Proxies
 app.get('/health', (req, res) => res.status(200).send('OK'));

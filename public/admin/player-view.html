@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Player Details — Ludo Bet Admin</title>
+  <meta name="description" content="Dedicated Player View &amp; Profile Deep-Dive Console">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-brand-header">
+      <span class="brand-crown-icon">👑</span>
+      <div class="brand-title-group">
+        <span class="brand-main-title">LUDO BET</span>
+        <span class="brand-super-tag">SUPER ADMIN</span>
+      </div>
+    </div>
+
+    <div class="sidebar-menu-scroll">
+      <!-- 1. Dashboard -->
+      <a class="nav-item-btn" href="index.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🏠</span><span>Dashboard</span></div>
+      </a>
+
+      <!-- 2. Players Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">👥</span><span>Players</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu open">
+          <a class="submenu-item-btn" href="players.html">All Players (1,24,580)</a>
+          <a class="submenu-item-btn" href="players-banned.html">🚫 Banned Accounts (152)</a>
+          <a class="submenu-item-btn active" href="player-view.html?id=LD10458">👤 Player Profile View</a>
+        </div>
+      </div>
+
+      <!-- 3. Finance Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">💰</span><span>Finance</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="finance.html">Overview</a>
+          <a class="submenu-item-btn" href="finance-deposits.html">Deposits (₹24,45,230)</a>
+          <a class="submenu-item-btn" href="finance-withdrawals.html">Withdrawals (₹17,82,120)</a>
+          <a class="submenu-item-btn" href="finance-adjustments.html">Manual Adjustments</a>
+          <a class="submenu-item-btn" href="finance-ledger.html">Double-Entry Ledger</a>
+        </div>
+      </div>
+
+      <!-- 4. KYC Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🪪</span><span>KYC Management</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="kyc.html">Pending Queue (456)</a>
+          <a class="submenu-item-btn" href="kyc-history.html">KYC History Log</a>
+        </div>
+      </div>
+
+      <!-- 5. Games Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🎮</span><span>Games</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="games-classic.html">🎲 Ludo Classic</a>
+          <a class="submenu-item-btn" href="games-quick.html">⚡ Ludo Quick</a>
+          <a class="submenu-item-btn" href="games-snake.html">🪜 Snake &amp; Ladders</a>
+        </div>
+      </div>
+
+      <!-- 6. Battles Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">⚔️</span><span>Battles</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="battles-open.html">Open Challenges (2,150)</a>
+          <a class="submenu-item-btn" href="battles-running.html">Live Running (3,820)</a>
+          <a class="submenu-item-btn" href="battles-completed.html">Completed (5,650)</a>
+          <a class="submenu-item-btn" href="battles-cancelled.html">Cancelled &amp; Refunded</a>
+          <a class="submenu-item-btn" href="battles-disputes.html">Disputes Desk (7)</a>
+        </div>
+      </div>
+
+      <!-- 7. Tournaments -->
+      <a class="nav-item-btn" href="tournaments.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🏆</span><span>Tournaments</span></div>
+      </a>
+
+      <!-- 8. Rewards & Spin Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🎡</span><span>Rewards &amp; Spin</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="rewards-bonuses.html">🎁 Bonuses Rules</a>
+          <a class="submenu-item-btn" href="rewards-referrals.html">🤝 Referral Program</a>
+          <a class="submenu-item-btn" href="rewards-spin.html">🎡 Spin Wheel CMS</a>
+        </div>
+      </div>
+
+      <!-- 9. Marketing Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">📢</span><span>Marketing &amp; CMS</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="marketing-banners.html">🖼️ Home Banners</a>
+          <a class="submenu-item-btn" href="marketing-notifications.html">🔔 Push Broadcaster</a>
+        </div>
+      </div>
+
+      <!-- 10. Support Tickets -->
+      <a class="nav-item-btn" href="support.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🎧</span><span>Support Tickets</span></div>
+        <span class="nav-pill-badge red">15</span>
+      </a>
+
+      <!-- 11. Security Center -->
+      <a class="nav-item-btn" href="security.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🛡️</span><span>Security Center</span></div>
+      </a>
+
+      <!-- 12. Employees & Roles -->
+      <a class="nav-item-btn" href="employees.html">
+        <div class="nav-left-group"><span class="nav-item-icon">👨‍💼</span><span>Employees &amp; Roles</span></div>
+      </a>
+
+      <!-- 13. Platform Settings Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">⚙️</span><span>Platform Settings</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="settings.html">Overview Hub</a>
+          <a class="submenu-item-btn" href="settings-financial.html">💰 Financial &amp; Commission</a>
+          <a class="submenu-item-btn" href="settings-game-engine.html">🎮 Game Engine &amp; Bot RNG</a>
+          <a class="submenu-item-btn" href="settings-payment-gateways.html">💳 Payment &amp; Crypto Gateways</a>
+          <a class="submenu-item-btn" href="settings-sms-gateways.html">📱 SMS Gateways &amp; DLT</a>
+          <a class="submenu-item-btn" href="settings-notifications-templates.html">✉️ Email &amp; Templates</a>
+          <a class="submenu-item-btn" href="settings-system-security.html">🛡️ Anti-Fraud &amp; Geo-Rules</a>
+        </div>
+      </div>
+
+      <!-- 14. Master Audit Logs -->
+      <a class="nav-item-btn" href="audit-logs.html">
+        <div class="nav-left-group"><span class="nav-item-icon">📜</span><span>Master Audit Logs</span></div>
+      </a>
+
+      <!-- 15. Emergency Controls -->
+      <a class="nav-item-btn" href="emergency.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🚨</span><span style="color:#ef4444;">Emergency Controls</span></div>
+      </a>
+    </div>
+
+    <div class="sidebar-footer-card">
+      <div class="maintenance-switch-row">
+        <div class="maint-title-group"><span>🛡️</span><span>Maintenance Mode</span></div>
+        <input type="checkbox" onchange="toggleEmergencyMaintenance(this)" style="cursor:pointer; width:18px; height:18px;">
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="admin-main-wrapper">
+    <header class="admin-top-header">
+      <div class="header-left-group">
+        <button class="btn-sidebar-toggle" onclick="document.getElementById('admin-sidebar').classList.toggle('open')">☰</button>
+        <button class="btn-table-action" onclick="window.location.href='players.html'" style="display:flex; align-items:center; gap:6px; font-weight:800;">
+          ← Back to Players
+        </button>
+      </div>
+
+      <div class="header-right-group">
+        <button class="header-icon-btn">🔍</button>
+        <button class="header-icon-btn">🔔</button>
+        <div class="admin-user-pill">
+          <div class="admin-avatar-circle"><span>👨‍💼</span></div>
+          <div class="admin-user-info">
+            <span class="admin-user-name">Super Admin</span>
+            <span class="admin-user-role">Super Administrator</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-body-container">
+      
+      <!-- Player Header Card -->
+      <div style="background:#ffffff; border:1px solid var(--border-color); border-radius:18px; padding:22px; box-shadow:var(--shadow-sm); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div class="user-mini-icon bubble-blue" style="width:60px; height:60px; font-size:28px; border-radius:16px;">👤</div>
+          <div>
+            <div style="display:flex; align-items:center; gap:10px;">
+              <h1 style="font-size:22px; font-weight:900; color:#0f172a;" id="pv-name">Rajendra Kumar</h1>
+              <span class="status-pill-badge approved" id="pv-kyc">KYC APPROVED</span>
+              <span class="status-pill-badge active" id="pv-status">ACTIVE</span>
+            </div>
+            <div style="font-size:12px; color:#64748b; margin-top:4px;">
+              Player ID: <strong id="pv-id" style="color:#0f172a;">LD10458</strong> • Joined: <span id="pv-joined">08 Aug 2026</span> • Phone: <strong id="pv-phone">+91 9876543221</strong>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:10px;">
+          <button class="btn-table-action" style="padding:10px 16px; background:#6366f1; color:#fff; font-weight:800;" onclick="openWalletAdjustModal('LD10458')">
+            ± ADJUST WALLET
+          </button>
+          <button class="btn-table-action" style="padding:10px 16px; background:#fef3c7; color:#b45309; font-weight:800;" onclick="showToast('Wallet Frozen for Player', '🔒')">
+            🔒 FREEZE WALLET
+          </button>
+          <button class="btn-table-action danger" style="padding:10px 16px; font-weight:800;" onclick="toggleBanPlayer('LD10458')">
+            🚫 BAN PLAYER
+          </button>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs Bar -->
+      <div class="player-drawer-tabs-bar" style="background:#ffffff; border:1px solid var(--border-color); border-radius:14px; padding:4px 14px;">
+        <button class="player-drawer-tab-btn active" onclick="switchPlayerViewTab(this, 'overview')">📌 Overview &amp; Stats</button>
+        <button class="player-drawer-tab-btn" onclick="switchPlayerViewTab(this, 'wallet')">💰 Wallet &amp; Ledger</button>
+        <button class="player-drawer-tab-btn" onclick="switchPlayerViewTab(this, 'kyc')">🪪 KYC Documents</button>
+        <button class="player-drawer-tab-btn" onclick="switchPlayerViewTab(this, 'battles')">⚔️ Match History (126)</button>
+        <button class="player-drawer-tab-btn" onclick="switchPlayerViewTab(this, 'referrals')">🤝 Referrals (14)</button>
+        <button class="player-drawer-tab-btn" onclick="switchPlayerViewTab(this, 'security')">🛡️ Security &amp; IP Logs</button>
+      </div>
+
+      <!-- TAB CONTENTS -->
+      
+      <!-- 1. Overview -->
+      <div class="player-tab-pane" id="pvtab-overview">
+        <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:14px;">
+          <div class="kpi-stat-card">
+            <span class="kpi-label-text">DEPOSIT CASH</span>
+            <div class="kpi-amount-val">₹400.00</div>
+            <span style="font-size:10px; color:#64748b;">Add Money Wallet</span>
+          </div>
+          <div class="kpi-stat-card">
+            <span class="kpi-label-text">WINNINGS CASH</span>
+            <div class="kpi-amount-val" style="color:#10b981;">₹750.00</div>
+            <span style="font-size:10px; color:#10b981;">Withdrawable Balance</span>
+          </div>
+          <div class="kpi-stat-card">
+            <span class="kpi-label-text">BONUS CASH</span>
+            <div class="kpi-amount-val" style="color:#f59e0b;">₹100.00</div>
+            <span style="font-size:10px; color:#f59e0b;">Promo Credits</span>
+          </div>
+          <div class="kpi-stat-card">
+            <span class="kpi-label-text">TOTAL WALLET VALUE</span>
+            <div class="kpi-amount-val" style="color:#6366f1;">₹1,250.00</div>
+            <span style="font-size:10px; color:#6366f1;">Active Funds</span>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1.5fr 1fr; gap:16px;">
+          <div class="admin-data-panel">
+            <h3 class="section-block-title">🎮 Battle Performance Statistics</h3>
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-top:10px; text-align:center;">
+              <div style="background:#f8fafc; padding:12px; border-radius:12px;">
+                <span style="font-size:10px; color:#64748b; font-weight:800;">TOTAL MATCHES</span>
+                <div style="font-size:18px; font-weight:900; color:#0f172a;">126</div>
+              </div>
+              <div style="background:#f8fafc; padding:12px; border-radius:12px;">
+                <span style="font-size:10px; color:#64748b; font-weight:800;">WINS (WIN RATE)</span>
+                <div style="font-size:18px; font-weight:900; color:#10b981;">78 (61.9%)</div>
+              </div>
+              <div style="background:#f8fafc; padding:12px; border-radius:12px;">
+                <span style="font-size:10px; color:#64748b; font-weight:800;">NET PROFIT</span>
+                <div style="font-size:18px; font-weight:900; color:#10b981;">+₹5,670.00</div>
+              </div>
+            </div>
+
+            <div style="margin-top:14px; font-size:12px; color:#475569; display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; justify-content:space-between;"><span>Favorite Game:</span><strong>🎲 Ludo Classic (84 Matches)</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Average Bet Size:</span><strong>₹50.00</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Total Entry Fees Paid:</span><strong>₹6,300.00</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Total Prize Won:</span><strong>₹11,970.00</strong></div>
+            </div>
+          </div>
+
+          <div class="admin-data-panel">
+            <h3 class="section-block-title">👤 Account Information</h3>
+            <div style="margin-top:10px; font-size:12px; display:flex; flex-direction:column; gap:8px;">
+              <div style="display:flex; justify-content:space-between;"><span>Email Address:</span><strong>rajendra.k@gmail.com</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Registration Date:</span><strong>08 Aug 2026</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Last Login:</span><strong>18 Aug 2026, 14:32</strong></div>
+              <div style="display:flex; justify-content:space-between;"><span>Last Login IP:</span><code>103.21.44.12 (Delhi)</code></div>
+              <div style="display:flex; justify-content:space-between;"><span>Device Model:</span><code>DEV-84920 (OnePlus 11R)</code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Wallet & Ledger -->
+      <div class="player-tab-pane" id="pvtab-wallet" style="display:none;">
+        <div class="admin-data-panel">
+          <h3 class="section-block-title">Transaction Ledger History</h3>
+          <table class="admin-data-table">
+            <thead>
+              <tr><th>Transaction ID</th><th>Type</th><th>Amount</th><th>Method / Gateway</th><th>UTR / Reference</th><th>Status</th><th>Timestamp</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>TXN-84910</code></td><td><span class="status-pill-badge approved">DEPOSIT</span></td><td><strong style="color:#10b981;">+₹500.00</strong></td><td>Google Pay UPI</td><td><code>ICICI48291084</code></td><td>APPROVED</td><td>18 Aug 2026, 14:22</td></tr>
+              <tr><td><code>WDR-94021</code></td><td><span class="status-pill-badge pending">WITHDRAWAL</span></td><td><strong style="color:#ef4444;">-₹1,000.00</strong></td><td>UPI Transfer</td><td><code>rajendra@okaxis</code></td><td>PENDING</td><td>18 Aug 2026, 14:30</td></tr>
+              <tr><td><code>BTL-94821</code></td><td><span class="status-pill-badge active">MATCH ENTRY</span></td><td><strong style="color:#ef4444;">-₹50.00</strong></td><td>Escrow Debit</td><td><code>#BTL-94821</code></td><td>SETTLED</td><td>18 Aug 2026, 14:00</td></tr>
+              <tr><td><code>BTL-94820</code></td><td><span class="status-pill-badge approved">WON PRIZE</span></td><td><strong style="color:#10b981;">+₹95.00</strong></td><td>Winnings Credit</td><td><code>#BTL-94820</code></td><td>CREDITED</td><td>18 Aug 2026, 13:40</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 3. KYC Documents -->
+      <div class="player-tab-pane" id="pvtab-kyc" style="display:none;">
+        <div class="admin-data-panel">
+          <h3 class="section-block-title">Government Identity Documents</h3>
+          <div class="split-evidence-grid" style="margin-top:10px;">
+            <div class="evidence-box-card">
+              <span style="font-size:12px; font-weight:800; color:#0f172a;">📄 Aadhaar Card (Front &amp; Back)</span>
+              <div class="evidence-screenshot-img" style="display:flex; align-items:center; justify-content:center; color:#10b981; font-weight:800; font-size:16px;">
+                ✓ AADHAAR CARD VERIFIED
+              </div>
+              <span style="font-size:11px; color:#64748b;">UID: <code>XXXX-XXXX-8921</code> • Name: <strong>Rajendra Kumar</strong></span>
+            </div>
+
+            <div class="evidence-box-card">
+              <span style="font-size:12px; font-weight:800; color:#0f172a;">📄 PAN Card Document</span>
+              <div class="evidence-screenshot-img" style="display:flex; align-items:center; justify-content:center; color:#10b981; font-weight:800; font-size:16px;">
+                ✓ PAN CARD VERIFIED
+              </div>
+              <span style="font-size:11px; color:#64748b;">PAN: <code>ABCDE8492F</code> • DOB: <strong>14/05/1996</strong></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Battles -->
+      <div class="player-tab-pane" id="pvtab-battles" style="display:none;">
+        <div class="admin-data-panel">
+          <h3 class="section-block-title">Recent Matches Played</h3>
+          <table class="admin-data-table">
+            <thead>
+              <tr><th>Battle ID</th><th>Game Mode</th><th>Opponent</th><th>Entry</th><th>Prize</th><th>Outcome</th><th>Room Code</th><th>Date &amp; Time</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>#BTL-94821</code></td><td>🎲 Ludo Classic</td><td>Amit (LD30912)</td><td>₹50</td><td>₹95</td><td><span class="status-pill-badge pending">RUNNING</span></td><td><code>04928174</code></td><td>18 Aug 2026, 14:00</td></tr>
+              <tr><td><code>#BTL-94819</code></td><td>⚡ Ludo Quick</td><td>Rahul (LD20541)</td><td>₹100</td><td>₹190</td><td><span class="status-pill-badge approved">WON (+₹95)</span></td><td><code>84920193</code></td><td>18 Aug 2026, 13:30</td></tr>
+              <tr><td><code>#BTL-94815</code></td><td>🪜 Snake &amp; Ladders</td><td>Neha (LD60219)</td><td>₹25</td><td>₹47.50</td><td><span class="status-pill-badge rejected">LOST (₹0)</span></td><td><code>93820194</code></td><td>18 Aug 2026, 12:15</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 5. Referrals -->
+      <div class="player-tab-pane" id="pvtab-referrals" style="display:none;">
+        <div class="admin-data-panel">
+          <h3 class="section-block-title">Referral Statistics</h3>
+          <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:12px; margin-top:10px; text-align:center;">
+            <div style="background:#f8fafc; padding:14px; border-radius:12px;">
+              <span style="font-size:10px; color:#64748b; font-weight:800;">INVITED FRIENDS</span>
+              <div style="font-size:20px; font-weight:900; color:#0f172a;">14 Friends</div>
+            </div>
+            <div style="background:#f8fafc; padding:14px; border-radius:12px;">
+              <span style="font-size:10px; color:#64748b; font-weight:800;">ACTIVE DEPOSITORS</span>
+              <div style="font-size:20px; font-weight:900; color:#10b981;">9 Active</div>
+            </div>
+            <div style="background:#f8fafc; padding:14px; border-radius:12px;">
+              <span style="font-size:10px; color:#64748b; font-weight:800;">COMMISSION EARNED</span>
+              <div style="font-size:20px; font-weight:900; color:#f59e0b;">₹225.00</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Security -->
+      <div class="player-tab-pane" id="pvtab-security" style="display:none;">
+        <div class="admin-data-panel">
+          <h3 class="section-block-title">Security &amp; Fraud Telemetry</h3>
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:16px; font-size:12px; display:flex; flex-direction:column; gap:8px; margin-top:10px;">
+            <div style="display:flex; justify-content:space-between;"><span>Device Fingerprint:</span><code>DEV-84920 (OnePlus 11R - Android 14)</code></div>
+            <div style="display:flex; justify-content:space-between;"><span>Last Login IP:</span><code>103.21.44.12 (Airtel Broadband, New Delhi)</code></div>
+            <div style="display:flex; justify-content:space-between;"><span>Linked Accounts on Same Device:</span><span class="status-pill-badge approved">0 (Clean Single Account)</span></div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-top:16px;">
+            <button class="btn-table-action" style="padding:12px 0; background:#fef3c7; color:#b45309;" onclick="showToast('Wallet Frozen', '🔒')">🔒 FREEZE WALLET</button>
+            <button class="btn-table-action danger" style="padding:12px 0;" onclick="showToast('Account Suspended', '🚫')">🚫 BAN ACCOUNT</button>
+            <button class="btn-table-action" style="padding:12px 0;" onclick="showToast('Active sessions terminated', '📱')">📱 FORCE LOGOUT</button>
+            <button class="btn-table-action" style="padding:12px 0;" onclick="showToast('Device ID Reset', '🔄')">🔄 RESET DEVICE</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- WALLET ADJUSTMENT MODAL -->
+  <div class="admin-audit-modal" id="modal-wallet-adjust">
+    <div class="audit-modal-box">
+      <h3 style="font-size:16px; font-weight:900; color:#0f172a;">Manual Wallet Adjustment</h3>
+      <p style="font-size:11.5px; color:#64748b;">Adjust player wallet. Every change is permanently logged.</p>
+
+      <div class="audit-field-group">
+        <label style="font-size:11px; font-weight:800; color:#475569;">Action Type:</label>
+        <select id="adj-type-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
+          <option value="credit">➕ CREDIT (Add Funds)</option>
+          <option value="debit">➖ DEBIT (Deduct Funds)</option>
+        </select>
+      </div>
+
+      <div class="audit-field-group">
+        <label style="font-size:11px; font-weight:800; color:#475569;">Target Wallet:</label>
+        <select id="adj-wallet-select" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit;">
+          <option value="winnings">🏆 Winnings Cash</option>
+          <option value="deposit">💳 Deposit Cash</option>
+          <option value="bonus">🎁 Bonus Cash</option>
+        </select>
+      </div>
+
+      <div class="audit-field-group">
+        <label style="font-size:11px; font-weight:800; color:#475569;">Amount (₹):</label>
+        <input type="number" id="adj-amount-input" value="100" style="padding:8px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-family:inherit; font-weight:800;">
+      </div>
+
+      <div class="audit-field-group">
+        <label style="font-size:11px; font-weight:800; color:#ef4444;">Mandatory Admin Reason (Audit Log):</label>
+        <textarea class="audit-reason-textarea" id="adj-reason-input" placeholder="Enter reason (e.g. Tournament compensation, refund reversal...)"></textarea>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:16px;">
+        <button class="btn-table-action" style="flex:1; padding:10px 0;" onclick="closeWalletAdjustModal()">CANCEL</button>
+        <button class="btn-table-action" style="flex:1; padding:10px 0; background:#6366f1; color:#fff;" onclick="submitWalletAdjustment()">CONFIRM &amp; LOG ➔</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    function switchPlayerViewTab(btn, tabKey) {
+      document.querySelectorAll('.player-drawer-tab-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      document.querySelectorAll('.player-tab-pane').forEach(p => p.style.display = 'none');
+      const target = document.getElementById('pvtab-' + tabKey);
+      if (target) target.style.display = 'flex';
+    }
+
+    // Dynamic Player Query Param Loader
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const pid = urlParams.get('id') || 'LD10458';
+
+      const PLAYERS_DATA = {
+        'LD10458': { name: 'Rajendra Kumar', phone: '+91 9876543221', joined: '08 Aug 2026', kyc: 'approved', status: 'active', deposit: 400, winnings: 750, bonus: 100, battles: 126, wins: 78, winRate: '61.9%', ip: '103.21.44.12', deviceId: 'DEV-84920' },
+        'LD20541': { name: 'Rahul Sharma', phone: '+91 9811223344', joined: '10 Aug 2026', kyc: 'approved', status: 'active', deposit: 300, winnings: 120, bonus: 0, battles: 45, wins: 28, winRate: '62.2%', ip: '103.21.44.15', deviceId: 'DEV-94821' },
+        'LD30912': { name: 'Amit Verma', phone: '+91 9722334455', joined: '12 Aug 2026', kyc: 'pending', status: 'active', deposit: 200, winnings: 0, bonus: 0, battles: 12, wins: 4, winRate: '33.3%', ip: '49.36.12.88', deviceId: 'DEV-10293' },
+        'LD40192': { name: 'Vikash Yadav', phone: '+91 9633445566', joined: '14 Aug 2026', kyc: 'rejected', status: 'active', deposit: 70, winnings: 0, bonus: 0, battles: 8, wins: 2, winRate: '25.0%', ip: '157.34.89.201', deviceId: 'DEV-55410' },
+        'LD50831': { name: 'Rohan Cheater', phone: '+91 9544556677', joined: '15 Aug 2026', kyc: 'rejected', status: 'banned', deposit: 0, winnings: 0, bonus: 0, battles: 4, wins: 0, winRate: '0.0%', ip: '103.21.44.99', deviceId: 'DEV-99201' },
+        'LD60219': { name: 'Neha Singh', phone: '+91 9455667788', joined: '16 Aug 2026', kyc: 'approved', status: 'active', deposit: 950, winnings: 1450, bonus: 0, battles: 92, wins: 59, winRate: '64.1%', ip: '27.56.21.90', deviceId: 'DEV-88219' }
+      };
+
+      const p = PLAYERS_DATA[pid] || PLAYERS_DATA['LD10458'];
+      if (p) {
+        document.getElementById('pv-id').textContent = pid;
+        document.getElementById('pv-name').textContent = p.name;
+        document.getElementById('pv-phone').textContent = p.phone;
+        document.getElementById('pv-joined').textContent = p.joined;
+        
+        const kycBadge = document.getElementById('pv-kyc');
+        if (kycBadge) {
+          kycBadge.className = `status-pill-badge ${p.kyc}`;
+          kycBadge.textContent = `KYC ${p.kyc.toUpperCase()}`;
+        }
+
+        const statusBadge = document.getElementById('pv-status');
+        if (statusBadge) {
+          statusBadge.className = `status-pill-badge ${p.status}`;
+          statusBadge.textContent = p.status.toUpperCase();
+        }
+      }
+    });
+  </script>
+</body>
+</html>

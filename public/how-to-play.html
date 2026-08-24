@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>How to Play & Win | Ludo Tournament King</title>
+  <meta name="description" content="Step by step guide on how to join battles, copy room codes, play on Ludo King, and win real cash.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="how-to-play.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 1. TOP HEADER (Menu + Resource Pill) -->
+    <header class="top-header">
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <div class="resource-pill">
+        <a href="wallet.html" class="res-item" style="text-decoration:none;" aria-label="Wallet Balance">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">₹1,250</span>
+            <span class="res-label">Cash</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
+
+        <div class="res-item" aria-label="Gems">
+          <img class="res-icon" src="assets/diamond.svg" alt="Gems">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">20</span>
+            <span class="res-label">Gems</span>
+          </div>
+        </div>
+
+        <button class="bell-item" onclick="window.location.href='notifications.html'" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Header Bar -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Go Back">←</button>
+      <div class="page-title-group">
+        <h1 class="guide-page-title">
+          <span class="title-orange">HOW TO</span> <span class="title-blue">PLAY</span>
+        </h1>
+        <span class="page-subtitle">4 Simple Steps to Play &amp; Earn Cash</span>
+      </div>
+      <button class="btn-rules-link" onclick="window.location.href='rules.html'">
+        Rules 📖
+      </button>
+    </div>
+
+    <!-- MAIN BODY -->
+    <main class="guide-main-body">
+
+      <!-- STEP 1 -->
+      <div class="step-card">
+        <div class="step-badge">STEP 1</div>
+        <div class="step-content">
+          <div class="step-icon-wrap blue">⚔️</div>
+          <h3 class="step-title">Choose &amp; Join a Battle</h3>
+          <p class="step-desc">Pick your favorite game mode (Ludo Classic, Quick, or Snakes) and select a challenge from the Open Battles Lobby with your desired entry fee.</p>
+        </div>
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="step-card">
+        <div class="step-badge">STEP 2</div>
+        <div class="step-content">
+          <div class="step-icon-wrap amber">🔑</div>
+          <h3 class="step-title">Copy Ludo King Room Code</h3>
+          <p class="step-desc">Once matched, tap <strong>"COPY ROOM CODE"</strong> in the Match Room. Then click <strong>"OPEN LUDO KING"</strong> to launch your game app instantly.</p>
+        </div>
+      </div>
+
+      <!-- STEP 3 -->
+      <div class="step-card">
+        <div class="step-badge">STEP 3</div>
+        <div class="step-content">
+          <div class="step-icon-wrap green">🎮</div>
+          <h3 class="step-title">Play with Opponent in Ludo King</h3>
+          <p class="step-desc">In Ludo King, go to <em>Play with Friends › Join</em>, paste the code, and play the match. Remember to take a screenshot of the victory screen when you win!</p>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div class="step-card">
+        <div class="step-badge">STEP 4</div>
+        <div class="step-content">
+          <div class="step-icon-wrap purple">🏆</div>
+          <h3 class="step-title">Upload Screenshot &amp; Claim Cash</h3>
+          <p class="step-desc">Return to the Match Result screen, select <strong>"I WON"</strong>, attach your victory screenshot proof, and submit. The prize money will be credited directly to your wallet!</p>
+        </div>
+      </div>
+
+      <!-- Bottom Action -->
+      <div class="guide-bottom-cta">
+        <button class="btn-start-now" onclick="window.location.href='ludo-classic.html'">
+          🚀 START PLAYING BATTLES NOW
+        </button>
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav">
+        <button class="nav-tab" onclick="window.location.href='index.html'">
+          <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ludo-classic.html'">
+          <img class="nav-icon-svg" src="assets/chip.svg" alt="Battles">
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ranking.html'">
+          <img class="nav-icon-svg" src="assets/ranking.svg" alt="Leaderboard">
+          <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='wallet.html'">
+          <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+          <span class="nav-label">Wallet</span>
+        </button>
+        <button class="nav-tab active" onclick="window.location.href='profile.html'">
+          <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+/* ==========================================================================
+   GAME RULES STYLESHEET
+   ========================================================================== */
+
+.rules-page-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.1;
+}
+
+.btn-guide-link {
+  background: #ffffff;
+  border: 1.5px solid #d4e5f7;
+  color: #0288d1;
+  font-size: 10.5px;
+  font-weight: 900;
+  padding: 6px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.rules-main-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+.rules-tabs-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  background: #ffffff;
+  border: 1.5px solid #d4e5f7;
+  border-radius: 14px;
+  padding: 4px;
+}
+
+.rules-tab-btn {
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 7px 0;
+  font-size: 10px;
+  font-weight: 900;
+  color: var(--slate-text);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.rules-tab-btn.active {
+  background: #0288d1;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(2, 136, 209, 0.25);
+}
+
+.rule-card {
+  background: #ffffff;
+  border: 1.5px solid #d4e5f7;
+  border-radius: 18px;
+  padding: 16px 14px;
+  box-shadow: 0 4px 12px rgba(12, 43, 100, 0.04);
+}
+
+.rule-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.rule-h-icon {
+  font-size: 20px;
+}
+
+.rule-h-title {
+  font-size: 13px;
+  font-weight: 900;
+  color: var(--navy-text);
+}
+
+.rule-bullet-list {
+  padding-left: 14px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 10.5px;
+  color: #334155;
+  line-height: 1.4;
+}
+
+.rules-bottom-cta {
+  margin-top: 6px;
+}
+
+.btn-play-now {
+  width: 100%;
+  background: linear-gradient(135deg, #0288d1 0%, #01579b 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 13px 0;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 4px 12px rgba(2, 136, 209, 0.3);
+}

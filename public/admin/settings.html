@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Settings Overview — Ludo Bet Admin</title>
+  <meta name="description" content="Master Platform Settings Hub & Quick Access Modules.">
+  <link rel="stylesheet" href="admin.css">
+  <style>
+    .settings-module-card {
+      background: #ffffff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 22px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .settings-module-card:hover {
+      border-color: #6366f1;
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.1);
+    }
+    .module-icon-box {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-brand-header">
+      <span class="brand-crown-icon">👑</span>
+      <div class="brand-title-group">
+        <span class="brand-main-title">LUDO BET</span>
+        <span class="brand-super-tag">SUPER ADMIN</span>
+      </div>
+    </div>
+
+    <div class="sidebar-menu-scroll">
+      <!-- 1. Dashboard -->
+      <a class="nav-item-btn" href="index.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🏠</span><span>Dashboard</span></div>
+      </a>
+
+      <!-- 2. Players Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">👥</span><span>Players</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="players.html">All Players (1,24,580)</a>
+          <a class="submenu-item-btn" href="players-banned.html">🚫 Banned Accounts (152)</a>
+          <a class="submenu-item-btn" href="player-view.html?id=LD10458">👤 Player Profile View</a>
+        </div>
+      </div>
+
+      <!-- 3. Finance Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">💰</span><span>Finance</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="finance.html">Overview</a>
+          <a class="submenu-item-btn" href="finance-deposits.html">Deposits (₹24,45,230)</a>
+          <a class="submenu-item-btn" href="finance-withdrawals.html">Withdrawals (₹17,82,120)</a>
+          <a class="submenu-item-btn" href="finance-adjustments.html">Manual Adjustments</a>
+          <a class="submenu-item-btn" href="finance-ledger.html">Double-Entry Ledger</a>
+        </div>
+      </div>
+
+      <!-- 4. KYC Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🪪</span><span>KYC Management</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="kyc.html">Pending Queue (456)</a>
+          <a class="submenu-item-btn" href="kyc-history.html">KYC History Log</a>
+        </div>
+      </div>
+
+      <!-- 5. Games Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🎮</span><span>Games</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="games-classic.html">🎲 Ludo Classic</a>
+          <a class="submenu-item-btn" href="games-quick.html">⚡ Ludo Quick</a>
+          <a class="submenu-item-btn" href="games-snake.html">🪜 Snake &amp; Ladders</a>
+        </div>
+      </div>
+
+      <!-- 6. Battles Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">⚔️</span><span>Battles</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="battles-open.html">Open Challenges (2,150)</a>
+          <a class="submenu-item-btn" href="battles-running.html">Live Running (3,820)</a>
+          <a class="submenu-item-btn" href="battles-completed.html">Completed (5,650)</a>
+          <a class="submenu-item-btn" href="battles-cancelled.html">Cancelled &amp; Refunded</a>
+          <a class="submenu-item-btn" href="battles-disputes.html">Disputes Desk (7)</a>
+        </div>
+      </div>
+
+      <!-- 7. Tournaments -->
+      <a class="nav-item-btn" href="tournaments.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🏆</span><span>Tournaments</span></div>
+      </a>
+
+      <!-- 8. Rewards & Spin Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🎡</span><span>Rewards &amp; Spin</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="rewards-bonuses.html">🎁 Bonuses Rules</a>
+          <a class="submenu-item-btn" href="rewards-referrals.html">🤝 Referral Program</a>
+          <a class="submenu-item-btn" href="rewards-spin.html">🎡 Spin Wheel CMS</a>
+        </div>
+      </div>
+
+      <!-- 9. Marketing Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">📢</span><span>Marketing &amp; CMS</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="marketing-banners.html">🖼️ Home Banners</a>
+          <a class="submenu-item-btn" href="marketing-notifications.html">🔔 Push Broadcaster</a>
+        </div>
+      </div>
+
+      <!-- 10. Support Tickets -->
+      <a class="nav-item-btn" href="support.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🎧</span><span>Support Tickets</span></div>
+        <span class="nav-pill-badge red">15</span>
+      </a>
+
+      <!-- 11. Security Center -->
+      <a class="nav-item-btn" href="security.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🛡️</span><span>Security Center</span></div>
+      </a>
+
+      <!-- 12. Employees & Roles -->
+      <a class="nav-item-btn" href="employees.html">
+        <div class="nav-left-group"><span class="nav-item-icon">👨‍💼</span><span>Employees &amp; Roles</span></div>
+      </a>
+
+      <!-- 13. Platform Settings Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">⚙️</span><span>Platform Settings</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu open">
+          <a class="submenu-item-btn active" href="settings.html">Overview Hub</a>
+          <a class="submenu-item-btn" href="settings-financial.html">💰 Financial &amp; Commission</a>
+          <a class="submenu-item-btn" href="settings-game-engine.html">🎮 Game Engine &amp; Bot RNG</a>
+          <a class="submenu-item-btn" href="settings-payment-gateways.html">💳 Payment &amp; Crypto Gateways</a>
+          <a class="submenu-item-btn" href="settings-sms-gateways.html">📱 SMS Gateways &amp; DLT</a>
+          <a class="submenu-item-btn" href="settings-notifications-templates.html">✉️ Email &amp; Templates</a>
+          <a class="submenu-item-btn" href="settings-system-security.html">🛡️ Anti-Fraud &amp; Geo-Rules</a>
+        </div>
+      </div>
+
+      <!-- 14. Master Audit Logs -->
+      <a class="nav-item-btn" href="audit-logs.html">
+        <div class="nav-left-group"><span class="nav-item-icon">📜</span><span>Master Audit Logs</span></div>
+      </a>
+
+      <!-- 15. Emergency Controls -->
+      <a class="nav-item-btn" href="emergency.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🚨</span><span style="color:#ef4444;">Emergency Controls</span></div>
+      </a>
+    </div>
+
+    <div class="sidebar-footer-card">
+      <div class="maintenance-switch-row">
+        <div class="maint-title-group"><span>🛡️</span><span>Maintenance Mode</span></div>
+        <input type="checkbox" onchange="toggleEmergencyMaintenance(this)" style="cursor:pointer; width:18px; height:18px;">
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="admin-main-wrapper">
+    <header class="admin-top-header">
+      <div class="header-left-group">
+        <button class="btn-sidebar-toggle" onclick="toggleMobileSidebar()">☰</button>
+        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">⚙️ Platform Settings Hub</h2>
+      </div>
+
+      <div class="header-right-group">
+        <button class="header-icon-btn" onclick="showToast('Searching system config...', '🔍')">🔍</button>
+        <button class="header-icon-btn" onclick="showToast('All system parameters operational', '🔔')">🔔</button>
+        <div class="admin-user-pill">
+          <div class="admin-avatar-circle"><span>👨‍💼</span></div>
+          <div class="admin-user-info">
+            <span class="admin-user-name">Super Admin</span>
+            <span class="admin-user-role">Super Administrator</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-body-container">
+      
+      <!-- Top Action Bar -->
+      <div class="admin-data-panel" style="margin-bottom:20px;">
+        <div class="data-panel-top-bar" style="margin-bottom:0;">
+          <div>
+            <h1 class="page-title-main">Master Platform Settings &amp; Engine Management</h1>
+            <p class="page-title-sub">Select any of the 6 specialized configuration consoles below to tune platform financial parameters, game AI algorithms, gateways, and legal compliance.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6 Settings Domain Cards Grid -->
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:20px;">
+        
+        <!-- Card 1: Financial & Commission -->
+        <div class="settings-module-card" onclick="window.location.href='settings-financial.html'">
+          <div>
+            <div class="module-icon-box" style="background:#eff6ff; color:#2563eb;">💰</div>
+            <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin-bottom:6px;">Commission &amp; Financials</h3>
+            <p style="font-size:12px; color:#64748b; line-height:1.5;">
+              Configure mode-wise platform rake (5%-10%), tiered commission rules, min/max deposit/withdrawal limits, and 30% Govt TDS tax compliance.
+            </p>
+          </div>
+          <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+            <span class="nav-pill-badge blue">5.0% - 6.0% Rake</span>
+            <span style="font-size:12px; font-weight:800; color:#6366f1;">OPEN CONSOLE ➔</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Game Engine & Bot RNG -->
+        <div class="settings-module-card" onclick="window.location.href='settings-game-engine.html'">
+          <div>
+            <div class="module-icon-box" style="background:#f5f3ff; color:#7c3aed;">🎮</div>
+            <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin-bottom:6px;">Game Engine &amp; Bot RNG</h3>
+            <p style="font-size:12px; color:#64748b; line-height:1.5;">
+              Tune Ludo Quick and Snake &amp; Ladders algorithms, bot vs human win rates (58%), dice 6-probability sliders, turn timers, and live dice simulator.
+            </p>
+          </div>
+          <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+            <span class="nav-pill-badge green">Smart RTP Active</span>
+            <span style="font-size:12px; font-weight:800; color:#6366f1;">OPEN CONSOLE ➔</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Payment & Crypto Gateways -->
+        <div class="settings-module-card" onclick="window.location.href='settings-payment-gateways.html'">
+          <div>
+            <div class="module-icon-box" style="background:#fef3c7; color:#d97706;">💳</div>
+            <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin-bottom:6px;">Payment Gateways &amp; Crypto</h3>
+            <p style="font-size:12px; color:#64748b; line-height:1.5;">
+              Manage Cashfree, Razorpay, PhonePe, Paytm API credentials, Admin manual UPI VPA/QR, and global USDT TRC20/BEP20 crypto deposits.
+            </p>
+          </div>
+          <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+            <span class="nav-pill-badge green">4 Gateways Live</span>
+            <span style="font-size:12px; font-weight:800; color:#6366f1;">OPEN CONSOLE ➔</span>
+          </div>
+        </div>
+
+        <!-- Card 4: SMS Gateways & DLT -->
+        <div class="settings-module-card" onclick="window.location.href='settings-sms-gateways.html'">
+          <div>
+            <div class="module-icon-box" style="background:#ecfdf5; color:#059669;">📱</div>
+            <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin-bottom:6px;">SMS Gateways &amp; DLT Hub</h3>
+            <p style="font-size:12px; color:#64748b; line-height:1.5;">
+              Connect SMSIndiaHub, Fast2SMS, Msg91 API keys, DLT Entity PE-IDs, registered templates, balance monitors, and test SMS diagnostic tools.
+            </p>
+          </div>
+          <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+            <span class="nav-pill-badge green">SMSIndiaHub Live</span>
+            <span style="font-size:12px; font-weight:800; color:#6366f1;">OPEN CONSOLE ➔</span>
+          </div>
+        </div>
+
+        <!-- Card 5: Email & Templates -->
+        <div class="settings-module-card" onclick="window.location.href='settings-notifications-templates.html'">
+          <div>
+            <div class="module-icon-box" style="background:#fdf2f8; color:#db2777;">✉️</div>
+            <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin-bottom:6px;">Email &amp; Template Suite</h3>
+            <p style="font-size:12px; color:#64748b; line-height:1.5;">
+              Configure SMTP servers (Hostinger/Gmail) and customize message templates with dynamic tags for OTP, Deposits, Withdrawals, and KYC notices.
+            </p>
+          </div>
+          <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+            <span class="nav-pill-badge blue">SMTP Connected</span>
+            <span style="font-size:12px; font-weight:800; color:#6366f1;">OPEN CONSOLE ➔</span>
+          </div>
+        </div>
+
+        <!-- Card 6: Anti-Fraud & Geo-Rules -->
+        <div class="settings-module-card" onclick="window.location.href='settings-system-security.html'">
+          <div>
+            <div class="module-icon-box" style="background:#fee2e2; color:#dc2626;">🛡️</div>
+            <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin-bottom:6px;">Anti-Fraud &amp; Geo-Rules</h3>
+            <p style="font-size:12px; color:#64748b; line-height:1.5;">
+              Block emulators, multi-account device clones, state-wise legal bans (Assam, Odisha, Telangana, etc.), VPN detection, and database backups.
+            </p>
+          </div>
+          <div style="margin-top:16px; display:flex; justify-content:space-between; align-items:center;">
+            <span class="nav-pill-badge red">Strict Shield ON</span>
+            <span style="font-size:12px; font-weight:800; color:#6366f1;">OPEN CONSOLE ➔</span>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

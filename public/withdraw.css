@@ -1,0 +1,359 @@
+/* ==========================================================================
+   WITHDRAW CASH STYLESHEET
+   ========================================================================== */
+
+.withdraw-page-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.1;
+}
+
+.kyc-badge-pill {
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  color: #15803d;
+  font-size: 9.5px;
+  font-weight: 900;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.withdraw-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+/* 1. Hero Balance Card */
+.withdraw-hero-card {
+  background: linear-gradient(135deg, #093884 0%, #051d4d 100%);
+  border-radius: 20px;
+  padding: 16px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6px 18px rgba(9, 56, 132, 0.25);
+}
+
+.hero-balance-left {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.balance-tag {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #93c5fd;
+  letter-spacing: 0.5px;
+}
+
+.balance-amount-large {
+  font-size: 28px;
+  font-weight: 900;
+  color: #ffffff;
+}
+
+.balance-sub {
+  font-size: 9px;
+  color: #cbd5e1;
+  font-weight: 600;
+}
+
+.hero-icon-right {
+  font-size: 40px;
+}
+
+/* 2. Method Selector */
+.method-selection-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.method-tabs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.method-tab-btn {
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: all 0.15s ease;
+  font-family: inherit;
+  text-align: left;
+}
+
+.method-tab-btn.active {
+  border-color: #16a34a;
+  background: #f0fdf4;
+}
+
+.method-icon {
+  font-size: 20px;
+}
+
+.method-texts {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.method-title {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--navy-text);
+}
+
+.method-sub {
+  font-size: 8px;
+  color: var(--slate-text);
+  font-weight: 600;
+}
+
+.method-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid #cbd5e1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.method-tab-btn.active .method-radio {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+}
+
+/* 3. Form Card */
+.withdraw-form-card {
+  background: #ffffff;
+  border: 1.5px solid #d4e5f7;
+  border-radius: 20px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(12, 43, 100, 0.04);
+}
+
+.form-block {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-lbl {
+  font-size: 10px;
+  font-weight: 800;
+  color: #0c2b64;
+  letter-spacing: 0.4px;
+}
+
+.amount-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.amount-limits {
+  font-size: 9px;
+  font-weight: 700;
+  color: #0288d1;
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-ico {
+  position: absolute;
+  left: 12px;
+  font-size: 14px;
+}
+
+.input-ico.currency {
+  font-size: 18px;
+  font-weight: 900;
+  color: #16a34a;
+}
+
+.text-input {
+  width: 100%;
+  padding: 10px 12px 10px 36px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--navy-text);
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.text-input.amount {
+  font-size: 18px;
+  font-weight: 900;
+  color: #16a34a;
+  padding-left: 36px;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: #0288d1;
+  box-shadow: 0 0 0 3px rgba(2, 136, 209, 0.15);
+}
+
+.input-helper {
+  font-size: 8.5px;
+  color: var(--slate-text);
+  font-weight: 600;
+}
+
+.quick-chips-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.quick-chip {
+  flex: 1;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 0;
+  font-size: 11px;
+  font-weight: 900;
+  color: #334155;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.quick-chip.active {
+  background: #0288d1;
+  color: #ffffff;
+  border-color: #0288d1;
+}
+
+.btn-submit-withdraw {
+  margin-top: 6px;
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
+  border: 2px solid #86efac;
+  border-radius: 16px;
+  padding: 13px 0;
+  font-size: 13px;
+  font-weight: 900;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+  transition: transform 0.15s ease;
+}
+
+.btn-submit-withdraw:active {
+  transform: scale(0.98);
+}
+
+/* 4. Recent Withdrawals List */
+.recent-withdrawals-card {
+  background: #ffffff;
+  border: 1.5px solid #d4e5f7;
+  border-radius: 20px;
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-link {
+  font-size: 10px;
+  font-weight: 900;
+  color: #0288d1;
+  cursor: pointer;
+}
+
+.withdrawals-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.w-item-row {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 8px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.w-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.w-icon-chip {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.w-icon-chip.upi { background: #e0f2fe; }
+.w-icon-chip.bank { background: #ecfdf5; }
+
+.w-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.w-title {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--navy-text);
+}
+
+.w-time {
+  font-size: 8.5px;
+  color: var(--slate-text);
+  font-weight: 600;
+}
+
+.w-status.success {
+  font-size: 9px;
+  font-weight: 900;
+  color: #16a34a;
+  background: #dcfce7;
+  padding: 2px 6px;
+  border-radius: 6px;
+}

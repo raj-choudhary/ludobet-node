@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Ludo Classic — Battle Arena</title>
+  <meta name="description" content="Create a Ludo battle or join live open battles. Play 1v1 and multiplayer matches to win real prizes!">
+  <link rel="stylesheet" href="classic-battle.css">
+</head>
+<body>
+
+  <!-- Ambient background sparkles -->
+  <div class="ambient-sparkles"></div>
+
+  <!-- Main Mobile App Frame -->
+  <div class="app-container">
+
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+      <!-- Menu Button -->
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- Resource Pill Container -->
+      <div class="resource-pill">
+        <!-- Chips Section -->
+        <button class="res-item" onclick="showToast('Chips: 12,450', '🪙')" aria-label="Chips">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-val">12,450</span>
+            <span class="res-label">Chips</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Earnings Section -->
+        <button class="res-item" onclick="showToast('Earnings: ₹350', '💎')" aria-label="Earnings">
+          <img class="res-icon" src="assets/diamond.svg" alt="Earnings">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-val">350</span>
+            <span class="res-label">Earnings</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Notification Bell -->
+        <button class="bell-item" onclick="showToast('3 New Notifications', '🔔')" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. SUB-HEADER WITH BACK BUTTON & 4-COLOR TITLE -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='index.html'" aria-label="Back to Home">
+        ←
+      </button>
+      <div class="page-title-group">
+        <div class="ludo-classic-title">
+          <span class="title-l">L</span><span class="title-u">U</span><span class="title-d">D</span><span class="title-o">O</span>
+          <span class="title-classic">CLASSIC</span>
+        </div>
+        <div class="page-subtitle">Create a battle or join a battle</div>
+      </div>
+    </div>
+
+    <!-- 3. "CREATE BATTLE" MAIN CARD -->
+    <section class="create-battle-card">
+      <div class="create-battle-badge">CREATE BATTLE</div>
+      
+      <!-- 3D Board Artwork -->
+      <img class="create-battle-art-img" src="assets/board_3d_card.png" alt="3D Ludo Board">
+      
+      <div class="entry-amount-label">Entry Amount (₹)</div>
+      
+      <div class="amount-input-wrapper">
+        <span class="currency-symbol">₹</span>
+        <input type="number" class="amount-input" id="create-entry-amount" value="20" min="10" max="10000" step="10">
+      </div>
+
+      <!-- Preset Quick Chips -->
+      <div class="amount-presets">
+        <button class="preset-chip-btn" onclick="setPresetAmount(10, this)">₹10</button>
+        <button class="preset-chip-btn active" onclick="setPresetAmount(20, this)">₹20</button>
+        <button class="preset-chip-btn" onclick="setPresetAmount(50, this)">₹50</button>
+        <button class="preset-chip-btn" onclick="setPresetAmount(100, this)">₹100</button>
+        <button class="preset-chip-btn" onclick="setPresetAmount(200, this)">₹200</button>
+      </div>
+
+      <button class="btn-create-battle" onclick="startCreateBattleFlow()">CREATE BATTLE</button>
+    </section>
+
+    <!-- 4. REDESIGNED JOIN PRIVATE BATTLE WITH ANIMATED "HOW IT WORKS" INFO BUTTON -->
+    <div class="private-battle-container">
+      <div class="private-battle-card" onclick="openJoinPrivateModal()">
+        <!-- Left: Padlock Icon -->
+        <div class="private-icon-box">
+          <span class="private-lock-icon">🔒</span>
+        </div>
+
+        <!-- Middle: Title & Subtitle -->
+        <div class="private-card-info">
+          <div class="private-card-title">JOIN PRIVATE BATTLE</div>
+          <div class="private-card-sub">Enter Room Code and join your private battle</div>
+        </div>
+
+        <!-- Right: Animated "How it works" Info Button + Action Arrow -->
+        <div class="private-actions-group">
+          <!-- Animated Info Button -->
+          <button class="btn-how-it-works-animated" onclick="event.stopPropagation(); openHowItWorks();" title="How it works & Rules">
+            <span class="info-icon-symbol">ℹ</span>
+            <span class="info-icon-label">Rules</span>
+          </button>
+          
+          <!-- Join Arrow -->
+          <div class="private-card-arrow">➔</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. BATTLE LIST TABS (Active Open & Running Battles) -->
+    <div class="battle-tabs-container">
+      <button class="battle-tab-btn active" id="tab-open-battles" onclick="switchBattleTab('open')">
+        OPEN BATTLES
+      </button>
+      <button class="battle-tab-btn" id="tab-running-battles" onclick="switchBattleTab('running')">
+        RUNNING BATTLES <span class="badge-live-pulse">● LIVE</span>
+      </button>
+    </div>
+
+    <!-- 6. FILTERS & REFRESH ROW -->
+    <div class="filter-row">
+      <div class="filter-btn">
+        <span>🔽</span>
+        <select id="sort-select" onchange="handleSortChange()">
+          <option value="low">Sort: Low to High</option>
+          <option value="high">Sort: High to Low</option>
+          <option value="prize">Sort: Highest Prize</option>
+        </select>
+      </div>
+
+      <button class="btn-refresh" id="btn-refresh" onclick="refreshBattles()" title="Refresh Battles">
+        🔄
+      </button>
+    </div>
+
+    <!-- 7. OPEN BATTLES LIST CONTAINER -->
+    <div class="battles-list" id="battles-list-container">
+      <!-- Dynamically rendered via classic-battle.js -->
+    </div>
+
+  </div>
+
+  <!-- 8. BOTTOM FLOATING NAVIGATION DOCK -->
+  <div class="bottom-nav-container">
+    <nav class="bottom-nav">
+      <button class="nav-tab active" onclick="window.location.href='index.html'">
+        <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='ranking.html'">
+        <img class="nav-icon-svg" src="assets/ranking.svg" alt="Ranking">
+        <span class="nav-label">Ranking</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='wallet.html'">
+        <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+        <span class="nav-label">Wallet</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='refer-earn.html'">
+        <img class="nav-icon-svg" src="assets/refer.svg" alt="Refer">
+        <span class="nav-label">Refer</span>
+      </button>
+      <button class="nav-tab" onclick="window.location.href='profile.html'">
+        <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+    <div class="home-indicator"></div>
+  </div>
+
+  <!-- ==========================================================================
+       FLOW STEP MODALS (100% Matching ludo_classic_battle_flow_design.png)
+       ========================================================================== -->
+
+  <!-- STEP 2: CHOOSE BATTLE TYPE MODAL -->
+  <div class="flow-modal-backdrop" id="modal-step2-choose-type">
+    <div class="flow-modal-box">
+      <button class="flow-modal-close-btn" onclick="closeAllFlowModals('modal-step2-choose-type')">✕</button>
+      <div class="flow-header-pill">CHOOSE BATTLE TYPE</div>
+      <h3 class="flow-title">Who can join this battle?</h3>
+      <p class="flow-subtitle">Select whether you want to play with anyone online or share a private room code.</p>
+
+      <div class="battle-type-cards">
+        <!-- Option 1: Public Battle -->
+        <div class="battle-type-card selected" id="type-card-public" onclick="selectBattleTypeOption(this, 'public')">
+          <div class="battle-type-icon-box">🌐</div>
+          <div>
+            <div class="battle-type-title">PUBLIC BATTLE</div>
+            <div class="battle-type-desc">Anyone can see and join in Open Battles</div>
+          </div>
+          <div class="radio-indicator"></div>
+        </div>
+
+        <!-- Option 2: Private Battle -->
+        <div class="battle-type-card" id="type-card-private" onclick="selectBattleTypeOption(this, 'private')">
+          <div class="battle-type-icon-box">🔒</div>
+          <div>
+            <div class="battle-type-title">PRIVATE BATTLE</div>
+            <div class="battle-type-desc">Only players with Room Code can join</div>
+          </div>
+          <div class="radio-indicator"></div>
+        </div>
+      </div>
+
+      <button class="btn-flow-primary" onclick="confirmBattleType()">CONTINUE</button>
+    </div>
+  </div>
+
+  <!-- STEP 3A: PUBLIC BATTLE CREATED MODAL -->
+  <div class="flow-modal-backdrop" id="modal-step3a-public-created">
+    <div class="flow-modal-box">
+      <button class="flow-modal-close-btn" onclick="closeAllFlowModals('modal-step3a-public-created')">✕</button>
+      <div class="icon-badge-success">✔</div>
+      <h3 class="flow-title" style="color: #1e7e23;">PUBLIC BATTLE CREATED!</h3>
+      <p class="flow-subtitle">Your battle is now live in Open Battles.</p>
+
+      <div class="battle-info-summary-box">
+        <div>
+          <div class="info-summary-label">Entry Amount</div>
+          <div class="info-summary-val" id="public-created-entry">₹20</div>
+        </div>
+        <div style="border-right: 1px solid #d8e6f5;"></div>
+        <div>
+          <div class="info-summary-label">Prize</div>
+          <div class="info-summary-val green" id="public-created-prize">₹36</div>
+        </div>
+        <div style="border-right: 1px solid #d8e6f5;"></div>
+        <div>
+          <div class="info-summary-label">Players</div>
+          <div class="info-summary-val">1 / 2</div>
+        </div>
+      </div>
+
+      <button class="btn-flow-green" onclick="closeAllFlowModals('modal-step3a-public-created'); showToast('Showing your battle in Open Battles list', '🏆');">
+        GO TO OPEN BATTLES
+      </button>
+
+      <div class="status-note-box">
+        Other players can now see and join your battle.
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3B: PRIVATE BATTLE CREATED MODAL -->
+  <div class="flow-modal-backdrop" id="modal-step3b-private-created">
+    <div class="flow-modal-box">
+      <button class="flow-modal-close-btn" onclick="closeAllFlowModals('modal-step3b-private-created')">✕</button>
+      <div class="icon-badge-lock">🔒</div>
+      <h3 class="flow-title" style="color: #e65100;">PRIVATE BATTLE CREATED!</h3>
+      <p class="flow-subtitle">Share this code with your friend to join the battle.</p>
+
+      <div style="font-size: 11px; font-weight: 800; color: #6a7d94; letter-spacing: 0.5px;">ROOM CODE</div>
+      
+      <div class="room-code-display" id="private-code-digits">
+        <div class="pin-digit-box">8</div>
+        <div class="pin-digit-box">4</div>
+        <div class="pin-digit-box">7</div>
+        <div class="pin-digit-box">2</div>
+        <div class="pin-digit-box">1</div>
+      </div>
+
+      <div class="dual-btn-row">
+        <button class="btn-flow-primary" onclick="copyRoomCode()">📋 COPY CODE</button>
+        <button class="btn-flow-green" onclick="shareRoomCode()">🟢 SHARE</button>
+      </div>
+
+      <div class="battle-info-summary-box">
+        <div>
+          <div class="info-summary-label">Entry Amount</div>
+          <div class="info-summary-val" id="private-created-entry">₹20</div>
+        </div>
+        <div style="border-right: 1px solid #d8e6f5;"></div>
+        <div>
+          <div class="info-summary-label">Prize</div>
+          <div class="info-summary-val green" id="private-created-prize">₹36</div>
+        </div>
+        <div style="border-right: 1px solid #d8e6f5;"></div>
+        <div>
+          <div class="info-summary-label">Players</div>
+          <div class="info-summary-val">1 / 2</div>
+        </div>
+      </div>
+
+      <div class="status-note-box orange">
+        ⏳ Waiting for another player to join using Room Code...
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4: JOIN PRIVATE BATTLE (ENTER ROOM CODE) MODAL -->
+  <div class="flow-modal-backdrop" id="modal-step4-enter-code">
+    <div class="flow-modal-box">
+      <button class="flow-modal-close-btn" onclick="closeAllFlowModals('modal-step4-enter-code')">✕</button>
+      <div class="flow-header-pill">JOIN PRIVATE BATTLE</div>
+      <h3 class="flow-title">Enter Room Code</h3>
+      <p class="flow-subtitle">Type the 5-digit code shared by the battle creator.</p>
+
+      <div class="room-code-display">
+        <input type="text" maxlength="1" class="pin-input" id="pin-1" oninput="handlePinInput(1, event)" pattern="[0-9]*" inputmode="numeric">
+        <input type="text" maxlength="1" class="pin-input" id="pin-2" oninput="handlePinInput(2, event)" pattern="[0-9]*" inputmode="numeric">
+        <input type="text" maxlength="1" class="pin-input" id="pin-3" oninput="handlePinInput(3, event)" pattern="[0-9]*" inputmode="numeric">
+        <input type="text" maxlength="1" class="pin-input" id="pin-4" oninput="handlePinInput(4, event)" pattern="[0-9]*" inputmode="numeric">
+        <input type="text" maxlength="1" class="pin-input" id="pin-5" oninput="handlePinInput(5, event)" pattern="[0-9]*" inputmode="numeric">
+      </div>
+
+      <button class="btn-flow-green" onclick="submitJoinPrivateCode()">JOIN BATTLE</button>
+
+      <div style="font-size: 11.5px; color: #6a7d94; margin-top: 14px;">
+        ℹ Make sure you have the correct Room Code from your friend.
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 5: JOINING BATTLE VERIFICATION ANIMATION MODAL -->
+  <div class="flow-modal-backdrop" id="modal-step5-joining-loader">
+    <div class="flow-modal-box">
+      <div class="flow-header-pill">JOINING BATTLE</div>
+      <div style="font-size: 40px; margin: 10px auto;">⏳</div>
+      <h3 class="flow-title">Joining the battle...</h3>
+      <p class="flow-subtitle">Please wait while we connect you to the room.</p>
+
+      <div class="verify-checklist">
+        <div class="checklist-item" id="chk-1">
+          <span class="checklist-icon">✔</span>
+          <span>Valid Room Code</span>
+        </div>
+        <div class="checklist-item" id="chk-2">
+          <span class="checklist-icon">✔</span>
+          <span>Battle Found</span>
+        </div>
+        <div class="checklist-item" id="chk-3">
+          <span class="checklist-icon">⏳</span>
+          <span>Joining match...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6: JOINED SUCCESSFULLY & COUNTDOWN MODAL -->
+  <div class="flow-modal-backdrop" id="modal-step6-joined-success">
+    <div class="flow-modal-box">
+      <button class="flow-modal-close-btn" onclick="closeAllFlowModals('modal-step6-joined-success')">✕</button>
+      <div class="icon-badge-success">✔</div>
+      <h3 class="flow-title" style="color: #1e7e23;">JOINED SUCCESSFULLY!</h3>
+      <p class="flow-subtitle">You have joined the battle arena.</p>
+
+      <div class="battle-info-summary-box">
+        <div>
+          <div class="info-summary-label">Entry Amount</div>
+          <div class="info-summary-val" id="joined-entry-amount">₹20</div>
+        </div>
+        <div style="border-right: 1px solid #d8e6f5;"></div>
+        <div>
+          <div class="info-summary-label">Prize</div>
+          <div class="info-summary-val green" id="joined-prize-amount">₹36</div>
+        </div>
+        <div style="border-right: 1px solid #d8e6f5;"></div>
+        <div>
+          <div class="info-summary-label">Players</div>
+          <div class="info-summary-val">2 / 2</div>
+        </div>
+      </div>
+
+      <div class="status-note-box" style="margin-bottom: 10px;">
+        Battle is full. Starting game...
+      </div>
+
+      <!-- Animated Countdown Number -->
+      <div class="countdown-box" id="match-countdown-num">3</div>
+    </div>
+  </div>
+
+  <!-- STEP 7: GAME STARTING SCREEN MODAL -->
+  <div class="flow-modal-backdrop" id="modal-step7-game-starting">
+    <div class="flow-modal-box" style="background: linear-gradient(180deg, #ffffff 0%, #e8f4fd 100%);">
+      <button class="flow-modal-close-btn" onclick="closeAllFlowModals('modal-step7-game-starting')">✕</button>
+      <img src="assets/board_3d_card.png" alt="Game Board" style="width: 80%; max-width: 260px; margin: 10px auto; display: block;">
+      <h2 style="font-size: 26px; font-weight: 900; color: #0c2b64; margin-top: 10px;">Game Starting!</h2>
+      <p style="font-size: 16px; font-weight: 800; color: #2cb730; margin-bottom: 20px;">Good Luck!</p>
+      
+      <button class="btn-flow-green" onclick="window.location.href='game-play.html'">ENTER MATCH</button>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS MODAL -->
+  <div class="flow-modal-backdrop" id="modal-how-it-works">
+    <div class="flow-modal-box" style="text-align: left;">
+      <button class="flow-modal-close-btn" onclick="closeAllFlowModals('modal-how-it-works')">✕</button>
+      <div class="flow-header-pill">HOW IT WORKS</div>
+      <h3 class="flow-title">Battle Rules & Commission</h3>
+      <p class="flow-subtitle">Simple, fair, and transparent gameplay guidelines.</p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px; color: #203a5a; margin-bottom: 18px;">
+        <div style="background: #ffffff; border: 1px solid #d8e7f5; border-radius: 12px; padding: 10px 12px;">
+          <b>🌐 Public Battles:</b> Anyone in the open lobby can join your match.
+        </div>
+        <div style="background: #ffffff; border: 1px solid #d8e7f5; border-radius: 12px; padding: 10px 12px;">
+          <b>🔒 Private Battles:</b> Only friends with your secret 5-digit Room Code can join.
+        </div>
+        <div style="background: #ffffff; border: 1px solid #d8e7f5; border-radius: 12px; padding: 10px 12px;">
+          <b>💰 Prize Calculation:</b> 2 Players x Entry Fee minus 10% platform commission = Prize Pool (e.g. ₹20 + ₹20 = ₹40 - 10% = <b>₹36</b>).
+        </div>
+        <div style="background: #ffffff; border: 1px solid #d8e7f5; border-radius: 12px; padding: 10px 12px;">
+          <b>🛡 Fair Play:</b> 100% verified real players and certified random dice roll algorithms.
+        </div>
+      </div>
+
+      <button class="btn-flow-primary" onclick="closeAllFlowModals('modal-how-it-works')">GOT IT</button>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-msg" id="toast-msg"></div>
+
+  <!-- Interactive Logic -->
+  <script src="classic-battle.js"></script>
+</body>
+</html>

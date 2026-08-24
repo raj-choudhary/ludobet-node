@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Transaction History & Passbook | Ludo Tournament King</title>
+  <meta name="description" content="Complete financial passbook and ledger history for deposits, withdrawals, tournament winnings, and referrals.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="transactions.css">
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 1. TOP HEADER (Menu + Resource Pill) -->
+    <header class="top-header">
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="window.location.href='index.html'">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <div class="resource-pill">
+        <a href="wallet.html" class="res-item" style="text-decoration:none;" aria-label="Wallet Balance">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">₹1,250</span>
+            <span class="res-label">Cash</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </a>
+
+        <div class="res-item" aria-label="Gems">
+          <img class="res-icon" src="assets/diamond.svg" alt="Gems">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">20</span>
+            <span class="res-label">Gems</span>
+          </div>
+        </div>
+
+        <button class="bell-item" onclick="window.location.href='notifications.html'" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- Sub-Header Bar -->
+    <div class="sub-header-bar">
+      <button class="btn-back" onclick="window.location.href='wallet.html'" aria-label="Go Back">←</button>
+      <div class="page-title-group">
+        <h1 class="txn-page-title">
+          <span class="title-blue">TRANSACTION</span> <span class="title-purple">PASSBOOK</span>
+        </h1>
+        <span class="page-subtitle">Complete Financial Statement &amp; Ledger</span>
+      </div>
+      <button class="btn-download-stmt" onclick="showToast('Statement downloaded as PDF', '📄')">
+        📄 PDF
+      </button>
+    </div>
+
+    <!-- MAIN BODY -->
+    <main class="txn-body">
+
+      <!-- 1. WALLET SUMMARY STRIP -->
+      <section class="txn-summary-strip">
+        <div class="summary-col">
+          <span class="sum-lbl">CURRENT BALANCE</span>
+          <span class="sum-val text-navy">₹1,250.00</span>
+        </div>
+        <div class="sum-divider"></div>
+        <div class="summary-col">
+          <span class="sum-lbl">TOTAL WON</span>
+          <span class="sum-val text-green">+₹14,820</span>
+        </div>
+        <div class="sum-divider"></div>
+        <div class="summary-col">
+          <span class="sum-lbl">TOTAL WITHDRAWN</span>
+          <span class="sum-val text-blue">₹12,400</span>
+        </div>
+      </section>
+
+      <!-- 2. CATEGORY FILTER TABS (7 CATEGORIES) -->
+      <div class="txn-filter-scroll">
+        <button class="txn-tab-chip active" onclick="filterTxn('all', this)">ALL</button>
+        <button class="txn-tab-chip" onclick="filterTxn('won', this)">🏆 WON</button>
+        <button class="txn-tab-chip" onclick="filterTxn('lost', this)">❌ LOST</button>
+        <button class="txn-tab-chip" onclick="filterTxn('deposit', this)">💰 DEPOSIT</button>
+        <button class="txn-tab-chip" onclick="filterTxn('withdraw', this)">💸 WITHDRAW</button>
+        <button class="txn-tab-chip" onclick="filterTxn('referral', this)">🎁 REFERRAL</button>
+        <button class="txn-tab-chip" onclick="filterTxn('penalty', this)">⚠️ PENALTY</button>
+      </div>
+
+      <!-- 3. TRANSACTION LIST -->
+      <div class="transactions-list-wrap" id="transactions-list">
+
+        <!-- Txn 1: Won -->
+        <div class="txn-item-card won" data-category="won">
+          <div class="txn-left">
+            <div class="txn-icon-box won">🏆</div>
+            <div class="txn-meta-info">
+              <span class="txn-title">Battle Won vs Rahul Kumar</span>
+              <span class="txn-sub">Battle #BTL-9284 • Ludo Classic 1v1</span>
+              <span class="txn-time">Today, 04:15 PM • Order #TXN-9418</span>
+            </div>
+          </div>
+          <div class="txn-right">
+            <span class="txn-amount green">+₹95.00</span>
+            <span class="txn-status success">SUCCESS</span>
+          </div>
+        </div>
+
+        <!-- Txn 2: Deposit -->
+        <div class="txn-item-card deposit" data-category="deposit">
+          <div class="txn-left">
+            <div class="txn-icon-box deposit">💰</div>
+            <div class="txn-meta-info">
+              <span class="txn-title">Add Cash via UPI (GPay)</span>
+              <span class="txn-sub">UTR: 384918291048 • Verified</span>
+              <span class="txn-time">Today, 01:30 PM • Order #TXN-9320</span>
+            </div>
+          </div>
+          <div class="txn-right">
+            <span class="txn-amount green">+₹500.00</span>
+            <span class="txn-status success">SUCCESS</span>
+          </div>
+        </div>
+
+        <!-- Txn 3: Withdrawal -->
+        <div class="txn-item-card withdraw" data-category="withdraw">
+          <div class="txn-left">
+            <div class="txn-icon-box withdraw">💸</div>
+            <div class="txn-meta-info">
+              <span class="txn-title">Withdrawal to UPI (rajendra@okaxis)</span>
+              <span class="txn-sub">IMPS Payout Reference: 93841920</span>
+              <span class="txn-time">Today, 11:20 AM • Order #TXN-9211</span>
+            </div>
+          </div>
+          <div class="txn-right">
+            <span class="txn-amount red">-₹500.00</span>
+            <span class="txn-status success">PAID OUT</span>
+          </div>
+        </div>
+
+        <!-- Txn 4: Lost Match Entry -->
+        <div class="txn-item-card lost" data-category="lost">
+          <div class="txn-left">
+            <div class="txn-icon-box lost">❌</div>
+            <div class="txn-meta-info">
+              <span class="txn-title">Match Entry Conceded vs Samir</span>
+              <span class="txn-sub">Battle #BTL-9022 • Snakes &amp; Ladders</span>
+              <span class="txn-time">Yesterday, 06:10 PM • Order #TXN-8940</span>
+            </div>
+          </div>
+          <div class="txn-right">
+            <span class="txn-amount red">-₹20.00</span>
+            <span class="txn-status failed">DEFEAT</span>
+          </div>
+        </div>
+
+        <!-- Txn 5: Referral Reward -->
+        <div class="txn-item-card referral" data-category="referral">
+          <div class="txn-left">
+            <div class="txn-icon-box referral">🎁</div>
+            <div class="txn-meta-info">
+              <span class="txn-title">Referral Commission (Amit Verma)</span>
+              <span class="txn-sub">5% Lifetime Battle Commission</span>
+              <span class="txn-time">20 Aug, 09:15 PM • Order #TXN-8812</span>
+            </div>
+          </div>
+          <div class="txn-right">
+            <span class="txn-amount green">+₹100.00</span>
+            <span class="txn-status success">BONUS</span>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav-container">
+      <nav class="bottom-nav">
+        <button class="nav-tab" onclick="window.location.href='index.html'">
+          <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+          <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ludo-classic.html'">
+          <img class="nav-icon-svg" src="assets/chip.svg" alt="Battles">
+          <span class="nav-label">Battles</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='ranking.html'">
+          <img class="nav-icon-svg" src="assets/ranking.svg" alt="Leaderboard">
+          <span class="nav-label">Ranking</span>
+        </button>
+        <button class="nav-tab active" onclick="window.location.href='wallet.html'">
+          <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+          <span class="nav-label">Wallet</span>
+        </button>
+        <button class="nav-tab" onclick="window.location.href='profile.html'">
+          <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+          <span class="nav-label">Profile</span>
+        </button>
+      </nav>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="app-toast" id="app-toast">
+    <span class="toast-icon" id="toast-icon">⚡</span>
+    <span class="toast-msg" id="toast-msg">Notification</span>
+  </div>
+
+  <script>
+    function filterTxn(category, btn) {
+      document.querySelectorAll('.txn-tab-chip').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.txn-item-card');
+      cards.forEach(card => {
+        if (category === 'all') {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = card.getAttribute('data-category') === category ? 'flex' : 'none';
+        }
+      });
+    }
+
+    function showToast(msg, icon = '⚡') {
+      const toast = document.getElementById('app-toast');
+      const msgEl = document.getElementById('toast-msg');
+      const iconEl = document.getElementById('toast-icon');
+      if (!toast || !msgEl) return;
+      msgEl.innerText = msg;
+      if (iconEl) iconEl.innerText = icon;
+      toast.classList.add('show');
+      clearTimeout(toast._timeout);
+      toast._timeout = setTimeout(() => toast.classList.remove('show'), 2400);
+    }
+  </script>
+</body>
+</html>

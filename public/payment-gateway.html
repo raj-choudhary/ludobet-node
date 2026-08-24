@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Secure Payment Gateway — Ludo Bet</title>
+  <meta name="description" content="Secure 256-Bit SSL Encrypted Payment Gateway for Instant Ludo Bet Wallet Deposits via UPI, GPay, PhonePe, Paytm and Cards.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .pg-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px 18px 24px;
+      background: var(--bg-gradient);
+    }
+
+    /* PG Header Bar */
+    .pg-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .pg-back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.8);
+      border: 1.5px solid #d4e5f7;
+      border-radius: 12px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      color: #0c2b64;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .pg-security-badge {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      color: #15803d;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 6px 10px;
+      border-radius: 12px;
+    }
+
+    /* Order Summary Card */
+    .pg-order-card {
+      background: linear-gradient(135deg, #0c2b64 0%, #081a3e 100%);
+      border-radius: 20px;
+      padding: 18px;
+      color: #ffffff;
+      box-shadow: 0 8px 24px rgba(12, 43, 100, 0.25);
+      margin-bottom: 16px;
+    }
+
+    .pg-order-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+
+    .pg-merchant-name {
+      font-size: 14px;
+      font-weight: 800;
+      color: #38bdf8;
+    }
+
+    .pg-order-id {
+      font-size: 10px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .pg-amount-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .pg-amount-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #cbd5e1;
+    }
+
+    .pg-amount-val {
+      font-size: 28px;
+      font-weight: 900;
+      color: #4ade80;
+    }
+
+    .pg-bonus-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fbbf24;
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 8px;
+      margin-top: 8px;
+    }
+
+    /* Payment Methods Container */
+    .pg-content-card {
+      background: #ffffff;
+      border-radius: 22px;
+      padding: 18px 16px;
+      border: 1.5px solid #d4e5f7;
+      box-shadow: 0 4px 20px rgba(12, 43, 100, 0.08);
+      margin-bottom: 16px;
+    }
+
+    .pg-section-title {
+      font-size: 12px;
+      font-weight: 900;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    /* UPI Apps Stack */
+    .upi-apps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .upi-app-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #f8fbfe;
+      border: 1.5px solid #d4e5f7;
+      border-radius: 14px;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, background 0.15s;
+    }
+
+    .upi-app-card:hover {
+      background: #ffffff;
+      border-color: #0288d1;
+      transform: translateY(-1px);
+    }
+
+    .upi-app-card.active {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+
+    .app-card-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-card-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      object-fit: contain;
+    }
+
+    .app-card-name {
+      font-size: 13.5px;
+      font-weight: 900;
+      color: #0c2b64;
+    }
+
+    .app-card-sub {
+      font-size: 10px;
+      font-weight: 600;
+      color: #64748b;
+    }
+
+    .app-card-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 2px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .upi-app-card.active .app-card-dot {
+      border-color: #16a34a;
+      background: #16a34a;
+    }
+
+    .upi-app-card.active .app-card-dot::after {
+      content: "✓";
+      color: #ffffff;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    /* QR Code Display */
+    .qr-section-box {
+      background: #f8fbfe;
+      border: 1.5px dashed #93c5fd;
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .qr-image-frame {
+      background: #ffffff;
+      padding: 10px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      margin: 8px 0;
+    }
+
+    .qr-code-img {
+      width: 140px;
+      height: 140px;
+      display: block;
+    }
+
+    .qr-timer-text {
+      font-size: 11px;
+      font-weight: 700;
+      color: #dc2626;
+      margin-top: 4px;
+    }
+
+    .btn-copy-upi {
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      color: #0288d1;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 8px;
+      font-family: inherit;
+    }
+
+    /* Pay Button */
+    .btn-pay-action {
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 15px 20px;
+      background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 6px 18px rgba(22, 163, 74, 0.35);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .btn-pay-action:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(22, 163, 74, 0.45);
+    }
+
+    .btn-pay-action:active {
+      transform: scale(0.98);
+    }
+
+    /* Payment Processing Overlay */
+    .pg-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(12, 43, 100, 0.85);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+      color: #ffffff;
+    }
+
+    .pg-overlay.show {
+      display: flex;
+    }
+
+    .pg-spinner {
+      width: 56px;
+      height: 56px;
+      border: 5px solid rgba(255, 255, 255, 0.2);
+      border-top-color: #22c55e;
+      border-radius: 50%;
+      animation: spinPG 0.8s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spinPG {
+      to { transform: rotate(360deg); }
+    }
+
+    .pg-status-title {
+      font-size: 20px;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .pg-status-desc {
+      font-size: 13px;
+      color: #93c5fd;
+      font-weight: 600;
+      max-width: 320px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <div class="pg-container">
+      
+      <div>
+        <!-- Top Bar -->
+        <div class="pg-top-bar">
+          <button class="pg-back-btn" onclick="window.location.href='wallet.html'">
+            <span>←</span>
+            <span>BACK</span>
+          </button>
+          <div class="pg-security-badge">
+            <span>🔒</span>
+            <span>256-Bit SSL Secure</span>
+          </div>
+        </div>
+
+        <!-- Order Summary Card -->
+        <div class="pg-order-card">
+          <div class="pg-order-top">
+            <div class="pg-merchant-name">Ludo Bet Arena (Verified) ✓</div>
+            <div class="pg-order-id" id="pg-order-id">ORD-8924108</div>
+          </div>
+          <div class="pg-amount-row">
+            <span class="pg-amount-label">Payable Amount</span>
+            <span class="pg-amount-val" id="pg-amount-display">₹500.00</span>
+          </div>
+          <div class="pg-bonus-tag">
+            <span>🎁</span>
+            <span id="pg-bonus-display">+₹75 Instant Deposit Bonus Credited</span>
+          </div>
+        </div>
+
+        <!-- Payment Options Card -->
+        <div class="pg-content-card">
+          <div class="pg-section-title">CHOOSE UPI PAYMENT OPTION</div>
+
+          <div class="upi-apps-list">
+            <!-- GPay -->
+            <div class="upi-app-card active" onclick="selectApp(this, 'Google Pay')">
+              <div class="app-card-left">
+                <img src="assets/icon_gpay.svg" alt="Google Pay" class="app-card-logo">
+                <div>
+                  <div class="app-card-name">Google Pay (GPay)</div>
+                  <div class="app-card-sub">Instant 1-Tap UPI Payment</div>
+                </div>
+              </div>
+              <div class="app-card-dot"></div>
+            </div>
+
+            <!-- PhonePe -->
+            <div class="upi-app-card" onclick="selectApp(this, 'PhonePe')">
+              <div class="app-card-left">
+                <img src="assets/icon_phonepe.svg" alt="PhonePe" class="app-card-logo">
+                <div>
+                  <div class="app-card-name">PhonePe UPI</div>
+                  <div class="app-card-sub">UPI App / Wallet</div>
+                </div>
+              </div>
+              <div class="app-card-dot"></div>
+            </div>
+
+            <!-- Paytm -->
+            <div class="upi-app-card" onclick="selectApp(this, 'Paytm')">
+              <div class="app-card-left">
+                <img src="assets/icon_paytm.svg" alt="Paytm" class="app-card-logo">
+                <div>
+                  <div class="app-card-name">Paytm UPI &amp; Wallet</div>
+                  <div class="app-card-sub">Instant 5s Payout Gateway</div>
+                </div>
+              </div>
+              <div class="app-card-dot"></div>
+            </div>
+          </div>
+
+          <!-- QR Scan Section -->
+          <div class="qr-section-box">
+            <span style="font-size:12px; font-weight:800; color:#0c2b64;">OR SCAN QR VIA ANY UPI APP</span>
+            <div class="qr-image-frame">
+              <img src="assets/payment_qr_code.png" alt="UPI QR Code" class="qr-code-img">
+            </div>
+            <span class="qr-timer-text">⏱️ QR Expires in <strong id="qr-pg-timer">04:58</strong></span>
+            <button class="btn-copy-upi" onclick="copyUpiId()">
+              📋 Copy UPI ID: <strong>ludobet.pay@icici</strong>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Action Button & Footer -->
+      <div>
+        <button class="btn-pay-action" id="btn-pay-now" onclick="processPayment()">
+          <span>🔒 PAY ₹500.00 VIA GPAY ➔</span>
+        </button>
+
+        <div style="display:flex; justify-content:center; align-items:center; gap:8px; margin-top:12px; font-size:10.5px; font-weight:700; color:#64748b;">
+          <span>⚡ Instant Credit</span>
+          <span>•</span>
+          <span>🛡️ 100% Refund Guarantee</span>
+          <span>•</span>
+          <span>🏛️ RBI Compliant</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Processing Modal Overlay -->
+  <div class="pg-overlay" id="pg-overlay">
+    <div class="pg-spinner" id="pg-spinner"></div>
+    <div style="font-size:48px; display:none; margin-bottom:14px;" id="pg-success-icon">🎉</div>
+    <h3 class="pg-status-title" id="pg-status-title">Processing Payment...</h3>
+    <p class="pg-status-desc" id="pg-status-desc">Connecting with bank server. Please do not press back or refresh.</p>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast-msg"></div>
+
+  <script>
+    let selectedAppName = 'Google Pay';
+    let depositAmt = 500;
+
+    // Read amount from URL params if present
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('amount')) {
+      const amt = parseInt(urlParams.get('amount'), 10);
+      if (amt && amt > 0) depositAmt = amt;
+    }
+
+    document.getElementById('pg-amount-display').textContent = `₹${depositAmt.toLocaleString()}.00`;
+    document.getElementById('pg-bonus-display').textContent = `+₹${Math.round(depositAmt * 0.15)} Instant Deposit Bonus Credited`;
+    document.getElementById('btn-pay-now').innerHTML = `<span>🔒 PAY ₹${depositAmt.toLocaleString()}.00 VIA GPAY ➔</span>`;
+    document.getElementById('pg-order-id').textContent = 'ORD-' + Math.floor(1000000 + Math.random() * 9000000);
+
+    function selectApp(el, name) {
+      selectedAppName = name;
+      document.querySelectorAll('.upi-app-card').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('btn-pay-now').innerHTML = `<span>🔒 PAY ₹${depositAmt.toLocaleString()}.00 VIA ${name.toUpperCase()} ➔</span>`;
+    }
+
+    function copyUpiId() {
+      navigator.clipboard.writeText('ludobet.pay@icici').then(() => {
+        showToast('UPI ID Copied: ludobet.pay@icici', '📋');
+      });
+    }
+
+    function showToast(msg, icon = 'ℹ️') {
+      const toast = document.getElementById('toast-msg');
+      if (!toast) return;
+      toast.innerHTML = `<span style="font-size:18px;">${icon}</span> <span>${msg}</span>`;
+      toast.classList.add('show');
+      setTimeout(() => { toast.classList.remove('show'); }, 2500);
+    }
+
+    // QR Countdown
+    let qrSecs = 298;
+    setInterval(() => {
+      qrSecs--;
+      if (qrSecs < 0) qrSecs = 300;
+      const mins = Math.floor(qrSecs / 60);
+      const s = qrSecs % 60;
+      document.getElementById('qr-pg-timer').textContent = `${String(mins).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }, 1000);
+
+    // Live Payment Simulation
+    function processPayment() {
+      const overlay = document.getElementById('pg-overlay');
+      const title = document.getElementById('pg-status-title');
+      const desc = document.getElementById('pg-status-desc');
+      const spinner = document.getElementById('pg-spinner');
+      const successIcon = document.getElementById('pg-success-icon');
+
+      overlay.classList.add('show');
+      title.textContent = `Connecting to ${selectedAppName}...`;
+      desc.textContent = `Authorizing transaction of ₹${depositAmt.toLocaleString()}...`;
+
+      setTimeout(() => {
+        title.textContent = 'Verifying Bank Confirmation...';
+        desc.textContent = 'Bank Ref: ICICI-UTR-' + Math.floor(10000000 + Math.random() * 90000000);
+      }, 1500);
+
+      setTimeout(() => {
+        spinner.style.display = 'none';
+        successIcon.style.display = 'block';
+        title.textContent = 'Deposit Successful! 🎉';
+        title.style.color = '#4ade80';
+        desc.textContent = `₹${depositAmt.toLocaleString()} added to your wallet with +₹${Math.round(depositAmt * 0.15)} Bonus!`;
+      }, 3000);
+
+      setTimeout(() => {
+        window.location.href = 'wallet.html';
+      }, 4500);
+    }
+  </script>
+</body>
+</html>

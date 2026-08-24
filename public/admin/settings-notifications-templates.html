@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email &amp; Notification Templates — Ludo Bet Admin</title>
+  <meta name="description" content="SMTP configuration, Email/SMS templates, and dynamic message tags.">
+  <link rel="stylesheet" href="admin.css">
+  <style>
+    .tag-chip-btn {
+      padding: 4px 10px;
+      background: #e0e7ff;
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .tag-chip-btn:hover {
+      background: #6366f1;
+      color: #ffffff;
+    }
+    .preview-phone-card {
+      background: #0f172a;
+      border-radius: 24px;
+      padding: 24px 16px;
+      color: #ffffff;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+    .preview-msg-bubble {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-brand-header">
+      <span class="brand-crown-icon">👑</span>
+      <div class="brand-title-group">
+        <span class="brand-main-title">LUDO BET</span>
+        <span class="brand-super-tag">SUPER ADMIN</span>
+      </div>
+    </div>
+
+    <div class="sidebar-menu-scroll">
+      <!-- 1. Dashboard -->
+      <a class="nav-item-btn" href="index.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🏠</span><span>Dashboard</span></div>
+      </a>
+
+      <!-- 2. Players Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">👥</span><span>Players</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="players.html">All Players (1,24,580)</a>
+          <a class="submenu-item-btn" href="players-banned.html">🚫 Banned Accounts (152)</a>
+          <a class="submenu-item-btn" href="player-view.html?id=LD10458">👤 Player Profile View</a>
+        </div>
+      </div>
+
+      <!-- 3. Finance Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">💰</span><span>Finance</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="finance.html">Overview</a>
+          <a class="submenu-item-btn" href="finance-deposits.html">Deposits (₹24,45,230)</a>
+          <a class="submenu-item-btn" href="finance-withdrawals.html">Withdrawals (₹17,82,120)</a>
+          <a class="submenu-item-btn" href="finance-adjustments.html">Manual Adjustments</a>
+          <a class="submenu-item-btn" href="finance-ledger.html">Double-Entry Ledger</a>
+        </div>
+      </div>
+
+      <!-- 4. KYC Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🪪</span><span>KYC Management</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="kyc.html">Pending Queue (456)</a>
+          <a class="submenu-item-btn" href="kyc-history.html">KYC History Log</a>
+        </div>
+      </div>
+
+      <!-- 5. Games Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🎮</span><span>Games</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="games-classic.html">🎲 Ludo Classic</a>
+          <a class="submenu-item-btn" href="games-quick.html">⚡ Ludo Quick</a>
+          <a class="submenu-item-btn" href="games-snake.html">🪜 Snake &amp; Ladders</a>
+        </div>
+      </div>
+
+      <!-- 6. Battles Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">⚔️</span><span>Battles</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="battles-open.html">Open Challenges (2,150)</a>
+          <a class="submenu-item-btn" href="battles-running.html">Live Running (3,820)</a>
+          <a class="submenu-item-btn" href="battles-completed.html">Completed (5,650)</a>
+          <a class="submenu-item-btn" href="battles-cancelled.html">Cancelled &amp; Refunded</a>
+          <a class="submenu-item-btn" href="battles-disputes.html">Disputes Desk (7)</a>
+        </div>
+      </div>
+
+      <!-- 7. Tournaments -->
+      <a class="nav-item-btn" href="tournaments.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🏆</span><span>Tournaments</span></div>
+      </a>
+
+      <!-- 8. Rewards & Spin Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🎡</span><span>Rewards &amp; Spin</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="rewards-bonuses.html">🎁 Bonuses Rules</a>
+          <a class="submenu-item-btn" href="rewards-referrals.html">🤝 Referral Program</a>
+          <a class="submenu-item-btn" href="rewards-spin.html">🎡 Spin Wheel CMS</a>
+        </div>
+      </div>
+
+      <!-- 9. Marketing Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">📢</span><span>Marketing &amp; CMS</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="marketing-banners.html">🖼️ Home Banners</a>
+          <a class="submenu-item-btn" href="marketing-notifications.html">🔔 Push Broadcaster</a>
+        </div>
+      </div>
+
+      <!-- 10. Support Tickets -->
+      <a class="nav-item-btn" href="support.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🎧</span><span>Support Tickets</span></div>
+        <span class="nav-pill-badge red">15</span>
+      </a>
+
+      <!-- 11. Security Center -->
+      <a class="nav-item-btn" href="security.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🛡️</span><span>Security Center</span></div>
+      </a>
+
+      <!-- 12. Employees & Roles -->
+      <a class="nav-item-btn" href="employees.html">
+        <div class="nav-left-group"><span class="nav-item-icon">👨‍💼</span><span>Employees &amp; Roles</span></div>
+      </a>
+
+      <!-- 13. Platform Settings Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">⚙️</span><span>Platform Settings</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu open">
+          <a class="submenu-item-btn" href="settings.html">Overview Hub</a>
+          <a class="submenu-item-btn" href="settings-financial.html">💰 Financial &amp; Commission</a>
+          <a class="submenu-item-btn" href="settings-game-engine.html">🎮 Game Engine &amp; Bot RNG</a>
+          <a class="submenu-item-btn" href="settings-payment-gateways.html">💳 Payment &amp; Crypto Gateways</a>
+          <a class="submenu-item-btn" href="settings-sms-gateways.html">📱 SMS Gateways &amp; DLT</a>
+          <a class="submenu-item-btn active" href="settings-notifications-templates.html">✉️ Email &amp; Templates</a>
+          <a class="submenu-item-btn" href="settings-system-security.html">🛡️ Anti-Fraud &amp; Geo-Rules</a>
+        </div>
+      </div>
+
+      <!-- 14. Master Audit Logs -->
+      <a class="nav-item-btn" href="audit-logs.html">
+        <div class="nav-left-group"><span class="nav-item-icon">📜</span><span>Master Audit Logs</span></div>
+      </a>
+
+      <!-- 15. Emergency Controls -->
+      <a class="nav-item-btn" href="emergency.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🚨</span><span style="color:#ef4444;">Emergency Controls</span></div>
+      </a>
+    </div>
+
+    <div class="sidebar-footer-card">
+      <div class="maintenance-switch-row">
+        <div class="maint-title-group"><span>🛡️</span><span>Maintenance Mode</span></div>
+        <input type="checkbox" onchange="toggleEmergencyMaintenance(this)" style="cursor:pointer; width:18px; height:18px;">
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="admin-main-wrapper">
+    <header class="admin-top-header">
+      <div class="header-left-group">
+        <button class="btn-sidebar-toggle" onclick="toggleMobileSidebar()">☰</button>
+        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">✉️ Email SMTP &amp; Notification Templates</h2>
+      </div>
+
+      <div class="header-right-group">
+        <button class="header-icon-btn" onclick="showToast('Searching templates...', '🔍')">🔍</button>
+        <button class="header-icon-btn" onclick="showToast('SMTP status: Connected', '🔔')">🔔</button>
+        <div class="admin-user-pill">
+          <div class="admin-avatar-circle"><span>👨‍💼</span></div>
+          <div class="admin-user-info">
+            <span class="admin-user-name">Super Admin</span>
+            <span class="admin-user-role">Super Administrator</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-body-container">
+      
+      <!-- Top Action Bar -->
+      <div class="admin-data-panel" style="margin-bottom:20px;">
+        <div class="data-panel-top-bar" style="margin-bottom:0;">
+          <div>
+            <h1 class="page-title-main">Email SMTP &amp; Message Templates Customizer</h1>
+            <p class="page-title-sub">Configure transactional SMTP mail servers and customize dynamic templates with merge tags for OTP, Deposits, Withdrawals, and Battle results.</p>
+          </div>
+          <div style="display:flex; gap:10px;">
+            <button class="btn-table-action" style="background:#6366f1; color:#fff; font-weight:800; padding:10px 24px;" onclick="saveTemplateSettings()">SAVE TEMPLATES &amp; SMTP 💾</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 1: SMTP Server Configuration -->
+      <div class="admin-data-panel" style="margin-bottom:20px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h2 style="font-size:15px; font-weight:800; color:#0f172a;">📧 Transactional SMTP Mail Server</h2>
+          <span class="nav-pill-badge green">● SMTP Connected</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:14px; margin-bottom:14px;">
+          <div>
+            <label style="font-size:11.5px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">SMTP Host</label>
+            <input type="text" id="smtpHost" value="smtp.hostinger.com" class="form-control-input" style="font-family:monospace; font-weight:700;">
+          </div>
+
+          <div>
+            <label style="font-size:11.5px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">SMTP Port</label>
+            <select id="smtpPort" class="form-control-select" style="font-weight:700;">
+              <option value="465" selected>465 (SSL Encrypted)</option>
+              <option value="587">587 (TLS / STARTTLS)</option>
+              <option value="25">25 (Unencrypted)</option>
+            </select>
+          </div>
+
+          <div>
+            <label style="font-size:11.5px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">SMTP Username / Email</label>
+            <input type="text" id="smtpUser" value="no-reply@ludobet.com" class="form-control-input" style="font-family:monospace; font-weight:700;">
+          </div>
+
+          <div>
+            <label style="font-size:11.5px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">SMTP Password</label>
+            <input type="password" id="smtpPass" value="SecretAppPassword#2026" class="form-control-input" style="font-family:monospace;">
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; gap:16px; font-size:12px; color:#475569;">
+            <span>From Header: <strong>Ludo Bet &lt;no-reply@ludobet.com&gt;</strong></span>
+          </div>
+          <button class="btn-table-action" style="background:#f1f5f9; color:#475569;" onclick="testSMTP()">⚡ TEST SMTP HANDSHAKE</button>
+        </div>
+      </div>
+
+      <!-- Row 2: Template Customizer with Live Phone Preview -->
+      <div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px;">
+        
+        <!-- Template Editor -->
+        <div class="admin-data-panel">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+            <h2 style="font-size:15px; font-weight:800; color:#0f172a;">📝 Dynamic Template Editor</h2>
+            <select id="templateSelector" class="form-control-select" style="width:240px; font-weight:800;" onchange="loadTemplate(this.value)">
+              <option value="otp">1. OTP Login / Register</option>
+              <option value="deposit">2. Deposit Credited Confirmation</option>
+              <option value="payout">3. Payout Dispatched &amp; UTR</option>
+              <option value="win">4. Battle Won &amp; Prize Added</option>
+              <option value="kyc_approved">5. KYC Verification Approved</option>
+              <option value="kyc_rejected">6. KYC Verification Rejected</option>
+            </select>
+          </div>
+
+          <!-- Dynamic Tags Inserter -->
+          <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px; padding:12px; margin-bottom:14px;">
+            <span style="font-size:11.5px; font-weight:800; color:#0f172a; display:block; margin-bottom:6px;">Click to Insert Dynamic Merge Tags:</span>
+            <div style="display:flex; flex-wrap:wrap; gap:6px;">
+              <button class="tag-chip-btn" onclick="insertTag('{PLAYER_NAME}')">{PLAYER_NAME}</button>
+              <button class="tag-chip-btn" onclick="insertTag('{AMOUNT}')">{AMOUNT}</button>
+              <button class="tag-chip-btn" onclick="insertTag('{OTP_CODE}')">{OTP_CODE}</button>
+              <button class="tag-chip-btn" onclick="insertTag('{UTR}')">{UTR}</button>
+              <button class="tag-chip-btn" onclick="insertTag('{MATCH_ID}')">{MATCH_ID}</button>
+              <button class="tag-chip-btn" onclick="insertTag('{WALLET_BALANCE}')">{WALLET_BALANCE}</button>
+              <button class="tag-chip-btn" onclick="insertTag('{DATE_TIME}')">{DATE_TIME}</button>
+            </div>
+          </div>
+
+          <div style="margin-bottom:14px;">
+            <label style="font-size:11.5px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">Email Subject Line</label>
+            <input type="text" id="tplSubject" value="Your Ludo Bet Verification Code: {OTP_CODE}" class="form-control-input" style="font-weight:700;" oninput="updateLivePreview()">
+          </div>
+
+          <div>
+            <label style="font-size:11.5px; font-weight:700; color:#475569; display:block; margin-bottom:4px;">SMS / Email Message Content Body</label>
+            <textarea id="tplBody" class="form-control-textarea" rows="6" style="font-size:13px; font-family:monospace;" oninput="updateLivePreview()">Dear {PLAYER_NAME}, your one-time verification code for Ludo Bet is {OTP_CODE}. This code is valid for 5 minutes. Please do not share this OTP with anyone.</textarea>
+          </div>
+        </div>
+
+        <!-- Live Phone Preview Card -->
+        <div class="admin-data-panel">
+          <h2 style="font-size:15px; font-weight:800; color:#0f172a; margin-bottom:14px;">📱 Live Player Device Preview</h2>
+          
+          <div class="preview-phone-card">
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:#94a3b8; margin-bottom:14px;">
+              <span>19:42</span>
+              <span>📶 5G  🔋 98%</span>
+            </div>
+
+            <div style="font-size:11px; color:#94a3b8; margin-bottom:8px;">FROM: <strong>LUDBET</strong> (Verified)</div>
+
+            <div class="preview-msg-bubble" id="liveMsgPreview">
+              Dear Rahul, your one-time verification code for Ludo Bet is <strong>839201</strong>. This code is valid for 5 minutes. Please do not share this OTP with anyone.
+            </div>
+
+            <div style="margin-top:14px; text-align:center; font-size:10px; color:#64748b;">
+              Delivered instantly via SMSIndiaHub
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+  <script>
+    const TEMPLATES = {
+      otp: {
+        subject: "Your Ludo Bet Verification Code: {OTP_CODE}",
+        body: "Dear {PLAYER_NAME}, your one-time verification code for Ludo Bet is {OTP_CODE}. Valid for 5 minutes. Do not share with anyone. - LUDBET"
+      },
+      deposit: {
+        subject: "Deposit Successful: ₹{AMOUNT} Added",
+        body: "Great news {PLAYER_NAME}! Your deposit of ₹{AMOUNT} has been credited to your Ludo Bet cash wallet. Current Balance: ₹{WALLET_BALANCE}. Happy Gaming! - LUDBET"
+      },
+      payout: {
+        subject: "Payout Dispatched: ₹{AMOUNT} Transferred",
+        body: "Hello {PLAYER_NAME}, your withdrawal of ₹{AMOUNT} has been transferred to your Bank/UPI. Bank Reference UTR: {UTR}. - LUDBET"
+      },
+      win: {
+        subject: "Victory! You Won ₹{AMOUNT} in Match #{MATCH_ID}",
+        body: "Congratulations {PLAYER_NAME}! You won the battle #{MATCH_ID} and ₹{AMOUNT} has been added to your winning balance. - LUDBET"
+      },
+      kyc_approved: {
+        subject: "KYC Approved: Instant Withdrawals Enabled",
+        body: "Hello {PLAYER_NAME}, your Aadhaar/PAN KYC documents have been verified & approved! Instant IMPS withdrawals are now enabled on your account. - LUDBET"
+      },
+      kyc_rejected: {
+        subject: "KYC Action Required: Verification Issue",
+        body: "Dear {PLAYER_NAME}, your KYC submission could not be verified due to unclear document scan. Please re-upload your valid government ID in your profile. - LUDBET"
+      }
+    };
+
+    function loadTemplate(key) {
+      if (TEMPLATES[key]) {
+        document.getElementById('tplSubject').value = TEMPLATES[key].subject;
+        document.getElementById('tplBody').value = TEMPLATES[key].body;
+        updateLivePreview();
+      }
+    }
+
+    function insertTag(tag) {
+      const textarea = document.getElementById('tplBody');
+      textarea.value += ' ' + tag;
+      updateLivePreview();
+    }
+
+    function updateLivePreview() {
+      let body = document.getElementById('tplBody').value;
+      body = body.replace(/{PLAYER_NAME}/g, 'Rahul')
+                 .replace(/{OTP_CODE}/g, '<strong>839201</strong>')
+                 .replace(/{AMOUNT}/g, '500')
+                 .replace(/{UTR}/g, '429810294819')
+                 .replace(/{MATCH_ID}/g, 'BAT-82910')
+                 .replace(/{WALLET_BALANCE}/g, '1,450')
+                 .replace(/{DATE_TIME}/g, '23-Aug 19:42');
+      document.getElementById('liveMsgPreview').innerHTML = body;
+    }
+
+    function testSMTP() {
+      showToast('Testing SMTP connection...', '⚡');
+      setTimeout(() => {
+        showToast('✅ SMTP Server Connected: 250 OK (Hostinger SSL Handshake Valid)', '🟢');
+      }, 1200);
+    }
+
+    function saveTemplateSettings() {
+      if (window.STATE && window.STATE.auditLogs) {
+        window.STATE.auditLogs.unshift({
+          action: "UPDATED_TEMPLATES_SMTP",
+          actor: "Super Admin (You)",
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
+          details: "Updated SMTP credentials and dynamic SMS/Email template strings.",
+          ip: "103.241.12.89"
+        });
+      }
+      showToast('SMTP settings & notification templates saved!', '💾');
+    }
+  </script>
+</body>
+</html>

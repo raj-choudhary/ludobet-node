@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Ludo Tournament — Win Real Cash & Rewards</title>
+  <meta name="description" content="Play Ludo Classic, Quick Ludo, and Snake & Ladders online with real players. Compete in daily championships and win exciting prizes!">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Ambient background stars & sparkles -->
+  <div class="ambient-sparkles"></div>
+
+  <!-- Main Mobile Application Canvas -->
+  <div class="app-container">
+
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+      <!-- Menu Button -->
+      <button class="btn-menu" id="btn-menu" aria-label="Menu" onclick="handleMenuClick()">
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+        <span class="menu-line"></span>
+      </button>
+
+      <!-- Resource Pill Container -->
+      <div class="resource-pill">
+        <!-- Chips Section -->
+        <button class="res-item" onclick="handleChipsClick()" aria-label="Add Chips">
+          <img class="res-icon" src="assets/chip.svg" alt="Chips">
+          <div class="res-data">
+            <span class="res-amount" id="chips-value">12,450</span>
+            <span class="res-label">Chips</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Earnings Section -->
+        <button class="res-item" onclick="handleEarningsClick()" aria-label="View Earnings">
+          <img class="res-icon" src="assets/diamond.svg" alt="Earnings">
+          <div class="res-data">
+            <span class="res-amount" id="earnings-value">350</span>
+            <span class="res-label">Earnings</span>
+          </div>
+          <span class="btn-plus">+</span>
+        </button>
+
+        <!-- Notification Bell Section -->
+        <button class="bell-item" onclick="handleBellClick()" aria-label="Notifications">
+          <div class="bell-icon-wrapper">
+            <img class="bell-icon" src="assets/bell.svg" alt="Bell">
+            <span class="bell-badge">3</span>
+          </div>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. HERO 3D TOURNAMENT SECTION -->
+    <section class="hero-section">
+      <div class="hero-art-wrapper">
+        <img class="hero-art-img" src="assets/hero_clean.png" alt="Ludo Tournament Champion Board">
+        <!-- Interactive trigger over the 3D board to launch Quick Play -->
+        <div class="hero-click-overlay" onclick="handleGameClick('Ludo Classic')" title="Tap to Play Ludo"></div>
+      </div>
+    </section>
+
+    <!-- 3. "CHOOSE YOUR GAME" SECTION TITLE -->
+    <div class="section-choose-game">
+      <img class="choose-game-header-img" src="assets/choose_game_header.png" alt="Choose Your Game">
+    </div>
+
+    <!-- 4. GAME CARDS GRID (2x2) -->
+    <main class="games-grid">
+      <!-- Card 1: Ludo Classic -->
+      <button class="game-card" id="card-classic" onclick="window.location.href='ludo-classic.html'" aria-label="Play Ludo Classic">
+        <img class="game-card-img" src="assets/card_ludo_classic_exact.png" alt="Ludo Classic - Play Now">
+      </button>
+
+      <!-- Card 2: Ludo Quick -->
+      <button class="game-card" id="card-quick" onclick="window.location.href='ludo-quick.html'" aria-label="Play Ludo Quick">
+        <img class="game-card-img" src="assets/card_ludo_quick_exact.png" alt="Ludo Quick - Play Now">
+      </button>
+
+      <!-- Card 3: Snake & Ladders -->
+      <button class="game-card" id="card-snake" onclick="window.location.href='snake-ladders.html'" aria-label="Play Snake & Ladders">
+        <img class="game-card-img" src="assets/card_snake_exact.png" alt="Snake & Ladders - Play Now">
+      </button>
+
+      <!-- Card 4: New Game (Coming Soon) -->
+      <button class="game-card" id="card-newgame" onclick="handleGameClick('New Game')" aria-label="New Game Coming Soon">
+        <img class="game-card-img" src="assets/card_newgame_exact.png" alt="New Game - Coming Soon">
+      </button>
+    </main>
+
+    <!-- 5. UPCOMING TOURNAMENT BANNER -->
+    <section class="tournament-banner-wrapper" onclick="handleTournamentClick()" aria-label="Join Upcoming Tournament">
+      <img class="tournament-banner-img" src="assets/tournament_banner_exact.png" alt="Upcoming Tournament - Daily Championship">
+      <div class="hotspot-view-all" onclick="handleViewAllTournaments(event)" title="View All Tournaments"></div>
+      <div class="hotspot-entry-btn" onclick="handleTournamentClick()" title="Register ₹20"></div>
+    </section>
+
+  </div>
+
+  <!-- 6. BOTTOM FLOATING NAVIGATION DOCK -->
+  <div class="bottom-nav-container">
+    <nav class="bottom-nav">
+      <!-- Home Tab (Active) -->
+      <button class="nav-tab active" id="tab-home" onclick="handleNavTab(this, 'Home')">
+        <img class="nav-icon-svg" src="assets/home.svg" alt="Home">
+        <span class="nav-label">Home</span>
+      </button>
+
+      <!-- Ranking Tab -->
+      <button class="nav-tab" id="tab-ranking" onclick="handleNavTab(this, 'Ranking')">
+        <img class="nav-icon-svg" src="assets/ranking.svg" alt="Ranking">
+        <span class="nav-label">Ranking</span>
+      </button>
+
+      <!-- Wallet Tab -->
+      <button class="nav-tab" id="tab-wallet" onclick="handleNavTab(this, 'Wallet')">
+        <img class="nav-icon-svg" src="assets/wallet.svg" alt="Wallet">
+        <span class="nav-label">Wallet</span>
+      </button>
+
+      <!-- Refer Tab -->
+      <button class="nav-tab" id="tab-refer" onclick="handleNavTab(this, 'Refer')">
+        <img class="nav-icon-svg" src="assets/refer.svg" alt="Refer">
+        <span class="nav-label">Refer</span>
+      </button>
+
+      <!-- Profile Tab -->
+      <button class="nav-tab" id="tab-profile" onclick="handleNavTab(this, 'Profile')">
+        <img class="nav-icon-svg" src="assets/profile.svg" alt="Profile">
+        <span class="nav-label">Profile</span>
+      </button>
+    </nav>
+    <div class="home-indicator"></div>
+  </div>
+
+  <!-- ==========================================================================
+       INTERACTIVE MODALS & DRAWERS
+       ========================================================================== -->
+
+  <!-- Modal 1: Game Matchmaking / Mode Selector -->
+  <div class="modal-backdrop" id="game-select-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeAllModals('game-select-modal')">✕</button>
+      <div class="modal-badge-icon" id="game-modal-badge">🎲</div>
+      <h3 class="modal-title" id="game-modal-title">Ludo Classic</h3>
+      <p class="modal-subtitle" id="game-modal-sub">Choose your battle format and play with verified real players.</p>
+      
+      <div class="modal-options-grid">
+        <button class="modal-option-btn selected" onclick="selectGameMode(this, '2 Players')">
+          <span class="modal-option-icon">👥</span>
+          <span class="modal-option-label">2 Players</span>
+          <span class="modal-option-sub">1 Winner • Fast</span>
+        </button>
+        <button class="modal-option-btn" onclick="selectGameMode(this, '4 Players')">
+          <span class="modal-option-icon">👨‍👩‍👧‍👦</span>
+          <span class="modal-option-label">4 Players</span>
+          <span class="modal-option-sub">Classic 4-Way</span>
+        </button>
+        <button class="modal-option-btn" onclick="selectGameMode(this, 'Private Room')">
+          <span class="modal-option-icon">🔒</span>
+          <span class="modal-option-label">Private Room</span>
+          <span class="modal-option-sub">Play with Friends</span>
+        </button>
+        <button class="modal-option-btn" onclick="selectGameMode(this, 'Practice')">
+          <span class="modal-option-icon">🤖</span>
+          <span class="modal-option-label">Practice</span>
+          <span class="modal-option-sub">Free Tokens</span>
+        </button>
+      </div>
+
+      <button class="btn-primary-action" id="game-modal-action-btn" onclick="confirmGameStart()">START MATCH (₹10)</button>
+    </div>
+  </div>
+
+  <!-- Modal 2: Tournament Registration Modal -->
+  <div class="modal-backdrop" id="tournament-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeAllModals('tournament-modal')">✕</button>
+      <div class="modal-badge-icon" style="background: linear-gradient(145deg, #fff3e0, #ffe082);">🏆</div>
+      <h3 class="modal-title">DAILY CHAMPIONSHIP</h3>
+      <p class="modal-subtitle">Starts Tonight at <b>10:00 PM</b> • 4 Players Bracket</p>
+
+      <div style="background: #eef6ff; border-radius: 16px; padding: 14px; margin-bottom: 18px; display: flex; justify-content: space-around; text-align: center;">
+        <div>
+          <small style="color: #6a7d94; font-weight: 700; font-size: 11px;">PRIZE POOL</small>
+          <div style="font-size: 20px; font-weight: 900; color: #e6a100;">🪙 5,000</div>
+        </div>
+        <div style="border-right: 1px solid #d4e2f0;"></div>
+        <div>
+          <small style="color: #6a7d94; font-weight: 700; font-size: 11px;">ENTRY FEE</small>
+          <div style="font-size: 20px; font-weight: 900; color: #1e9922;">₹20</div>
+        </div>
+        <div style="border-right: 1px solid #d4e2f0;"></div>
+        <div>
+          <small style="color: #6a7d94; font-weight: 700; font-size: 11px;">SLOTS LEFT</small>
+          <div style="font-size: 20px; font-weight: 900; color: #0d2c66;">24 / 64</div>
+        </div>
+      </div>
+
+      <button class="btn-primary-action" onclick="confirmTournamentEntry()">REGISTER NOW (₹20)</button>
+    </div>
+  </div>
+
+  <!-- Modal 3: Add Chips Modal -->
+  <div class="modal-backdrop" id="add-chips-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeAllModals('add-chips-modal')">✕</button>
+      <div class="modal-badge-icon" style="background: linear-gradient(145deg, #fffde7, #fff59d);">🪙</div>
+      <h3 class="modal-title">Recharge Chips</h3>
+      <p class="modal-subtitle">Instant 100% Bonus Chips on your first deposit today!</p>
+
+      <div class="modal-options-grid">
+        <button class="modal-option-btn chip-option-btn" onclick="selectChipAmount(this, '₹50')">
+          <span class="modal-option-label">500 Chips</span>
+          <span class="modal-option-sub">₹50</span>
+        </button>
+        <button class="modal-option-btn chip-option-btn selected" onclick="selectChipAmount(this, '₹100')">
+          <span class="modal-option-label">1,200 Chips</span>
+          <span class="modal-option-sub" style="color:#e68a00; font-weight: 800;">₹100 (+20% FREE)</span>
+        </button>
+        <button class="modal-option-btn chip-option-btn" onclick="selectChipAmount(this, '₹250')">
+          <span class="modal-option-label">3,500 Chips</span>
+          <span class="modal-option-sub">₹250 (+40% FREE)</span>
+        </button>
+        <button class="modal-option-btn chip-option-btn" onclick="selectChipAmount(this, '₹500')">
+          <span class="modal-option-label">7,500 Chips</span>
+          <span class="modal-option-sub">₹500 (+50% FREE)</span>
+        </button>
+      </div>
+
+      <button class="btn-primary-action" id="pay-chips-btn" onclick="confirmRecharge()">ADD ₹100 (1,200 CHIPS)</button>
+    </div>
+  </div>
+
+  <!-- Modal 4: Earnings / Withdraw Modal -->
+  <div class="modal-backdrop" id="earnings-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeAllModals('earnings-modal')">✕</button>
+      <div class="modal-badge-icon" style="background: linear-gradient(145deg, #e1f5fe, #81d4fa);">💎</div>
+      <h3 class="modal-title">Your Earnings</h3>
+      <p class="modal-subtitle">Available balance ready for instant bank / UPI withdrawal.</p>
+
+      <div style="background: #f0f7ff; border: 2px dashed #90caf9; border-radius: 18px; padding: 16px; margin-bottom: 20px;">
+        <small style="color: #546e7a; font-weight: 700;">TOTAL WINNINGS</small>
+        <div style="font-size: 32px; font-weight: 900; color: #0288d1; margin: 4px 0;">₹350.00</div>
+        <small style="color: #2e7d32; font-weight: 800;">✓ Verified & Withdrawable</small>
+      </div>
+
+      <button class="btn-primary-action" onclick="confirmWithdraw()">WITHDRAW TO UPI / BANK</button>
+    </div>
+  </div>
+
+  <!-- Modal 5: Notifications Panel -->
+  <div class="modal-backdrop" id="notifications-modal">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeAllModals('notifications-modal')">✕</button>
+      <div class="modal-badge-icon" style="background: linear-gradient(145deg, #fff3e0, #ffcc80);">🔔</div>
+      <h3 class="modal-title">Notifications</h3>
+      <p class="modal-subtitle">Recent activity, tournament alerts & rewards.</p>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; text-align: left; margin-bottom: 18px; max-height: 240px; overflow-y: auto;">
+        <div style="background: #ffffff; border: 1px solid #e1ebf6; border-radius: 14px; padding: 10px 12px; display: flex; gap: 10px; align-items: center;">
+          <span style="font-size: 22px;">🏆</span>
+          <div>
+            <b style="font-size: 13px; color: #102a43;">Daily Championship Reminder</b>
+            <div style="font-size: 11px; color: #627d98;">Tournament starts in 45 mins. Secure your slot!</div>
+          </div>
+        </div>
+        <div style="background: #ffffff; border: 1px solid #e1ebf6; border-radius: 14px; padding: 10px 12px; display: flex; gap: 10px; align-items: center;">
+          <span style="font-size: 22px;">🎁</span>
+          <div>
+            <b style="font-size: 13px; color: #102a43;">Daily Login Bonus</b>
+            <div style="font-size: 11px; color: #627d98;">+100 Chips claimed successfully!</div>
+          </div>
+        </div>
+        <div style="background: #ffffff; border: 1px solid #e1ebf6; border-radius: 14px; padding: 10px 12px; display: flex; gap: 10px; align-items: center;">
+          <span style="font-size: 22px;">⚔️</span>
+          <div>
+            <b style="font-size: 13px; color: #102a43;">Match Victory!</b>
+            <div style="font-size: 11px; color: #627d98;">You won ₹80 in Ludo Quick 2-Player match.</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-primary-action" onclick="closeAllModals('notifications-modal')">MARK ALL AS READ</button>
+    </div>
+  </div>
+
+  <!-- Sidebar Drawer Menu (Exact Reference Design) -->
+  <div class="drawer-backdrop" id="sidebar-drawer" onclick="closeDrawer();">
+    <div class="drawer-panel" onclick="event.stopPropagation();">
+      <!-- 1. Drawer Header (Fixed) -->
+      <div class="drawer-header-card">
+        <button class="drawer-close-btn" onclick="closeDrawer()" aria-label="Close Menu">✕</button>
+        <div class="drawer-user-info" onclick="closeDrawer(); window.location.href='profile.html';">
+          <img src="assets/avatar_rajendra.png" alt="Rajendra" class="drawer-user-avatar">
+          <div class="drawer-user-meta">
+            <div class="drawer-name-row">
+              <span class="drawer-name">Rajendra</span>
+              <span class="verified-tick">✓</span>
+            </div>
+            <span class="drawer-id">Player ID: LD10458</span>
+          </div>
+        </div>
+        <button class="btn-drawer-profile" onclick="closeDrawer(); window.location.href='profile.html';">VIEW FULL PROFILE ›</button>
+      </div>
+
+      <!-- 2. Drawer Scrollable List (Light Luxury Cards) -->
+      <div class="drawer-scroll-content" id="drawer-scroll-content">
+        
+        <!-- SECTION 1: GAMING & BATTLES -->
+        <div class="drawer-section-title">🎮 GAMING &amp; BATTLES</div>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='my-battles.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-blue">⚔️</div>
+            <div class="nav-card-text">
+              <span class="card-title">My Battles</span>
+              <span class="card-sub">Open, Running &amp; Completed</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='ranking.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-amber">🏆</div>
+            <div class="nav-card-text">
+              <span class="card-title">Leaderboard &amp; Rankings</span>
+              <span class="card-sub">Daily, Weekly &amp; Monthly Winners</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='notifications.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-amber">🔔</div>
+            <div class="nav-card-text">
+              <span class="card-title">Notifications</span>
+              <span class="card-sub">Invites, Results &amp; Alerts</span>
+            </div>
+          </div>
+          <span class="nav-badge-pill red">3</span>
+        </a>
+
+        <!-- SECTION 2: WALLET & FINANCES -->
+        <div class="drawer-section-title">💳 WALLET &amp; TRANSACTIONS</div>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='wallet.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-green">💰</div>
+            <div class="nav-card-text">
+              <span class="card-title">Add Cash / Deposit</span>
+              <span class="card-sub">Instant UPI, QR &amp; Cards</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='withdraw.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-emerald">💸</div>
+            <div class="nav-card-text">
+              <span class="card-title">Withdraw Cash</span>
+              <span class="card-sub">Instant Transfer to UPI / Bank</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='transactions.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-indigo">📜</div>
+            <div class="nav-card-text">
+              <span class="card-title">Transaction History</span>
+              <span class="card-sub">Passbook, Ledger &amp; Winnings</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <!-- SECTION 3: REWARDS & EARNINGS -->
+        <div class="drawer-section-title">🎁 REWARDS &amp; OFFERS</div>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='refer-earn.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-orange">🎁</div>
+            <div class="nav-card-text">
+              <span class="card-title">Refer &amp; Earn</span>
+              <span class="card-sub">Get ₹100 Per Friend</span>
+            </div>
+          </div>
+          <span class="nav-badge-pill orange">HOT 🔥</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='profile.html#achievements';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-pink">🎉</div>
+            <div class="nav-card-text">
+              <span class="card-title">Rewards &amp; Bonuses</span>
+              <span class="card-sub">Cashback, Free Spins &amp; Passes</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <!-- SECTION 4: ACCOUNT & VERIFICATION -->
+        <div class="drawer-section-title">🛡️ ACCOUNT &amp; RULES</div>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='kyc.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-green">🆔</div>
+            <div class="nav-card-text">
+              <span class="card-title">KYC Verification</span>
+              <span class="card-sub">Aadhaar &amp; PAN Identity</span>
+            </div>
+          </div>
+          <span class="nav-badge-pill green">VERIFIED ✓</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='rules.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-blue">📖</div>
+            <div class="nav-card-text">
+              <span class="card-title">Game Rules</span>
+              <span class="card-sub">Rules of Classic, Quick &amp; Snake</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='how-to-play.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-blue">🎓</div>
+            <div class="nav-card-text">
+              <span class="card-title">How to Play</span>
+              <span class="card-sub">Beginners Guide &amp; Tips</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <!-- SECTION 5: SETTINGS & SUPPORT -->
+        <div class="drawer-section-title">⚙️ SETTINGS &amp; SUPPORT</div>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='settings.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-slate">⚙️</div>
+            <div class="nav-card-text">
+              <span class="card-title">Settings</span>
+              <span class="card-sub">Sound, Vibration, Language</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='support.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-green">🎧</div>
+            <div class="nav-card-text">
+              <span class="card-title">Support / Help</span>
+              <span class="card-sub">FAQ, 24x7 WhatsApp Support</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='terms.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-slate">⚖️</div>
+            <div class="nav-card-text">
+              <span class="card-title">Terms &amp; Conditions</span>
+              <span class="card-sub">Fairplay &amp; User Agreements</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <a class="drawer-menu-card" onclick="closeDrawer(); window.location.href='privacy.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-slate">🔒</div>
+            <div class="nav-card-text">
+              <span class="card-title">Privacy Policy</span>
+              <span class="card-sub">Privacy &amp; Data Security</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+        <!-- Logout -->
+        <a class="drawer-menu-card logout-card" onclick="closeDrawer(); window.location.href='settings.html';">
+          <div class="card-left-group">
+            <div class="nav-card-icon icon-red">🚪</div>
+            <div class="nav-card-text">
+              <span class="card-title danger">Logout</span>
+              <span class="card-sub">Securely exit account</span>
+            </div>
+          </div>
+          <span class="nav-card-arrow">›</span>
+        </a>
+
+      </div>
+
+      <!-- 3. Drawer Footer (Fixed) -->
+      <div class="drawer-bottom-footer">
+        <span>Fairplay 100% Certified • v2.4.0</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Daily Spin Widget -->
+  <div class="floating-spin-widget" onclick="openDailySpinModal()" title="Free Daily Spin!">
+    <div class="spin-widget-badge">🎡</div>
+  </div>
+
+  <!-- MODAL: DAILY LUCKY SPIN WHEEL -->
+  <div class="drawer-backdrop" id="modal-spin-wheel" onclick="closeDailySpinModal()" style="display:none; align-items:center; justify-content:center; padding:16px;">
+    <div class="spin-modal-card" onclick="event.stopPropagation()">
+      <button class="flow-modal-close-btn" onclick="closeDailySpinModal()" aria-label="Close Spin Wheel">✕</button>
+      
+      <div class="flow-header-pill" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow:0 3px 8px rgba(217, 119, 6, 0.35); margin-bottom:6px;">🎡 DAILY LUCKY WHEEL</div>
+      <h3 style="font-size:20px; font-weight:900; color:#0c2b64; margin-top:2px;">Spin &amp; Win Real Cash!</h3>
+      <p style="font-size:11.5px; font-weight:600; color:#64748b; margin-top:2px;">1 Free Spin every 24 hours. Guaranteed prizes!</p>
+
+      <!-- Wheel Graphic Frame -->
+      <div class="spin-wheel-container">
+        <div class="spin-wheel-pointer">▼</div>
+        <canvas id="wheel-canvas" width="280" height="280" class="spin-wheel-canvas"></canvas>
+        <div class="spin-center-hub" id="btn-spin-hub" onclick="triggerWheelSpin()">SPIN!</div>
+      </div>
+
+      <div class="spin-prize-box" id="spin-result-box">
+        <span id="spin-result-text">🎯 Tap "SPIN!" in the center to test your luck!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toast-msg"></div>
+
+  <!-- Interactive Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Spin Wheel Probability CMS — Ludo Bet Admin</title>
+  <meta name="description" content="Configure 8-slice drop rates and daily rewards.">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar" id="admin-sidebar">
+    <div class="sidebar-brand-header">
+      <span class="brand-crown-icon">👑</span>
+      <div class="brand-title-group">
+        <span class="brand-main-title">LUDO BET</span>
+        <span class="brand-super-tag">SUPER ADMIN</span>
+      </div>
+    </div>
+
+    <div class="sidebar-menu-scroll">
+      <!-- 1. Dashboard -->
+      <a class="nav-item-btn" href="index.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🏠</span><span>Dashboard</span></div>
+      </a>
+
+      <!-- 2. Players Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">👥</span><span>Players</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="players.html">All Players (1,24,580)</a>
+          <a class="submenu-item-btn" href="players-banned.html">🚫 Banned Accounts (152)</a>
+          <a class="submenu-item-btn" href="player-view.html?id=LD10458">👤 Player Profile View</a>
+        </div>
+      </div>
+
+      <!-- 3. Finance Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">💰</span><span>Finance</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="finance.html">Overview</a>
+          <a class="submenu-item-btn" href="finance-deposits.html">Deposits (₹24,45,230)</a>
+          <a class="submenu-item-btn" href="finance-withdrawals.html">Withdrawals (₹17,82,120)</a>
+          <a class="submenu-item-btn" href="finance-adjustments.html">Manual Adjustments</a>
+          <a class="submenu-item-btn" href="finance-ledger.html">Double-Entry Ledger</a>
+        </div>
+      </div>
+
+      <!-- 4. KYC Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🪪</span><span>KYC Management</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="kyc.html">Pending Queue (456)</a>
+          <a class="submenu-item-btn" href="kyc-history.html">KYC History Log</a>
+        </div>
+      </div>
+
+      <!-- 5. Games Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🎮</span><span>Games</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="games-classic.html">🎲 Ludo Classic</a>
+          <a class="submenu-item-btn" href="games-quick.html">⚡ Ludo Quick</a>
+          <a class="submenu-item-btn" href="games-snake.html">🪜 Snake &amp; Ladders</a>
+        </div>
+      </div>
+
+      <!-- 6. Battles Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">⚔️</span><span>Battles</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="battles-open.html">Open Challenges (2,150)</a>
+          <a class="submenu-item-btn" href="battles-running.html">Live Running (3,820)</a>
+          <a class="submenu-item-btn" href="battles-completed.html">Completed (5,650)</a>
+          <a class="submenu-item-btn" href="battles-cancelled.html">Cancelled &amp; Refunded</a>
+          <a class="submenu-item-btn" href="battles-disputes.html">Disputes Desk (7)</a>
+        </div>
+      </div>
+
+      <!-- 7. Tournaments -->
+      <a class="nav-item-btn" href="tournaments.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🏆</span><span>Tournaments</span></div>
+      </a>
+
+      <!-- 8. Rewards & Spin Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn active" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">🎡</span><span>Rewards &amp; Spin</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu open">
+          <a class="submenu-item-btn" href="rewards-bonuses.html">🎁 Bonuses Rules</a>
+          <a class="submenu-item-btn" href="rewards-referrals.html">🤝 Referral Program</a>
+          <a class="submenu-item-btn active" href="rewards-spin.html">🎡 Spin Wheel CMS</a>
+        </div>
+      </div>
+
+      <!-- 9. Marketing Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">📢</span><span>Marketing &amp; CMS</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="marketing-banners.html">🖼️ Home Banners</a>
+          <a class="submenu-item-btn" href="marketing-notifications.html">🔔 Push Broadcaster</a>
+        </div>
+      </div>
+
+      <!-- 10. Support Tickets -->
+      <a class="nav-item-btn" href="support.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🎧</span><span>Support Tickets</span></div>
+        <span class="nav-pill-badge red">15</span>
+      </a>
+
+      <!-- 11. Security Center -->
+      <a class="nav-item-btn" href="security.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🛡️</span><span>Security Center</span></div>
+      </a>
+
+      <!-- 12. Employees & Roles -->
+      <a class="nav-item-btn" href="employees.html">
+        <div class="nav-left-group"><span class="nav-item-icon">👨‍💼</span><span>Employees &amp; Roles</span></div>
+      </a>
+
+      <!-- 13. Platform Settings Dropdown -->
+      <div class="nav-dropdown-group">
+        <a class="nav-item-btn" href="javascript:void(0)" onclick="toggleSidebarDropdown(this)">
+          <div class="nav-left-group"><span class="nav-item-icon">⚙️</span><span>Platform Settings</span></div>
+          <span class="nav-dropdown-arrow">▼</span>
+        </a>
+        <div class="sidebar-submenu">
+          <a class="submenu-item-btn" href="settings.html">Overview Hub</a>
+          <a class="submenu-item-btn" href="settings-financial.html">💰 Financial &amp; Commission</a>
+          <a class="submenu-item-btn" href="settings-game-engine.html">🎮 Game Engine &amp; Bot RNG</a>
+          <a class="submenu-item-btn" href="settings-payment-gateways.html">💳 Payment &amp; Crypto Gateways</a>
+          <a class="submenu-item-btn" href="settings-sms-gateways.html">📱 SMS Gateways &amp; DLT</a>
+          <a class="submenu-item-btn" href="settings-notifications-templates.html">✉️ Email &amp; Templates</a>
+          <a class="submenu-item-btn" href="settings-system-security.html">🛡️ Anti-Fraud &amp; Geo-Rules</a>
+        </div>
+      </div>
+
+      <!-- 14. Master Audit Logs -->
+      <a class="nav-item-btn" href="audit-logs.html">
+        <div class="nav-left-group"><span class="nav-item-icon">📜</span><span>Master Audit Logs</span></div>
+      </a>
+
+      <!-- 15. Emergency Controls -->
+      <a class="nav-item-btn" href="emergency.html">
+        <div class="nav-left-group"><span class="nav-item-icon">🚨</span><span style="color:#ef4444;">Emergency Controls</span></div>
+      </a>
+    </div>
+
+    <div class="sidebar-footer-card">
+      <div class="maintenance-switch-row">
+        <div class="maint-title-group"><span>🛡️</span><span>Maintenance Mode</span></div>
+        <input type="checkbox" onchange="toggleEmergencyMaintenance(this)" style="cursor:pointer; width:18px; height:18px;">
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN WRAPPER -->
+  <div class="admin-main-wrapper">
+    <header class="admin-top-header">
+      <div class="header-left-group">
+        <button class="btn-sidebar-toggle" onclick="toggleMobileSidebar()">☰</button>
+        <h2 style="font-size:16px; font-weight:800; color:#0f172a;">🎡 Daily Spin Wheel Probability CMS</h2>
+      </div>
+
+      <div class="header-right-group">
+        <button class="header-icon-btn">🔍</button>
+        <button class="header-icon-btn">🔔</button>
+        <div class="admin-user-pill">
+          <div class="admin-avatar-circle"><span>👨‍💼</span></div>
+          <div class="admin-user-info">
+            <span class="admin-user-name">Super Admin</span>
+            <span class="admin-user-role">Super Administrator</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-body-container">
+      
+      <!-- Subnav Navigation Pill Strip -->
+      <div class="player-drawer-tabs-bar" style="background:#ffffff; border:1px solid var(--border-color); border-radius:14px; padding:4px 14px;">
+        <a class="player-drawer-tab-btn" href="rewards-bonuses.html" style="text-decoration:none;">🎁 Bonus Rules</a>
+        <a class="player-drawer-tab-btn" href="rewards-referrals.html" style="text-decoration:none;">🤝 Referral Program</a>
+        <a class="player-drawer-tab-btn active" href="rewards-spin.html" style="text-decoration:none;">🎡 Spin Wheel CMS</a>
+      </div>
+
+      <div class="admin-data-panel">
+        <div class="data-panel-top-bar">
+          <div>
+            <h1 class="page-title-main">8-Slice Reward Wheel Drop Probability</h1>
+            <p class="page-title-sub">Configure exact prize rewards and mathematical drop percentage odds for user daily lucky wheel.</p>
+          </div>
+        </div>
+
+        <div class="admin-table-frame" style="margin-top:14px;">
+          <table class="admin-data-table">
+            <thead>
+              <tr>
+                <th>Slice #</th>
+                <th>Reward Label</th>
+                <th>Reward Type</th>
+                <th>Reward Value</th>
+                <th>Drop Probability (%)</th>
+                <th>Daily Total Claimed</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Slice 1</strong></td>
+                <td><strong style="color:#10b981;">₹5 Real Cash</strong></td>
+                <td>Deposit Cash</td>
+                <td>₹5.00</td>
+                <td><input type="number" value="30.0" step="0.5" style="width:75px; padding:6px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:800;"> %</td>
+                <td>1,840 Times</td>
+              </tr>
+              <tr>
+                <td><strong>Slice 2</strong></td>
+                <td><strong style="color:#6366f1;">10 Bonus Cash</strong></td>
+                <td>Bonus Wallet</td>
+                <td>₹10.00</td>
+                <td><input type="number" value="25.0" step="0.5" style="width:75px; padding:6px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:800;"> %</td>
+                <td>1,510 Times</td>
+              </tr>
+              <tr>
+                <td><strong>Slice 3</strong></td>
+                <td><strong style="color:#0288d1;">50 Loyalty Gems</strong></td>
+                <td>Gems Currency</td>
+                <td>50 Gems</td>
+                <td><input type="number" value="20.0" step="0.5" style="width:75px; padding:6px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:800;"> %</td>
+                <td>1,240 Times</td>
+              </tr>
+              <tr>
+                <td><strong>Slice 4</strong></td>
+                <td><strong style="color:#10b981;">₹20 Real Cash</strong></td>
+                <td>Deposit Cash</td>
+                <td>₹20.00</td>
+                <td><input type="number" value="10.0" step="0.5" style="width:75px; padding:6px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:800;"> %</td>
+                <td>614 Times</td>
+              </tr>
+              <tr>
+                <td><strong>Slice 5</strong></td>
+                <td><strong style="color:#f59e0b;">Better Luck Next Time</strong></td>
+                <td>No Reward</td>
+                <td>0</td>
+                <td><input type="number" value="10.0" step="0.5" style="width:75px; padding:6px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:800;"> %</td>
+                <td>620 Times</td>
+              </tr>
+              <tr>
+                <td><strong>Slice 6</strong></td>
+                <td><strong style="color:#6366f1;">₹50 Bonus Cash</strong></td>
+                <td>Bonus Wallet</td>
+                <td>₹50.00</td>
+                <td><input type="number" value="3.5" step="0.1" style="width:75px; padding:6px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:800;"> %</td>
+                <td>214 Times</td>
+              </tr>
+              <tr>
+                <td><strong>Slice 7</strong></td>
+                <td><strong style="color:#10b981;">₹100 Real Cash</strong></td>
+                <td>Deposit Cash</td>
+                <td>₹100.00</td>
+                <td><input type="number" value="1.0" step="0.1" style="width:75px; padding:6px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:800;"> %</td>
+                <td>62 Times</td>
+              </tr>
+              <tr>
+                <td><strong>Slice 8</strong></td>
+                <td><strong style="color:#b91c1c;">👑 JACKPOT ₹500</strong></td>
+                <td>Winnings Cash</td>
+                <td>₹500.00</td>
+                <td><input type="number" value="0.5" step="0.1" style="width:75px; padding:6px 10px; border-radius:8px; border:1.5px solid #cbd5e1; font-weight:800;"> %</td>
+                <td>8 Times</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <button class="btn-table-action" style="background:#6366f1; color:#fff; padding:12px 28px; margin-top:20px; font-size:13px;" onclick="showToast('Spin Wheel probability saved successfully (Total 100%)!', '🎡')">
+          SAVE PROBABILITY CMS 🎡
+        </button>
+      </div>
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

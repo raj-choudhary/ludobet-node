@@ -1,0 +1,319 @@
+/* ==========================================================================
+   MY BATTLES PAGE STYLESHEET
+   100% Mobile Responsive, Luxury Tournament Passbook & Match History
+   ========================================================================== */
+
+.battles-page-title {
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.1;
+}
+
+.header-action-btn {
+  background: linear-gradient(135deg, #0288d1 0%, #01579b 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(2, 136, 209, 0.25);
+  font-family: inherit;
+}
+
+/* 1. Battles Body */
+.battles-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+}
+
+/* 2. Stats Strip */
+.battles-stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.stat-pill-box {
+  background: #ffffff;
+  border: 1.5px solid #d4e5f7;
+  border-radius: 14px;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(12, 43, 100, 0.04);
+}
+
+.stat-num {
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.stat-lbl {
+  font-size: 8px;
+  font-weight: 800;
+  color: var(--slate-text);
+  letter-spacing: 0.4px;
+}
+
+/* Colors */
+.text-navy { color: var(--navy-text); }
+.text-green { color: #16a34a; }
+.text-red { color: #dc2626; }
+.text-purple { color: #7a39d0; }
+
+/* 3. Filter Tabs Bar */
+.battles-tabs-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  background: #ffffff;
+  border: 1.5px solid #d4e5f7;
+  border-radius: 14px;
+  padding: 4px;
+}
+
+.battles-tab {
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  padding: 7px 0;
+  font-size: 10.5px;
+  font-weight: 900;
+  color: var(--slate-text);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.battles-tab.active {
+  background: #0288d1;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(2, 136, 209, 0.3);
+}
+
+/* 4. Battles List & Cards */
+.battles-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.battle-card-row {
+  background: #ffffff;
+  border: 1.5px solid #d4e5f7;
+  border-radius: 18px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: 0 4px 12px rgba(12, 43, 100, 0.05);
+}
+
+.battle-card-row.live-card {
+  border-color: #38bdf8;
+  background: linear-gradient(180deg, #ffffff 0%, #f0f9ff 100%);
+  box-shadow: 0 6px 18px rgba(2, 136, 209, 0.12);
+}
+
+.battle-card-row.won-card {
+  border-left: 4px solid #16a34a;
+}
+
+.battle-card-row.lost-card {
+  border-left: 4px solid #dc2626;
+}
+
+/* Card Top Bar */
+.card-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mode-tag {
+  font-size: 9.5px;
+  font-weight: 900;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.mode-tag.live {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.live-blink-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #0288d1;
+  animation: live-blink 1s infinite;
+}
+
+@keyframes live-blink {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
+}
+
+.mode-tag.won {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.mode-tag.lost {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fca5a5;
+}
+
+.battle-id-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 800;
+  color: #0288d1;
+}
+
+.battle-date-text {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--slate-text);
+}
+
+/* Versus Area */
+.card-versus-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 4px 0;
+}
+
+.player-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.p-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+.p-avatar.you {
+  border-color: #0288d1;
+}
+
+.p-avatar.opp {
+  border-color: #f59e0b;
+}
+
+.p-name {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--navy-text);
+}
+
+.vs-badge-small {
+  font-size: 11px;
+  font-weight: 900;
+  color: #f59e0b;
+  background: #fffbeb;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid #fde68a;
+}
+
+/* Stakes Row */
+.card-stakes-row {
+  background: #f8fafc;
+  border-radius: 10px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stake-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.st-lbl {
+  font-size: 8.5px;
+  font-weight: 700;
+  color: var(--slate-text);
+}
+
+.st-val {
+  font-size: 12px;
+  font-weight: 900;
+  color: var(--navy-text);
+}
+
+/* Actions Area */
+.card-actions-area {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-card-action {
+  flex: 1;
+  padding: 9px 0;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 900;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.15s ease;
+}
+
+.btn-card-action:active {
+  transform: scale(0.98);
+}
+
+.btn-card-action.primary {
+  background: linear-gradient(135deg, #0288d1 0%, #01579b 100%);
+  color: #ffffff;
+  box-shadow: 0 3px 8px rgba(2, 136, 209, 0.25);
+}
+
+.btn-card-action.green {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: #ffffff;
+  box-shadow: 0 3px 8px rgba(22, 163, 74, 0.25);
+}
+
+.btn-card-action.outline {
+  background: #ffffff;
+  border: 1.5px solid #d4e5f7;
+  color: #10386e;
+}
+
+.btn-card-action.rematch {
+  background: #fff7ed;
+  border: 1.5px solid #fed7aa;
+  color: #c2410c;
+}
