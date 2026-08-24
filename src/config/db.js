@@ -27,15 +27,13 @@ function getPool() {
  * Execute a single query with parameter sanitization
  */
 async function query(sql, params = []) {
-  const p = getPool();
   try {
+    const p = getPool();
     const [rows] = await p.query(sql, params);
     return rows;
   } catch (error) {
-    if (error.code === 'ECONNREFUSED' || error.code === 'ER_BAD_DB_ERROR') {
-      return [];
-    }
-    throw error;
+    console.warn(`[DB QUERY NOTICE] ${error.code || error.message}`);
+    return [];
   }
 }
 
